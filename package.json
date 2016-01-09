@@ -1,0 +1,20 @@
+{
+  "name": "hexaworld-mobile",
+  "version": "1.0.0",
+  "description": "mobile app for hexaworld",
+  "main": "www/index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexaworld/hexaworld-mobile.git"
+  },
+  "keywords": [
+    "hexaworld"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hexaworld/hexaworld-mobile/issues"
+  },
+  "homepage": "https://github.com/hexaworld/hexaworld-mobile#readme",
+  "dependencies": {}
+}
