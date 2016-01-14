@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "mobile app for hexaworld",
   "main": "www/index.js",
-  "scripts": {},
+  "scripts": {
+    "bundle-css": "sheetify -u sheetify-cssnext www/style.css > www/bundle.css",
+    "bundle-js": "browserify www/index.js > www/bundle.js",
+    "bundle": "npm run bundle-css & npm run bundle-js",
+    "web": "budo www/index.js:www/bundle.js --live --dir www",
+    "ios": "phonegap emulate ios"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hexaworld/hexaworld-mobile.git"
@@ -16,5 +22,15 @@
     "url": "https://github.com/hexaworld/hexaworld-mobile/issues"
   },
   "homepage": "https://github.com/hexaworld/hexaworld-mobile#readme",
-  "dependencies": {}
+  "dependencies": {
+    "hexaworld": "github:hexaworld/hexaworld",
+    "hexaworld-app": "github:hexaworld/hexaworld-app"
+  },
+  "devDependencies": {
+    "sheetify": "^3.3.3",
+    "sheetify-cssnext": "^1.0.7",
+    "standard": "^5.4.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.4.0"
+  }
 }

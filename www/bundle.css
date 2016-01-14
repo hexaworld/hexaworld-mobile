@@ -1,0 +1,17 @@
+html,
+body {
+  font: 16px/1.2 "Hack", Helvetica, arial, sans-serif;
+  color: rgb(220,220,220);
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  font-weight: 300;
+  background: rgb(55,55,55);
+  margin: 0px;
+}
+
+#container {
+	height: 100%;
+	width: 100%;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm5vZGVfbW9kdWxlcy9oZXhhd29ybGQtYXBwL3N0eWxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7RUFFRSxvREFBb0Q7RUFDcEQsd0JBQXdCO0VBQ3hCLG9DQUFvQztFQUNwQyw0QkFBNEI7RUFDNUIsaUJBQWlCO0VBQ2pCLDBCQUEwQjtFQUMxQixZQUFZO0NBQ2I7O0FBRUQ7Q0FDQyxhQUFhO0NBQ2IsWUFBWTtDQUNaIiwiZmlsZSI6Ind3dy9zdHlsZS5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJodG1sLFxuYm9keSB7XG4gIGZvbnQ6IDE2cHgvMS4yIFwiSGFja1wiLCBIZWx2ZXRpY2EsIGFyaWFsLCBzYW5zLXNlcmlmO1xuICBjb2xvcjogcmdiKDIyMCwyMjAsMjIwKTtcbiAgLXdlYmtpdC1mb250LXNtb290aGluZzogYW50aWFsaWFzZWQ7XG4gIGZvbnQtc21vb3RoaW5nOiBhbnRpYWxpYXNlZDtcbiAgZm9udC13ZWlnaHQ6IDMwMDtcbiAgYmFja2dyb3VuZDogcmdiKDU1LDU1LDU1KTtcbiAgbWFyZ2luOiAwcHg7XG59XG5cbiNjb250YWluZXIge1xuXHRoZWlnaHQ6IDEwMCU7XG5cdHdpZHRoOiAxMDAlO1xufSJdfQ== */
