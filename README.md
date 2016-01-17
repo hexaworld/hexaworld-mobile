@@ -6,21 +6,36 @@ Right now as a demo the www folder is just the hexaworld-64 branch of the main h
 
 ## Running on osx
 
-Link with local hexaworld-app & hexaworld
+### Clone this repository and cd into it.
+
+### Install npm dependencies from package.json
+
+```
+npm i
+```
+
+### Link with local hexaworld-app & hexaworld
 
 ```
 npm link hexaworld hexaworld-app
 ```
 
-Install dependencies:
+### Install dev dependencies:
 
 ```
-npm i -g phonegap ios-sim
+npm i -g cordova ios-sim ios-deploy
 ```
 
-Emulate in ios:
+### Run on device:
 
 ```
-phonegap emulate ios
+cordova run --device
+```
+
+### Emulate in ios:
+(this has awful performance)
+
+```
+cordova emulate ios
 ```
 

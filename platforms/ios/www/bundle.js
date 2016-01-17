@@ -3186,11 +3186,13 @@ module.exports = function (id, set) {
   })
 
   levels.events.on('click', function (selection) {
+    levels.hide()
     setTimeout(function () {
-      levels.hide()
       game.reload(set[selection])
-      game.show()
-    }, 100)
+      setTimeout(function () {
+        game.show()
+      }, 50)
+    }, 150)
   })
 
   return {
@@ -3198,7 +3200,49 @@ module.exports = function (id, set) {
   }
 }
 
-},{"./state.js":17,"./ui/about.js":18,"./ui/game.js":19,"./ui/levels.js":20,"./ui/menu.js":21,"./ui/settings.js":22,"./ui/side.js":23,"fastclick":14,"lodash":15}],13:[function(require,module,exports){
+},{"./state.js":23,"./ui/about.js":24,"./ui/game.js":25,"./ui/levels.js":26,"./ui/menu.js":27,"./ui/settings.js":28,"./ui/side.js":29,"fastclick":16,"lodash":17}],13:[function(require,module,exports){
+/* The following list is defined in React's core */
+var IS_UNITLESS = {
+  animationIterationCount: true,
+  boxFlex: true,
+  boxFlexGroup: true,
+  boxOrdinalGroup: true,
+  columnCount: true,
+  flex: true,
+  flexGrow: true,
+  flexPositive: true,
+  flexShrink: true,
+  flexNegative: true,
+  flexOrder: true,
+  gridRow: true,
+  gridColumn: true,
+  fontWeight: true,
+  lineClamp: true,
+  lineHeight: true,
+  opacity: true,
+  order: true,
+  orphans: true,
+  tabSize: true,
+  widows: true,
+  zIndex: true,
+  zoom: true,
+
+  // SVG-related properties
+  fillOpacity: true,
+  stopOpacity: true,
+  strokeDashoffset: true,
+  strokeOpacity: true,
+  strokeWidth: true
+};
+
+module.exports = function(name, value) {
+  if(typeof value === 'number' && !IS_UNITLESS[ name ]) {
+    return value + 'px';
+  } else {
+    return value;
+  }
+};
+},{}],14:[function(require,module,exports){
 var animate=function(){function F(a){return Array.isArray(a)?a:Array.prototype.slice.call(a)}var k=function(a){var c=a.length;return function d(){for(var e=arguments.length,f=Array(e),g=0;g<e;g++)f[g]=arguments[g];return f.length<c?function(){for(var a=arguments.length,c=Array(a),e=0;e<a;e++)c[e]=arguments[e];return d.apply(void 0,f.concat(c))}:a.apply(void 0,f)}},r=function(){for(var a=arguments.length,c=Array(a),b=0;b<a;b++)c[b]=arguments[b];return function(a){return c.reduce(function(a,b){return b(a)},
 a)}},t=function(a){return function(){return!a.apply(void 0,arguments)}},G={linear:function(a,c,b,d){return c+a/d*b},easeInQuad:function(a,c,b,d){return b*(a/=d)*a+c},easeInCubic:function(a,c,b,d){return b*(a/=d)*a*a+c},easeInQuart:function(a,c,b,d){return b*(a/=d)*a*a*a+c},easeInQuint:function(a,c,b,d){return b*(a/=d)*a*a*a*a+c},easeInSine:function(a,c,b,d){return-b*Math.cos(a/d*(Math.PI/2))+b+c},easeInExpo:function(a,c,b,d){return 0==a?c:b*Math.pow(2,10*(a/d-1))+c},easeInCirc:function(a,c,b,d){return-b*
 (Math.sqrt(1-(a/=d)*a)-1)+c},easeInElastic:function(a,c,b,d){var e=4>=arguments.length||void 0===arguments[4]?500:arguments[4];if(0==a)return c;if(1==(a/=d))return c+b;var e=d*(1-Math.min(e,999)/1E3),f=b<Math.abs(b)?e/4:e/(2*Math.PI)*Math.asin(b/b);return-(b*Math.pow(2,10*--a)*Math.sin(2*(a*d-f)*Math.PI/e))+c},easeInBack:function(a,c,b,d){return b*(a/=d)*a*(2.70158*a-1.70158)+c},easeOutQuad:function(a,c,b,d){return-b*(a/=d)*(a-2)+c},easeOutCubic:function(a,c,b,d){return b*((a=a/d-1)*a*a+1)+c},easeOutQuart:function(a,
@@ -3219,7 +3263,66 @@ return b}}(),U=k(function(a,c,b){var d=b.get("to").get("digits").map(function(d,
 "("+b[c]+")")):"opacity"==a.get("prop")?d.style.opacity=b[c]:d.setAttribute(a.get("prop"),b[c])});e&&(a||(a="transform"in document.body.style?"transform":"-webkit-transform"),d.style[a]=e.join(" "))})}(),X=function(){var a=function(a,b){b.get("begin")&&b.get("begin")(b.get("el"));requestAnimationFrame(a)};return function(c,b){return b.get("delay")?setTimeout(function(){return a(c,b)},b.get("delay")):a(c,b)}}(),Y=function(a){return x(function(){if("alternate"==a.get("direction"))return E(a);if("reverse"==
 a.get("direction")){var c=h(a);c["delete"]("direction");return c}return a}())},l=new Map,Z=function(){var a=0;return function(c){var b=a++,d=h(l);d.set(b,c);l=d;return b}}(),x=function(a){var c=P(a),b=R(c),d=Z(c.get("el")),e=new Map;S(c);X(function g(a){if(l.has(d)){e.has("start")||e.set("start",a);e.set("elapsed",a-e.get("start"));a=e.get("elapsed")<c.get("duration");var k=b.map(a?U(c,e.get("elapsed")):V(c));l.get(d).forEach(W(b,k));a?requestAnimationFrame(g):(a=h(l),a["delete"](d),l=a,c.get("complete")&&
 c.get("complete")(c.get("el")),c.get("loop")&&Y(c))}},c)};x.stop=function(a){var c=B(a),b=h(l);b.forEach(function(a,e){var f=z(a,c);f.length?b.set(e,f):b["delete"](e)});l=b};return x}();"undefined"!=typeof module&&module.exports&&(module.exports=animate);
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
+var prefix = require('prefix-style')
+var toCamelCase = require('to-camel-case')
+var cache = { 'float': 'cssFloat' }
+var addPxToStyle = require('add-px-to-style')
+
+function style (element, property, value) {
+  var camel = cache[property]
+  if (typeof camel === 'undefined') {
+    camel = detect(property)
+  }
+
+  // may be false if CSS prop is unsupported
+  if (camel) {
+    if (value === undefined) {
+      return element.style[camel]
+    }
+
+    element.style[camel] = addPxToStyle(camel, value)
+  }
+}
+
+function each (element, properties) {
+  for (var k in properties) {
+    if (properties.hasOwnProperty(k)) {
+      style(element, k, properties[k])
+    }
+  }
+}
+
+function detect (cssProp) {
+  var camel = toCamelCase(cssProp)
+  var result = prefix(camel)
+  cache[camel] = cache[cssProp] = cache[result] = result
+  return result
+}
+
+function set () {
+  if (arguments.length === 2) {
+    each(arguments[0], arguments[1])
+  } else {
+    style(arguments[0], arguments[1], arguments[2])
+  }
+}
+
+module.exports = set
+module.exports.set = set
+
+module.exports.get = function (element, properties) {
+  if (Array.isArray(properties)) {
+    return properties.reduce(function (obj, prop) {
+      obj[prop] = style(element, prop || '')
+      return obj
+    }, {})
+  } else {
+    return style(element, properties || '')
+  }
+}
+
+},{"add-px-to-style":13,"prefix-style":18,"to-camel-case":19}],16:[function(require,module,exports){
 ;(function () {
 	'use strict';
 
@@ -4062,7 +4165,7 @@ c.get("complete")(c.get("el")),c.get("loop")&&Y(c))}},c)};x.stop=function(a){var
 	}
 }());
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -16417,13 +16520,170 @@ c.get("complete")(c.get("el")),c.get("loop")&&Y(c))}},c)};x.stop=function(a){var
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
+var div = null
+var prefixes = [ 'Webkit', 'Moz', 'O', 'ms' ]
+
+module.exports = function prefixStyle (prop) {
+  // re-use a dummy div
+  if (!div) {
+    div = document.createElement('div')
+  }
+
+  var style = div.style
+
+  // prop exists without prefix
+  if (prop in style) {
+    return prop
+  }
+
+  // borderRadius -> BorderRadius
+  var titleCase = prop.charAt(0).toUpperCase() + prop.slice(1)
+
+  // find the vendor-prefixed prop
+  for (var i = prefixes.length; i >= 0; i--) {
+    var name = prefixes[i] + titleCase
+    // e.g. WebkitBorderRadius or webkitBorderRadius
+    if (name in style) {
+      return name
+    }
+  }
+
+  return false
+}
+
+},{}],19:[function(require,module,exports){
+
+var toSpace = require('to-space-case');
+
+
+/**
+ * Expose `toCamelCase`.
+ */
+
+module.exports = toCamelCase;
+
+
+/**
+ * Convert a `string` to camel case.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+
+function toCamelCase (string) {
+  return toSpace(string).replace(/\s(\w)/g, function (matches, letter) {
+    return letter.toUpperCase();
+  });
+}
+},{"to-space-case":21}],20:[function(require,module,exports){
+
+/**
+ * Expose `toNoCase`.
+ */
+
+module.exports = toNoCase;
+
+
+/**
+ * Test whether a string is camel-case.
+ */
+
+var hasSpace = /\s/;
+var hasCamel = /[a-z][A-Z]/;
+var hasSeparator = /[\W_]/;
+
+
+/**
+ * Remove any starting case from a `string`, like camel or snake, but keep
+ * spaces and punctuation that may be important otherwise.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function toNoCase (string) {
+  if (hasSpace.test(string)) return string.toLowerCase();
+
+  if (hasSeparator.test(string)) string = unseparate(string);
+  if (hasCamel.test(string)) string = uncamelize(string);
+  return string.toLowerCase();
+}
+
+
+/**
+ * Separator splitter.
+ */
+
+var separatorSplitter = /[\W_]+(.|$)/g;
+
+
+/**
+ * Un-separate a `string`.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function unseparate (string) {
+  return string.replace(separatorSplitter, function (m, next) {
+    return next ? ' ' + next : '';
+  });
+}
+
+
+/**
+ * Camelcase splitter.
+ */
+
+var camelSplitter = /(.)([A-Z]+)/g;
+
+
+/**
+ * Un-camelcase a `string`.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+function uncamelize (string) {
+  return string.replace(camelSplitter, function (m, previous, uppers) {
+    return previous + ' ' + uppers.toLowerCase().split('').join(' ');
+  });
+}
+},{}],21:[function(require,module,exports){
+
+var clean = require('to-no-case');
+
+
+/**
+ * Expose `toSpaceCase`.
+ */
+
+module.exports = toSpaceCase;
+
+
+/**
+ * Convert a `string` to space case.
+ *
+ * @param {String} string
+ * @return {String}
+ */
+
+
+function toSpaceCase (string) {
+  return clean(string).replace(/[\W_]+(.|$)/g, function (matches, match) {
+    return match ? ' ' + match : '';
+  });
+}
+},{"to-no-case":20}],22:[function(require,module,exports){
 var _ = require('lodash')
 
 var levels = _.range(12).map(function() {
 
   var config = {
-    name: 'foo',
+    name: 'longname',
     lives: parseInt(Math.random() * 3) + 1,
     moves: parseInt(Math.random() * 6) + 1,
     difficulty: 1
@@ -16457,7 +16717,7 @@ var levels = _.range(12).map(function() {
 })
 
 module.exports = levels
-},{"lodash":15}],17:[function(require,module,exports){
+},{"lodash":17}],23:[function(require,module,exports){
 module.exports = [
   {
     name: 'music',
@@ -16472,29 +16732,37 @@ module.exports = [
     value: false
   }
 ]
-},{}],18:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
+var css = require('dom-css')
 var _ = require('lodash')
 var animate = require('animateplus')
 
 module.exports = function(container) {
-  var ismobile = window.innerWidth < window.innerHeight
-
-  var wrapper = document.createElement('div')
-  wrapper.style.width = '85%'
-  wrapper.style.height = '90%'
-  wrapper.style.top = '5%'
-  wrapper.style.bottom = '5%'
-  wrapper.style.left = 0
-  wrapper.style.right = 0
-  wrapper.style.margin = '0 auto'
-  wrapper.style.position = 'absolute'
-  wrapper.style.pointerEvents = 'none'
-  container.appendChild(wrapper)
-
-  var size = wrapper.clientWidth
-
   var height = window.innerHeight
   var width = window.innerWidth
+  var menuwidth = document.getElementById('menu').clientWidth
+  var ismobile = window.innerWidth < window.innerHeight
+
+  var colors = {
+    text1: 'rgb(150,150,150)',
+    text2: 'rgb(220,220,220)',
+    stroke: 'rgb(120,120,120)'
+  }
+
+  var wrapper = document.createElement('div')
+  container.appendChild(wrapper)
+  css(wrapper,{
+    width: '85%',
+    height: ismobile ? '80%' : '90%',
+    top: ismobile ? '10%' : '5%',
+    left: 0, right: 0,
+    margin: '0px auto',
+    position: 'absolute',
+    pointerEvents: 'none'
+  })
+ 
+  var size = wrapper.clientWidth
+
   var offset = ismobile ? 0 : Math.PI / 6
   var points = _.range(7).map(function (i) {
     var dx = 0.8 * height * Math.cos(i * 2 * Math.PI / 6 + offset) + height * 0.7
@@ -16504,45 +16772,54 @@ module.exports = function(container) {
   points = [points[3], points[2], points[1], points[2]]
 
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  wrapper.appendChild(svg)
   svg.setAttribute('width', height * 1.2)
   svg.setAttribute('height', height * 1.2)
-  svg.style.position = 'absolute'
-  svg.style.display = 'block'
-  svg.style.pointerEvents = 'none'
-  svg.style.position = 'fixed'
-  svg.style.bottom = ismobile ? height * 0.2 : -height * 0.035
-  var menuwidth = document.getElementById('menu').clientWidth
-  svg.style.left = ismobile ? -height * 0.15 : width * 0.5 - menuwidth * 0.5 * 0.8
-  svg.style.pointerEvents = 'none'
-  wrapper.appendChild(svg)
+  css(svg, {
+    position: 'absolute',
+    display: 'block',
+    pointerEvents: 'none',
+    position: 'fixed',
+    bottom: ismobile ? height * 0.05 : -height * 0.035,
+    left: ismobile ? -height * 0.15 : width * 0.5 - menuwidth * 0.5 * 0.8,
+    pointerEvents: 'none'
+  })
+  
 
   var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-  hex.setAttribute('points', points.join(' '))
-  hex.style.fill = 'none'
-  hex.style.stroke = 'rgb(155,155,155)'
-  hex.style.strokeWidth = '5'
   svg.appendChild(hex)
-
+  hex.setAttribute('points', points.join(' '))
+  css(hex, {
+    fill: 'none',
+    stroke: colors.stroke,
+    strokeWidth: 5
+  })
+  
   var about = document.createElement('div')
-  about.style.position = 'absolute'
-  about.style.top = ismobile ? height * 0.5 : size * 0.06
-  about.style.left = ismobile ? size * 0.3 : width * 0.52 - menuwidth * 0.5 * 0.8
-  about.style.fontSize = ismobile ? size * 0.15 : size * 0.06
   about.innerHTML = 'ABOUT'
+  css(about, {
+    position: 'absolute',
+    left: ismobile ? size * 0.3 : width * 0.52 - menuwidth * 0.5 * 0.8,
+    fontSize: ismobile ? size * 0.15 : size * 0.06,
+    fontColor: colors.text1
+  })
+  if (!ismobile) css(about, {top: size * 0.06})
+  if (ismobile) css(about, {bottom: size * 0.2})
   wrapper.appendChild(about)
 
   var text = document.createElement('p')
-  text.style.position = 'absolute'
-  text.style.top = ismobile ? 0 : size * 0.14
-  text.style.left = ismobile ? size * 0.08 : width * 0.52 - menuwidth * 0.5 * 0.8
-  text.style.width = ismobile ? size * 0.9 : size * 0.5
-  text.style.color = 'rgb(155,155,155)'
-  text.style.fontSize = ismobile ? size * 0.06 : Math.sqrt(size * 0.6)
-  text.innerHTML = "<span style='color: rgb(240,240,240)'>hexaworld</span> is a game about learning to explore <br><br>\n designed by neuroscientists to study how humans and mice think <br><br>\n source code on <a style='color: rgb(155,155,155)' href='https://github.com/hexaworld'>github</a>"
   wrapper.appendChild(text)
-
-  wrapper.style.opacity = 0
-  wrapper.style.pointerEvents = 'none'
+  text.innerHTML = "<span style='color: " + colors.text2 + "'>hexaworld</span> is a game about learning to explore <br><br>\n designed by neuroscientists to study how humans and mice think <br><br>\n source code on <a style='color: " + colors.text1 + "' href='https://github.com/hexaworld'>github</a><br>\n contact us <a style='color: " + colors.text1 + "' href='https://twitter.com/hexaworldgame'>@hexaworldgame</a>"
+  css(text, {
+    position: 'absolute',
+    top: ismobile ? size * 0.06 : size * 0.14,
+    left: ismobile ? size * 0.04 : width * 0.52 - menuwidth * 0.5 * 0.8,
+    width: ismobile ? size * 0.96 : size * 0.5,
+    color: colors.text1,
+    fontSize: ismobile ? size * 0.06 : Math.sqrt(size * 0.6)
+  })
+  
+  css(wrapper, {opacity: 0, pointerEvents: 'none'})
 
   return {
     hide: function() {
@@ -16573,28 +16850,23 @@ module.exports = function(container) {
   }
 
 }
-},{"animateplus":13,"lodash":15}],19:[function(require,module,exports){
+},{"animateplus":14,"dom-css":15,"lodash":17}],25:[function(require,module,exports){
+var css = require('dom-css')
 var hexaworld = require('hexaworld/play.js')
 var animate = require('animateplus')
 
 module.exports = function(container, level) {
   var wrapper = document.createElement('div')
-  wrapper.style.width = '100%'
-  wrapper.style.height = '100%'
-  wrapper.style.position = 'absolute'
+  css(wrapper, {height: '100%', width: '100%', position: 'absolute'})
   container.appendChild(wrapper)
 
   var game = document.createElement('div')
   game.id = 'game-container'
-  game.style.width = '35%'
-  game.style.height = '100%'
-  game.style.margin = '0 auto'
-  game.style.position = 'absolute'
+  css(game, {height: '100%'})
   wrapper.appendChild(game)
-
   var play = hexaworld('game-container', level)
 
-  wrapper.style.display = 'none'
+  css(wrapper, {opacity: 0, pointerEvents: 'none'})
 
   return {
     events: play.events,
@@ -16604,31 +16876,34 @@ module.exports = function(container, level) {
     },
 
     hide: function() {
+      css(wrapper, {pointerEvents: 'none'})
       play.pause()
-      animate({
-        el: wrapper,
-        opacity: [1, 0],
-        duration: 300,
-        easing: 'easeInQuad',
-        complete: function() {
-          wrapper.style.display = 'none'
-        }
-      })
+      if (wrapper.style.opacity == 1) {
+        animate({
+          el: wrapper,
+          opacity: [1, 0],
+          duration: 200,
+          easing: 'easeInQuad'
+        })
+      }
     },
 
     show: function() {
-      play.resume()
       animate({
         el: wrapper,
         opacity: [0, 1],
-        duration: 300,
-        easing: 'easeInQuad'
+        duration: 200,
+        easing: 'easeInQuad',
+        complete: function () {
+          play.resume()
+          css(wrapper, {pointerEvents: 'all'})
+        }
       })
-      wrapper.style.display = 'block'
     }
   }
 }
-},{"animateplus":13,"hexaworld/play.js":196}],20:[function(require,module,exports){
+},{"animateplus":14,"dom-css":15,"hexaworld/play.js":200}],26:[function(require,module,exports){
+var css = require('dom-css')
 var _ = require('lodash')
 var animate = require('animateplus')
 var EventEmitter = require('events').EventEmitter
@@ -16643,141 +16918,172 @@ function hexsvg(size) {
 }
 
 module.exports = function(container, set) {
-  var ismobile = window.innerWidth < window.innerHeight
+  var width = container.clientWidth
+  var height = container.clientHeight
+  var ismobile = width < height
+
+  var colors = {
+    text1: 'rgb(150,150,150)',
+    text2: 'rgb(220,220,220)',
+    buttonStroke: 'none',
+    buttonFill: 'rgb(10,10,10)',
+    buttonFillSelect: 'rgb(120,120,120)',
+    buttonStroke2: 'none',
+    buttonFill2: 'rgb(10,10,10)',
+    buttonFillSelect2: 'rgb(120,120,120)'
+  }
 
   var wrapper = document.createElement('div')
-  wrapper.style.width = ismobile ? '95%' : '85%'
-  wrapper.style.height = '100%'
-  wrapper.style.left = 0
-  wrapper.style.right = 0
-  wrapper.style.margin = '0 auto'
-  wrapper.style.position = 'absolute'
   container.appendChild(wrapper)
+  wrapper.id = 'levels'
+  css(wrapper, {
+    width: ismobile ? '96%' : '85%',
+    height: ismobile ? '94%' : '100%',
+    top: ismobile ? '6%' : '0%',
+    left: 0, right: 0,
+    margin: '0px auto',
+    position: 'absolute'
+  })
 
   var size = wrapper.clientWidth
 
   var box = {
-    left: ismobile ? size * 0.1 : size * 0.5,
-    top: ismobile ? size * 0.45 : size * 0.07,
-    width: ismobile ? size * 0.8 : size * 0.45,
-    height: ismobile ? window.innerHeight * 0.6 : window.innerHeight * 0.8,
-    margin: ismobile ? 0.2 : 0.2
+    left: ismobile ? size * 0.06 : size * 0.5,
+    top: ismobile ? height * 0.27 : size * 0.07,
+    width: ismobile ? size * 0.85 : size * 0.45,
+    height: ismobile ? height * 0.6 : height * 0.8,
+    margin: ismobile ? 0.2 : 0.2,
+    aspect: 1
   }
 
   var hexsize = (box.width / (3 * (2 + box.margin)))
   if ((hexsize * 2 + box.margin * hexsize) * 4 > box.height) {
-    hexsize = (box.height / (4 * (2 + box.margin)))
-    box.width = (3 * (hexsize * 2 + box.margin * hexsize))
-    box.left = ismobile ? (wrapper.clientWidth - (box.width)) / 2 : box.left
+    hexsize = (box.height / (4 * (2 + box.margin))) - 0.001 * height
+    box.margin = ismobile ? ((box.width / 3) - (hexsize * 2)) / hexsize : box.margin
+    box.width = ismobile ? (3 * (hexsize * 2 + box.margin * hexsize)) : box.width,
+    box.aspect = ismobile ? 0.2 * box.width / box.height : 1
   }
+  box.left = ismobile ? (wrapper.clientWidth - (box.width)) / 2 + box.margin * hexsize / 2: box.left
 
   var selected = 0
   var events = new EventEmitter()
 
   var name = document.createElement('div')
-  name.style.position = 'absolute'
-  name.style.top = ismobile ? size * 0.1 : size * 0.3
-  name.style.left = ismobile ? box.left : size * 0.1
-  name.style.fontSize = ismobile ? size * 0.1 : size * 0.055
-  name.style.textTransform = 'uppercase'
-  name.innerHTML = 'LEVELNAME'
   wrapper.appendChild(name)
-
+  name.innerHTML = 'LEVELNAME'
+  css(name, {
+    position: 'absolute',
+    top: ismobile ? size * 0.04 : size * 0.3,
+    left: ismobile ? box.left : size * 0.1,
+    fontSize: ismobile ? size * 0.1 : size * 0.055,
+    textTransform: 'uppercase'
+  })
+  
   var moves = document.createElement('div')
-  moves.style.position = 'absolute'
-  moves.style.top = ismobile ? size * 0.24 : size * 0.4
-  moves.style.left = ismobile ? box.left : size * 0.1
-  moves.style.fontSize = ismobile ? size * 0.05 : size * 0.03
-  moves.innerHTML = 'moves '
-  moves.style.color = 'rgb(150,150,150)'
   wrapper.appendChild(moves)
+  moves.innerHTML = 'moves '
+  css(moves, {
+    position: 'absolute',
+    top: ismobile ? size * 0.19 : size * 0.4,
+    left: ismobile ? box.left : size * 0.1,
+    fontSize: ismobile ? size * 0.06 : size * 0.03,
+    color: colors.text1
+  })
 
   var movesval = document.createElement('span')
-  movesval.innerHTML = '6'
-  movesval.style.color = 'rgb(220,220,220)'
   moves.appendChild(movesval)
+  movesval.innerHTML = '6'
+  css(movesval, {color: colors.text2})
 
   var score = document.createElement('div')
-  score.style.position = 'absolute'
-  score.style.top = ismobile ? size * 0.31 : size * 0.45
-  score.style.left = ismobile ? box.left : size * 0.1
-  score.style.fontSize = ismobile ? size * 0.05 : size * 0.03
-  score.style.color = 'rgb(150,150,150)'
-  score.innerHTML = 'top score '
   wrapper.appendChild(score)
+  score.innerHTML = 'top score '
+  css(score, {
+    position: 'absolute',
+    top: ismobile ? size * 0.27 : size * 0.45,
+    left: ismobile ? box.left : size * 0.1,
+    fontSize: ismobile ? size * 0.06 : size * 0.03,
+    color: colors.text1
+  })
 
   var scoreval = document.createElement('span')
-  scoreval.innerHTML = '10000'
-  scoreval.style.color = 'rgb(220,220,220)'
   score.appendChild(scoreval)
+  scoreval.innerHTML = '10000'
+  css(scoreval, {color: colors.text2})
 
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  wrapper.appendChild(svg)
   svg.setAttribute('width', hexsize * 2)
   svg.setAttribute('height', hexsize * 2.1)
-  svg.style.position = 'absolute'
-  svg.style.top = ismobile ? size * 0.1 : size * 0.07
-  if (ismobile) {
-    svg.style.right = box.left + hexsize * 0.2
-  } else {
-    svg.style.left = size * 0.1
-  }
-  
-  wrapper.appendChild(svg)
+  css(svg, {
+    position: 'absolute',
+    top: ismobile ? size * 0.13 : size * 0.07
+  })
+  if (ismobile) css(svg, {left: box.left + 2.02 * (hexsize * 2 + box.margin * hexsize)})
+  if (!ismobile) css(svg, {left: size * 0.1})
 
   var play = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-  play.setAttribute("points", hexsvg(hexsize))
-  play.setAttribute("fill", 'rgb(45,45,45)')
-  play.style.stroke = 'rgb(240,240,240)'
-  play.style.strokeWidth = '4'
-  play.style.strokeLinejoin = 'round'
-  play.style.transformOrigin = 'center'
-  play.style.cursor = 'pointer'
-  play.style.webkitTapHighlightColor = 'rgba(0,0,0,0)'
   svg.appendChild(play)
+  play.setAttribute('points', hexsvg(hexsize))
+  play.setAttribute('fill', colors.buttonFill2)
+  css(play, {
+    stroke: colors.buttonStroke2,
+    strokeWidth: 3,
+    strokeLinejoin: 'round',
+    transformOrigin: 'center',
+    cursor: 'pointer',
+    webkitTapHighlightColor: 'rgba(0,0,0,0)'
+  })
 
   var playlabel = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-  playlabel.setAttribute("fill", 'rgb(240,240,240)')
-  playlabel.setAttribute("font-size", hexsize * 0.5)
+  svg.appendChild(playlabel)
+  playlabel.innerHTML = 'PLAY'
+  playlabel.setAttribute("fill", colors.text2)
+  playlabel.setAttribute("font-size", ismobile ? hexsize * 0.5 : hexsize * 0.5)
   playlabel.setAttribute("text-anchor", 'middle')
-  playlabel.setAttribute("dominant-baseline", 'middle')
+  playlabel.setAttribute("dominant-baseline", 'central')
   var t = ismobile
     ? 'translate(' + hexsize + ',' + hexsize + ')'
     : 'translate(' + hexsize + ',' + hexsize + ')'
   playlabel.setAttribute('transform', t)
-  playlabel.style.pointerEvents = 'none'
-  playlabel.innerHTML = 'PLAY'
-  svg.appendChild(playlabel)
-
+  css(playlabel, {pointerEvents: 'none'}) 
+  
   var levelgroup = document.createElement('div')
-  levelgroup.style.left = box.left
-  levelgroup.style.top = box.top
-  levelgroup.style.width = box.width
-  levelgroup.style.height = box.height
-  levelgroup.style.position = 'absolute'
   wrapper.appendChild(levelgroup)
+  css(levelgroup, {
+    left: box.left,
+    top: box.top,
+    width: box.width,
+    height: box.height,
+    position: 'absolute'
+  })
 
   _.range(set.length).forEach(function (i) {
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    levelgroup.appendChild(svg)
     svg.setAttribute('width', hexsize * 2)
     svg.setAttribute('height', hexsize * 2.1)
-    svg.style.position = 'relative'
-    svg.style.display = 'inline'
-    svg.style.marginRight = box.margin * hexsize
-    svg.style.marginBottom = box.margin * hexsize
-    levelgroup.appendChild(svg)
+    css(svg, {
+      position: 'relative',
+      display: 'inline',
+      marginRight: box.margin * hexsize,
+      marginBottom: box.aspect * box.margin * hexsize
+    })
 
     var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    svg.appendChild(hex)
+    hex.id = 'level-hex-' + i
     hex.setAttribute("points", hexsvg(hexsize))
     hex.setAttribute('data-id', i)
     hex.setAttribute('class', 'level-hex')
-    hex.id = 'level-hex-' + i
-    hex.style.stroke = 'rgb(240,240,240)'
-    hex.style.strokeWidth = '4'
-    hex.style.strokeLinejoin = 'round'
-    hex.style.transformOrigin = 'center'
-    hex.style.cursor = 'pointer'
-    hex.style.webkitTapHighlightColor = 'rgba(0,0,0,0)'
-    svg.appendChild(hex)
+    css(hex, {
+      stroke: colors.buttonStroke,
+      strokeWidth: 3,
+      strokeLinejoin: 'round',
+      transformOrigin: 'center',
+      cursor: 'pointer',
+      webkitTapHighlightColor: 'rgba(0,0,0,0)'
+    })
 
     function update() {
       name.innerHTML = set[selected].config.name
@@ -16785,15 +17091,9 @@ module.exports = function(container, set) {
       scoreval.innerHTML = 0
       var items = document.getElementsByClassName('level-hex')
       _.range(items.length).forEach( function(i) {
-        document.getElementById('level-hex-' + i).setAttribute('fill', 'rgb(45,45,45)')
+        document.getElementById('level-hex-' + i).setAttribute('fill', colors.buttonFill)
       })
-      animate({
-        el: document.getElementById('level-hex-' + selected),
-        fill: ['rgb(45,45,45)', 'rgb(100,100,100)'],
-        duration: 150,
-        easing: 'easeInQuad'
-      })
-
+      document.getElementById('level-hex-' + selected).setAttribute('fill', colors.buttonFillSelect)
     }
 
     update()
@@ -16807,17 +17107,17 @@ module.exports = function(container, set) {
     play.onclick = function(item) {
       animate({
         el: play,
-        fill: ['rgb(100,100,100)', 'rgb(45,45,45)'],
-        duration: 300,
-        easing: 'easeInQuad'
+        fill: [colors.buttonFillSelect2, colors.buttonFill2],
+        duration: 50,
+        easing: 'easeInQuad',
+        complete: function () {
+          events.emit('click', selected)
+        }
       })
-      events.emit('click', selected)
     }
-
   })
 
-  wrapper.style.opacity = 0
-  wrapper.style.pointerEvents = 'none'
+  css(wrapper, {opacity: 0, pointerEvents: 'none'})
 
   return {
     hide: function() {
@@ -16825,7 +17125,7 @@ module.exports = function(container, set) {
         animate({
           el: wrapper,
           opacity: [1, 0],
-          duration: 300,
+          duration: 100,
           easing: 'easeInQuad',
           complete: function() {
             wrapper.style.pointerEvents = 'none'
@@ -16850,7 +17150,7 @@ module.exports = function(container, set) {
   }
 
 }
-},{"animateplus":13,"events":6,"lodash":15}],21:[function(require,module,exports){
+},{"animateplus":14,"dom-css":15,"events":6,"lodash":17}],27:[function(require,module,exports){
 var _ = require('lodash')
 var animate = require('animateplus')
 var EventEmitter = require('events').EventEmitter
@@ -16858,10 +17158,11 @@ var EventEmitter = require('events').EventEmitter
 var ismobile = (window.outerWidth < 480) ? true : false
 
 module.exports = function(container) {
+  var width = container.clientWidth
   var height = container.clientHeight
 
-  if (height * 0.7 > container.clientWidth) {
-    height = container.clientWidth * (1 / 0.7)
+  if (height * 0.7 > width) {
+    height = width * (1 / 0.7)
   }
 
   var wrapper = document.createElement('div')
@@ -16904,7 +17205,7 @@ module.exports = function(container) {
   hex.setAttribute("points", points.join(' '))
   hex.style.fill = 'none'
   hex.style.stroke = 'rgb(150,150,150)'
-  hex.style.strokeWidth = '5'
+  hex.style.strokeWidth = 4
   hex.style.strokeLinejoin = 'round'
   hex.style.transformOrigin = 'center'
   svg.appendChild(hex)
@@ -16986,7 +17287,8 @@ module.exports = function(container) {
   }
 
 }
-},{"animateplus":13,"events":6,"lodash":15}],22:[function(require,module,exports){
+},{"animateplus":14,"events":6,"lodash":17}],28:[function(require,module,exports){
+var css = require('dom-css')
 var _ = require('lodash')
 var animate = require('animateplus')
 var EventEmitter = require('events').EventEmitter
@@ -17002,19 +17304,32 @@ function hexagon(size, offset) {
 }
 
 module.exports = function(container, state) {
-  var ismobile = window.innerWidth < window.innerHeight
+  var width = container.clientWidth
+  var height = container.clientHeight
+  var ismobile = width < height
+  var menuwidth = document.getElementById('menu').clientWidth
+
+  var colors = {
+    text1: 'rgb(150,150,150)',
+    text2: 'rgb(220,220,220)',
+    backStroke: 'rgb(120,120,120)',
+    buttonStroke: 'none',
+    buttonFill: 'rgb(10,10,10)',
+    buttonFillSelect: 'rgb(120,120,120)'
+  }
 
   var wrapper = document.createElement('div')
   wrapper.id = 'settings'
-  wrapper.style.width = '85%'
-  wrapper.style.height = '90%'
-  wrapper.style.top = '5%'
-  wrapper.style.bottom = '5%'
-  wrapper.style.left = 0
-  wrapper.style.right = 0
-  wrapper.style.margin = '0 auto'
-  wrapper.style.position = 'absolute'
-  wrapper.style.pointerEvents = 'none'
+  css(wrapper, {
+    width: '85%', 
+    height: ismobile ? '80%' : '90%',
+    top: ismobile ? '10%' : '5%',
+    bottom: '5%', 
+    left: 0, right: 0, 
+    margin: '0 auto',
+    position: 'absolute',
+    pointerEvents: 'none'
+  })
   container.appendChild(wrapper)
 
   var size = wrapper.clientWidth
@@ -17038,90 +17353,98 @@ module.exports = function(container, state) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('width', height * 1.2)
   svg.setAttribute('height', height * 1.2)
-  svg.style.position = 'absolute'
-  svg.style.display = 'block'
-  svg.style.pointerEvents = 'none'
-  svg.style.position = 'fixed'
-  svg.style.bottom = ismobile ? height * 0.2 : -height * 0.035
-  var menuwidth = document.getElementById('menu').clientWidth
-  svg.style.right = ismobile ? -height * 0.15 : width * 0.5 - menuwidth * 0.5 * 0.8
-  svg.style.pointerEvents = 'none'
+  css(svg, {
+    position: 'absolute',
+    display: 'block',
+    pointerEvents: 'none',
+    position: 'fixed',
+    bottom: ismobile ? height * 0.05 : -height * 0.035,
+    pointerEvents: 'none',
+    right: ismobile ? -height * 0.15 : width * 0.5 - menuwidth * 0.5 * 0.8
+  })
   wrapper.appendChild(svg)
 
   var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
   hex.setAttribute('points', points.join(' '))
-  hex.style.fill = 'none'
-  hex.style.stroke = 'rgb(155,155,155)'
-  hex.style.strokeWidth = '5'
+  css(hex, {fill: 'none', stroke: colors.backStroke, strokeWidth: 5})
   svg.appendChild(hex)
 
   var settings = document.createElement('div')
-  settings.style.position = 'absolute'
-  settings.style.top = ismobile ? height * 0.5 : size * 0.06
-  settings.style.left = ismobile ? size * 0 : size * 0.15
-  settings.style.fontSize = ismobile ? size * 0.15 : size * 0.06
   settings.innerHTML = 'SETTINGS'
+  css(settings, {
+    position: 'absolute',
+    left: ismobile ? size * 0 : size * 0.15,
+    fontSize: ismobile ? size * 0.15 : size * 0.06,
+    fontColor: colors.text1
+  })
+  if (!ismobile) css(settings, {top: size * 0.06})
+  if (ismobile) css(settings, {bottom: size * 0.2})
   wrapper.appendChild(settings)
 
   var options = document.createElement('div')
-  options.style.position = 'absolute'
-  options.style.top = ismobile ? 0 : size * 0.16
-  options.style.left = ismobile ? size * 0 : size * 0.15
+  css(options, {
+    position: 'absolute', 
+    top: ismobile ? size * 0.1 : size * 0.16,
+    left: ismobile ? size * 0 : size * 0.15
+  })
   wrapper.appendChild(options)
 
   function createOption(key) {
     var item = document.createElement('div')
-    item.style.marginBottom = ismobile ? size * 0.05 : size * 0.02
+    css(item, {marginBottom: ismobile ? size * 0.05 : size * 0.02})
     options.appendChild(item)
 
-    var iconsize = ismobile ? size * 0.1 : size * 0.03
+    var iconsize = ismobile ? size * 0.09 : size * 0.035
 
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('width', iconsize * 4.2)
     svg.setAttribute('height', iconsize * 2.2)
-    svg.style.position = 'absolute'
-    svg.style.display = 'inline'
-    svg.style.position = 'relative'
-    svg.style.left = 0
-    svg.style.verticalAlign = 'middle'
-    svg.style.webkitTapHighlightColor = 'rgba(0,0,0,0)'
+    css(svg, {
+      position: 'absolute',
+      display: 'inline',
+      position: 'relative',
+      left: 0,
+      verticalAlign: 'middle',
+      webkitTapHighlightColor: 'rgba(0,0,0,0)'
+    })
     item.appendChild(svg)
+
+    var button = {stroke: colors.buttonStroke, strokeWidth: 3, cursor: 'pointer'}
 
     var hex1 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     hex1.setAttribute('points', hexagon(iconsize).join(' '))
-    hex1.style.fill = key.value ? 'rgb(45,45,45)' : 'rgb(140,140,140)'
-    hex1.style.stroke = 'rgb(240,240,240)'
-    hex1.style.strokeWidth = '3'
-    hex1.style.cursor = 'pointer'
+    css(hex1, {fill: key.value ? colors.buttonFill : colors.buttonFillSelect})
+    css(hex1, button)
     svg.appendChild(hex1)   
 
     var hex2 = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     hex2.setAttribute('points', hexagon(iconsize, [iconsize * 2.2, 0]).join(' '))
-    hex2.style.fill = key.value ? 'rgb(140,140,140)' : 'rgb(45,45,45)'
-    hex2.style.stroke = 'rgb(240,240,240)'
-    hex2.style.strokeWidth = '3'
-    hex2.style.cursor = 'pointer'
+    css(hex2, {fill: key.value ? colors.buttonFillSelect : colors.buttonFill})
+    css(hex2, button)
     svg.appendChild(hex2)
     
     var name = document.createElement('span')
-    name.style.fontSize = ismobile ? Math.sqrt(size * 1.8) : Math.sqrt(size * 1)
-    name.style.marginLeft = ismobile ? size * 0.05 : size * 0.02
-    name.style.verticalAlign = 'middle'
     name.innerHTML = key.name
+    css(name, {
+      fontSize: ismobile ? Math.sqrt(size * 1.6) : Math.sqrt(size * 1),
+      marginLeft: ismobile ? size * 0.05 : size * 0.02,
+      verticalAlign: 'middle',
+      fontColor: colors.text1
+    })
     item.appendChild(name)
 
     var br = document.createElement('br')
     item.appendChild(br)
 
     hex1.onclick = function () {
-      hex1.style.fill = 'rgb(140,140,140)'
-      hex2.style.fill = 'rgb(45,45,45)'
+      css(hex1, {fill: colors.buttonFillSelect})
+      css(hex2, {fill: colors.buttonFill})
       events.emit('click', {name: key.name, value: false})
     }
 
     hex2.onclick = function () {
-      hex1.style.fill = 'rgb(45,45,45)'
-      hex2.style.fill = 'rgb(140,140,140)'
+      css(hex1, {fill: colors.buttonFill})
+      css(hex2, {fill: colors.buttonFillSelect})
       events.emit('click', {name: key.name, value: true})
     }
   }
@@ -17130,8 +17453,7 @@ module.exports = function(container, state) {
     createOption(key)
   })
 
-  wrapper.style.opacity = 0
-  wrapper.style.pointerEvents = 'none'
+  css(wrapper, {opacity: 0, pointerEvents: 'none'})
 
   return {
     hide: function() {
@@ -17164,18 +17486,26 @@ module.exports = function(container, state) {
   }
 
 }
-},{"animateplus":13,"events":6,"lodash":15}],23:[function(require,module,exports){
+},{"animateplus":14,"dom-css":15,"events":6,"lodash":17}],29:[function(require,module,exports){
+var css = require('dom-css')
 var _ = require('lodash')
 var animate = require('animateplus')
 var EventEmitter = require('events').EventEmitter
 
 module.exports = function(container) {
-  var size = window.innerHeight * 0.6
-
-  var ismobile = window.innerWidth < window.innerHeight
+  var width = container.clientWidth
+  var height = container.clientHeight
+  var ismobile = width < height
+  var size = ismobile ? width * 1.0: height * 0.6
 
   var events = new EventEmitter()
-  var t
+
+  var colors = {
+    text: 'rgb(200,200,200)',
+    textSelected: 'rgb(255,255,255)',
+    fill: 'rgb(10,10,10)',
+    stroke: 'none'
+  }
 
   var offset = ismobile ? 0 : Math.PI / 6
   var points = _.range(7).map(function (i) {
@@ -17187,50 +17517,47 @@ module.exports = function(container) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('width', size)
   svg.setAttribute('height', size)
-  svg.style.position = 'absolute'
-  svg.style.display = 'block'
-  svg.style.zIndex = 2000
-  svg.style.pointerEvents = 'none'
+  css(svg, {
+    position: 'fixed',
+    display: 'block',
+    zIndex: 2000,
+    pointerEvents: 'none'
+  })
   if (ismobile) {
-    svg.style.position = 'fixed'
-    svg.style.bottom = 0
-    svg.style.left = 0
-    svg.style.transform = 'translateX(0px)'
+    css(svg, {right: 0, top: 0, transform: 'translateX(0px)'})
   } else {
-    svg.style.position = 'fixed'
-    svg.style.top = window.innerHeight * 0.5 - size / 2
-    svg.style.left = 0
+    css(svg, {left: 0, top: height * 0.5 - size / 2})
   }
-  
   container.appendChild(svg)
 
   var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
   hex.setAttribute("points", points.join(' '))
-  hex.style.fill = 'rgb(45,45,45)'
-  hex.style.stroke = 'rgb(155,155,155)'
-  hex.style.strokeWidth = '5'
-  hex.style.strokeLinejoin = 'round'
-  hex.style.cursor = 'pointer'
-  hex.style.webkitTapHighlightColor = 'rgba(0,0,0,0)'
-  hex.style.pointerEvents = 'all'
+  css(hex, {
+    fill: colors.fill,
+    stroke: colors.stroke,
+    strokeWidth: 4,
+    strokeLinejoin: 'round',
+    cursor: 'pointer',
+    webkitTapHighlightColor: 'rgba(0,0,0,0)',
+    pointerEvents: 'all'
+  })
   svg.appendChild(hex)
 
   var menu = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-  menu.setAttribute("fill", 'rgb(200,200,200)')
-  menu.setAttribute("font-size", size / 16)
+  menu.innerHTML = 'MENU'
+  menu.setAttribute("fill", colors.text)
+  menu.setAttribute("font-size", ismobile ? width * 0.066 : size * 0.0625)
   menu.setAttribute("text-anchor", 'middle')
   menu.setAttribute("dominant-baseline", 'hanging')
-  menu.style.opacity = 0
-  menu.style.pointerEvents = 'none'
-  menu.innerHTML = 'MENU'
-  t = ismobile
-    ? 'translate(' + size * 0.15 + ',' + size * 0.92 + ')rotate(0)'
+  var t = ismobile
+    ? 'translate(' + size * 0.87 + ',' + size * 0.035 + ')rotate(0)'
     : 'translate(' + size * 0.025 + ',' + size * 0.5 + ')rotate(-90)'
   menu.setAttribute('transform', t)
+  css(menu, {opacity: 0, pointerEvents: 'menu'})
   svg.appendChild(menu)
 
   hex.onclick = function() {
-    menu.setAttribute("fill", "rgb(255,255,255)")
+    menu.setAttribute("fill", colors.textSelected)
     events.emit('click', true)
   }
 
@@ -17241,8 +17568,8 @@ module.exports = function(container) {
     hide: function() {
       animate({
         el: hex,
-        translateX: ismobile ? [size * 0.21, -200] : [0, -100],
-        translateY: ismobile ? [size * 0.656, size * 0.656] : [0, 0],
+        translateX: ismobile ? [size * 1.16, size * 2] : [0, -100],
+        translateY: ismobile ? [size * -0.636, size * -0.636] : [0, 0],
         opacity: [1, 0],
         duration: 200,
         easing: 'easeInCirc'
@@ -17255,11 +17582,11 @@ module.exports = function(container) {
     },
 
     show: function() {
-      menu.setAttribute("fill", "rgb(200,200,200)")
+      menu.setAttribute("fill", colors.text)
       animate({
         el: hex,
-        translateX: ismobile ? [-200, size * 0.21] : [-100, 0],
-        translateY: ismobile ? [size * 0.656, size * 0.656] : [0, 0],
+        translateX: ismobile ? [size * 2, size * 1.16] : [-100, 0],
+        translateY: ismobile ? [size * -0.636, size * -0.636] : [0, 0],
         opacity: [0, 1],
         duration: 300,
         easing: 'easeInQuad',
@@ -17278,12 +17605,7 @@ module.exports = function(container) {
   }
 
 }
-},{"animateplus":13,"events":6,"lodash":15}],24:[function(require,module,exports){
-var hexaworld = require('hexaworld-app/app')
-var set = require('hexaworld-app/set')
-hexaworld('container', set)
-
-},{"hexaworld-app/app":12,"hexaworld-app/set":16}],25:[function(require,module,exports){
+},{"animateplus":14,"dom-css":15,"events":6,"lodash":17}],30:[function(require,module,exports){
 var inherits = require('inherits')
 var transform = require('transformist')
 var Entity = require('crtrdg-entity')
@@ -17314,7 +17636,7 @@ Camera.prototype.move = function (keyboard) {
   this.emit('move', self.transform)
 }
 
-},{"../movement/freemove.js":43,"crtrdg-entity":58,"inherits":146,"transformist":186}],26:[function(require,module,exports){
+},{"../movement/freemove.js":48,"crtrdg-entity":64,"inherits":153,"transformist":190}],31:[function(require,module,exports){
 var _ = require('lodash')
 var inherits = require('inherits')
 var mouse = require('../geometry/mouse.js')
@@ -17350,7 +17672,7 @@ function Player (opts) {
       '<left>', '<right>', '<up>',
       '<swipeLeft>', '<swipeRight>', '<swipeUp>',
       '<tapDownLeft>', '<tapDownRight>', '<tapUpLeft>', '<tapUpRight>'],
-    heading: [-60, 60, 0, -60, 60, 0, -60, 60, 0, -60, 60, 0, 0],
+    heading: [60, -60, 0, 60, -60, 0, 60, -60, 0, 60, -60, 0, 0],
     shift: [0, 0, 8, 0, 0, 8, 0, 0, 8, 0, 0, 8, 8],
     speed: opts.speed
   })
@@ -17471,7 +17793,7 @@ Player.prototype.angle = function () {
   return this.geometry.transform.rotation
 }
 
-},{"../geometry/mouse.js":36,"../movement/automove.js":41,"../movement/fixmove.js":42,"../util/collision.js":203,"crtrdg-entity":58,"inherits":146,"lodash":163}],27:[function(require,module,exports){
+},{"../geometry/mouse.js":41,"../movement/automove.js":46,"../movement/fixmove.js":47,"../util/collision.js":207,"crtrdg-entity":64,"inherits":153,"lodash":162}],32:[function(require,module,exports){
 var _ = require('lodash')
 var inherits = require('inherits')
 var color = require('d3-color')
@@ -17626,7 +17948,7 @@ Ring.prototype.update = function (player, world) {
   this.recolor(colors)
 }
 
-},{"../geometry/cap.js":31,"../geometry/notch.js":37,"crtrdg-entity":58,"d3-color":65,"inherits":146,"lodash":163}],28:[function(require,module,exports){
+},{"../geometry/cap.js":36,"../geometry/notch.js":42,"crtrdg-entity":64,"d3-color":71,"inherits":153,"lodash":162}],33:[function(require,module,exports){
 var _ = require('lodash')
 var inherits = require('inherits')
 var tile = require('../geometry/tile.js')
@@ -17662,7 +17984,7 @@ World.prototype.reload = function (schema) {
         cue: true,
         surface: true,
         color: hexrgb(t.cue.fill),
-        height: 4.2
+        height: 4.5
       }))
     }
     if (t.target) {
@@ -17695,14 +18017,6 @@ World.prototype.reload = function (schema) {
     self._tileCache[x] = rowCache
 
     return tileObj
-  })
-
-  self.floor = hex({
-    surface: false,
-    height: -5,
-    color: [10, 10, 10],
-    scale: 400,
-    lit: true
   })
 }
 
@@ -17765,7 +18079,7 @@ World.prototype.intersects = function (geometry) {
   if (results.length) return results
 }
 
-},{"../geometry/circle.js":32,"../geometry/geometry.js":34,"../geometry/hex.js":35,"../geometry/tile.js":39,"crtrdg-entity":58,"hex-rgb":144,"inherits":146,"lodash":163}],29:[function(require,module,exports){
+},{"../geometry/circle.js":37,"../geometry/geometry.js":39,"../geometry/hex.js":40,"../geometry/tile.js":44,"crtrdg-entity":64,"hex-rgb":151,"inherits":153,"lodash":162}],34:[function(require,module,exports){
 var _ = require('lodash')
 var EventEmitter = require('eventemitter2').EventEmitter2
 var Game = require('gameloop')
@@ -17970,7 +18284,7 @@ module.exports = function (canvas, schema, opts) {
   }
 }
 
-},{"./entity/camera.js":25,"./entity/player.js":26,"./entity/ring.js":27,"./entity/world.js":28,"./ui/main.js":199,"./util/events.js":204,"./util/mask.js":205,"crtrdg-keyboard":59,"crtrdg-touch":61,"eventemitter2":78,"gameloop":86,"lodash":163,"lookat-camera":164}],30:[function(require,module,exports){
+},{"./entity/camera.js":30,"./entity/player.js":31,"./entity/ring.js":32,"./entity/world.js":33,"./ui/main.js":203,"./util/events.js":208,"./util/mask.js":209,"crtrdg-keyboard":65,"crtrdg-touch":67,"eventemitter2":85,"gameloop":93,"lodash":162,"lookat-camera":163}],35:[function(require,module,exports){
 var Geometry = require('./geometry.js')
 
 module.exports = function (opts) {
@@ -18004,7 +18318,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34}],31:[function(require,module,exports){
+},{"./geometry.js":39}],36:[function(require,module,exports){
 var transform = require('transformist')
 var Geometry = require('./geometry.js')
 
@@ -18047,7 +18361,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34,"transformist":186}],32:[function(require,module,exports){
+},{"./geometry.js":39,"transformist":190}],37:[function(require,module,exports){
 var Geometry = require('./geometry.js')
 
 module.exports = function (opts) {
@@ -18060,10 +18374,14 @@ module.exports = function (opts) {
       stroke: opts.stroke,
       thickness: opts.thickness,
       shadow: opts.shadow || {},
-      type: 'bezier',
+      type: 'polygon',
       cue: opts.cue || false,
       target: opts.target || false,
-      consumable: opts.consumable || false
+      consumable: opts.consumable || false,
+      surface: opts.surface || false,
+      height: opts.height,
+      color: opts.color,
+      lit: opts.lit
     },
 
     points: [
@@ -18083,7 +18401,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34}],33:[function(require,module,exports){
+},{"./geometry.js":39}],38:[function(require,module,exports){
 var Geometry = require('./geometry.js')
 
 module.exports = function (opts) {
@@ -18111,7 +18429,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34}],34:[function(require,module,exports){
+},{"./geometry.js":39}],39:[function(require,module,exports){
 var _ = require('lodash')
 var inside = require('point-in-polygon')
 var transform = require('transformist')
@@ -18287,13 +18605,13 @@ Geometry.prototype.drawSurface = function (gl, camera, light) {
     this.shader = {}
 
     this.shader.fill = Shader(gl,
-      "#define GLSLIFY 1\nprecision mediump float;\n\nattribute vec3 position;\nattribute vec3 normal;\n\nuniform mat4 proj;\nuniform mat4 view;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nvoid main() {\n\tvposition = position;\n\tvnormal = normalize(normal);\n \tgl_Position = proj * view * vec4(position, 1.0);\n}",
-      "#define GLSLIFY 1\nprecision mediump float;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nuniform vec3 eye;\nuniform vec3 light;\nuniform vec3 color;\nuniform float lit;\n\nfloat orenNayarDiffuse(\n  vec3 lightDirection,\n  vec3 viewDirection,\n  vec3 surfaceNormal,\n  float roughness,\n  float albedo) {\n  \n  float LdotV = dot(lightDirection, viewDirection);\n  float NdotL = dot(lightDirection, surfaceNormal);\n  float NdotV = dot(surfaceNormal, viewDirection);\n\n  float s = LdotV - NdotL * NdotV;\n  float t = mix(1.0, max(NdotL, NdotV), step(0.0, s));\n\n  float sigma2 = roughness * roughness;\n  float A = 1.0 + sigma2 * (albedo / (sigma2 + 0.13) + 0.5 / (sigma2 + 0.33));\n  float B = 0.45 * sigma2 / (sigma2 + 0.09);\n\n  return albedo * max(0.0, NdotL) * (A + B * s / t) / 3.14159265;\n}\n\nfloat gaussianSpecular(\n  vec3 lightDirection,\n  vec3 viewDirection,\n  vec3 surfaceNormal,\n  float shininess) {\n  vec3 H = normalize(lightDirection + viewDirection);\n  float theta = acos(dot(H, surfaceNormal));\n  float w = theta / shininess;\n  return exp(-w*w);\n}\n\nfloat fogFactorExp2(\n  const float dist,\n  const float density\n) {\n  const float LOG2 = -1.442695;\n  float d = density * dist;\n  return 1.0 - clamp(exp2(d * d * LOG2), 0.0, 1.0);\n}\n\nfloat calcLightAttenuation(float lightDistance, float cutoffDistance, float decayExponent) {\n  if (decayExponent > 0.0) {\n    return pow(clamp(-lightDistance / cutoffDistance + 1.0, 0.0, 1.0), decayExponent);\n  }\n  return 1.0;\n}\n\nvoid main() {\n\tvec3 viewdiff = eye - vposition;\n\tvec3 lightdir = light - vposition;\n\n\tfloat diff = orenNayarDiffuse(normalize(lightdir), normalize(viewdiff), vnormal, 0.9, 0.9);\n\tfloat spec = gaussianSpecular(normalize(lightdir), normalize(viewdiff), vnormal, 1.0);\n\n\tfloat att = calcLightAttenuation(length(lightdir), 150.0, 1.0);\n\tvec3 lcol = vec3(0.6, 0.6, 0.6);\n\n\tvec3 material = color;\n\n\tvec3 result = (lit > 0.0) ? (att * lcol * vec3(material * diff + spec)) : material;\n\n\t// result = (vposition.x > 0.0) ? (vec3(0.0, 0.0, 0.0)) : result;\n\t\n\t// result = mix(result, vec3(0.1, 0.1, 0.1), fog(length(viewdiff), 0.005));\n\n \tgl_FragColor = vec4(result, 1);\n}"
+      "#define GLSLIFY 1\nprecision highp float;\n\nattribute vec3 position;\nattribute vec3 normal;\n\nuniform mat4 proj;\nuniform mat4 view;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nvoid main() {\n\tvposition = position;\n\tvnormal = normalize(normal);\n \tgl_Position = proj * view * vec4(position, 1.0);\n}",
+      "#define GLSLIFY 1\nprecision highp float;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nuniform vec3 eye;\nuniform vec3 light;\nuniform vec3 color;\nuniform float lit;\n\nfloat orenNayarDiffuse(\n  vec3 lightDirection,\n  vec3 viewDirection,\n  vec3 surfaceNormal,\n  float roughness,\n  float albedo) {\n  \n  float LdotV = dot(lightDirection, viewDirection);\n  float NdotL = dot(lightDirection, surfaceNormal);\n  float NdotV = dot(surfaceNormal, viewDirection);\n\n  float s = LdotV - NdotL * NdotV;\n  float t = mix(1.0, max(NdotL, NdotV), step(0.0, s));\n\n  float sigma2 = roughness * roughness;\n  float A = 1.0 + sigma2 * (albedo / (sigma2 + 0.13) + 0.5 / (sigma2 + 0.33));\n  float B = 0.45 * sigma2 / (sigma2 + 0.09);\n\n  return albedo * max(0.0, NdotL) * (A + B * s / t) / 3.14159265;\n}\n\nfloat gaussianSpecular(\n  vec3 lightDirection,\n  vec3 viewDirection,\n  vec3 surfaceNormal,\n  float shininess) {\n  vec3 H = normalize(lightDirection + viewDirection);\n  float theta = acos(dot(H, surfaceNormal));\n  float w = theta / shininess;\n  return exp(-w*w);\n}\n\nfloat fogFactorExp2(\n  const float dist,\n  const float density\n) {\n  const float LOG2 = -1.442695;\n  float d = density * dist;\n  return 1.0 - clamp(exp2(d * d * LOG2), 0.0, 1.0);\n}\n\nfloat calcLightAttenuation(float lightDistance, float cutoffDistance, float decayExponent) {\n  if (decayExponent > 0.0) {\n    return pow(clamp(-lightDistance / cutoffDistance + 1.0, 0.0, 1.0), decayExponent);\n  }\n  return 1.0;\n}\n\nvoid main() {\n\tvec3 viewdiff = eye - vposition;\n\tvec3 lightdir = light - vposition;\n\n\t// float diff = orenn(normalize(lightdir), normalize(viewdiff), vnormal, 0.9, 0.9);\n\t// float spec = gauss(normalize(lightdir), normalize(viewdiff), vnormal, 1.0);\n\n\tfloat att = calcLightAttenuation(length(lightdir), 150.0, 1.0);\n\tvec3 lcol = vec3(1.0, 1.0, 1.0);\n\n\tvec3 material = color;\n\n\tvec3 result = (lit > 0.0) ? (att * lcol * material) : material;\n\n\t// result = (vposition.x > 0.0) ? (vec3(0.0, 0.0, 0.0)) : result;\n\t\n\t// result = mix(result, vec3(0.1, 0.1, 0.1), fog(length(viewdiff), 0.005));\n\n \tgl_FragColor = vec4(result, 1);\n}"
     )
 
     this.shader.stroke = Shader(gl,
-      "#define GLSLIFY 1\nprecision mediump float;\n\nattribute vec3 position;\nattribute vec3 normal;\n\nuniform mat4 proj;\nuniform mat4 view;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nvoid main() {\n\tvposition = position;\n\tvnormal = normalize(normal);\n \tgl_Position = proj * view * vec4(position, 1.0);\n}",
-      "#define GLSLIFY 1\nprecision mediump float;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nuniform vec3 eye;\nuniform vec3 light;\nuniform vec3 color;\nuniform float lit;\n\nfloat calcLightAttenuation(float lightDistance, float cutoffDistance, float decayExponent) {\n  if (decayExponent > 0.0) {\n    return pow(clamp(-lightDistance / cutoffDistance + 1.0, 0.0, 1.0), decayExponent);\n  }\n  return 1.0;\n}\n\nvoid main() {\n\tvec3 viewdiff = eye - vposition;\n\tvec3 lightdir = light - vposition;\n\n\tfloat att = calcLightAttenuation(length(lightdir), 200.0, 0.5);\n\n \tgl_FragColor = vec4(att * vec3(1.0, 1.0, 1.0), 1.0);\n}"
+      "#define GLSLIFY 1\nprecision highp float;\n\nattribute vec3 position;\nattribute vec3 normal;\n\nuniform mat4 proj;\nuniform mat4 view;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nvoid main() {\n\tvposition = position;\n\tvnormal = normalize(normal);\n \tgl_Position = proj * view * vec4(position, 1.0);\n}",
+      "#define GLSLIFY 1\nprecision highp float;\n\nvarying vec3 vposition;\nvarying vec3 vnormal;\n\nuniform vec3 eye;\nuniform vec3 light;\nuniform vec3 color;\nuniform float lit;\n\nfloat calcLightAttenuation(float lightDistance, float cutoffDistance, float decayExponent) {\n  if (decayExponent > 0.0) {\n    return pow(clamp(-lightDistance / cutoffDistance + 1.0, 0.0, 1.0), decayExponent);\n  }\n  return 1.0;\n}\n\nvoid main() {\n\tvec3 viewdiff = eye - vposition;\n\tvec3 lightdir = light - vposition;\n\n\tfloat att = calcLightAttenuation(length(lightdir), 200.0, 0.5);\n\n \tgl_FragColor = vec4(att * vec3(1.0, 1.0, 1.0), 1.0);\n}"
     )
   }
 
@@ -18318,11 +18636,11 @@ Geometry.prototype.drawSurface = function (gl, camera, light) {
       complex = stroke.build(points)
       var top = {
         cells: complex.cells,
-        positions: complex.positions.map(function (p) {return [p[0], p[1], height + 0.1]})
+        positions: complex.positions.map(function (p) {return [p[0], p[1], height + 0.2]})
       }
       var bottom = {
         cells: complex.cells.map(function (p) {return p.map(function (c) {return c + top.cells.length + 2})}),
-        positions: complex.positions.map(function (p) {return [p[0], p[1], -0.1]})
+        positions: complex.positions.map(function (p) {return [p[0], p[1], -0.2]})
       }
       complex = {
         cells: top.cells.concat(bottom.cells),
@@ -18400,7 +18718,7 @@ Geometry.prototype.draw = function (context, camera, light) {
 
 module.exports = Geometry
 
-},{"delaunay-triangulate":67,"extrude":83,"extrude-polyline":81,"eye-vector":84,"gl-geometry":91,"gl-mat4":102,"gl-shader":117,"lodash":163,"mesh-reindex":165,"normals":169,"point-in-polygon":172,"sat":180,"transformist":186,"unindex-mesh":190}],35:[function(require,module,exports){
+},{"delaunay-triangulate":73,"extrude":90,"extrude-polyline":88,"eye-vector":91,"gl-geometry":98,"gl-mat4":109,"gl-shader":124,"lodash":162,"mesh-reindex":164,"normals":168,"point-in-polygon":172,"sat":181,"transformist":190,"unindex-mesh":194}],40:[function(require,module,exports){
 var _ = require('lodash')
 var Geometry = require('./geometry.js')
 
@@ -18419,7 +18737,8 @@ module.exports = function (opts) {
       trigger: opts.trigger || false,
       surface: opts.surface || false,
       height: opts.height || 0,
-      lit: opts.lit || false
+      lit: opts.lit || false,
+      consumable: opts.consumable || false
     },
 
     points: _.range(7).map(function (i) {
@@ -18430,14 +18749,15 @@ module.exports = function (opts) {
 
     transform: {
       scale: opts.scale,
-      rotation: opts.rotation
+      rotation: opts.rotation,
+      translation: opts.translation
     },
 
     children: opts.children
   })
 }
 
-},{"./geometry.js":34,"lodash":163}],36:[function(require,module,exports){
+},{"./geometry.js":39,"lodash":162}],41:[function(require,module,exports){
 var Geometry = require('./geometry.js')
 
 module.exports = function (opts) {
@@ -18474,7 +18794,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34}],37:[function(require,module,exports){
+},{"./geometry.js":39}],42:[function(require,module,exports){
 var Geometry = require('./geometry.js')
 
 module.exports = function (opts) {
@@ -18514,7 +18834,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34}],38:[function(require,module,exports){
+},{"./geometry.js":39}],43:[function(require,module,exports){
 var Geometry = require('./geometry.js')
 
 module.exports = function (opts) {
@@ -18549,7 +18869,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34}],39:[function(require,module,exports){
+},{"./geometry.js":39}],44:[function(require,module,exports){
 var _ = require('lodash')
 var hex = require('./hex.js')
 var wedge = require('./wedge.js')
@@ -18597,26 +18917,47 @@ module.exports = function (opts) {
   var paths = _.range(6).map(function (i) {
     if (_.includes(opts.paths, i)) {
       var children = []
-      if (Math.random() > 0) {
+      if (Math.random() >= 0) {
         children = [
           circle({
-            fill: 'white', stroke: 'white', thickness: opts.thickness,
-            translation: [0, 1.5], scale: 0.06, consumable: true
+            fill: 'white', 
+            thickness: opts.thickness,
+            translation: [0, 1.5], 
+            scale: 0.06, 
+            consumable: true,
+            surface: true,
+            height: 4.5,
+            color: [255,255,255],
+            lit: false
           }),
           circle({
-            fill: 'white', stroke: 'white', thickness: opts.thickness,
-            translation: [0, 2], scale: 0.06, consumable: true
+            fill: 'white', 
+            thickness: opts.thickness,
+            translation: [0, 2], 
+            scale: 0.06, 
+            consumable: true,
+            surface: true,
+            height: 4.5,
+            color: [255,255,255],
+            lit: false
           }),
           circle({
-            fill: 'white', stroke: 'white', thickness: opts.thickness,
-            translation: [0, 2.5], scale: 0.06, consumable: true
+            fill: 'white', 
+            thickness: opts.thickness,
+            translation: [0, 2.5], 
+            scale: 0.06, 
+            consumable: true,
+            surface: true,
+            height: 4.5,
+            color: [255,255,255],
+            lit: false
           })
         ]
       }
       return path({
         rotation: i * 60,
         thickness: thickness,
-        children: []
+        children: children
       })
     }
   })
@@ -18648,7 +18989,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./block.js":30,"./circle.js":32,"./end.js":33,"./geometry.js":34,"./hex.js":35,"./path.js":38,"./wedge.js":40,"lodash":163}],40:[function(require,module,exports){
+},{"./block.js":35,"./circle.js":37,"./end.js":38,"./geometry.js":39,"./hex.js":40,"./path.js":43,"./wedge.js":45,"lodash":162}],45:[function(require,module,exports){
 var Geometry = require('./geometry.js')
 
 module.exports = function (opts) {
@@ -18661,7 +19002,7 @@ module.exports = function (opts) {
       type: 'polygon',
       obstacle: true,
       surface: false || false,
-      color: [10, 10, 100],
+      color: [20, 20, 20],
       lit: true,
       height: -1
     },
@@ -18682,7 +19023,7 @@ module.exports = function (opts) {
   })
 }
 
-},{"./geometry.js":34}],41:[function(require,module,exports){
+},{"./geometry.js":39}],46:[function(require,module,exports){
 var _ = require('lodash')
 var inherits = require('inherits')
 var Fixmove = require('./fixmove.js')
@@ -18754,7 +19095,7 @@ Automove.prototype.clear = function () {
   this.pressed = this.pressed.map(function () { return false })
 }
 
-},{"./fixmove.js":42,"inherits":146,"lodash":163}],42:[function(require,module,exports){
+},{"./fixmove.js":47,"inherits":153,"lodash":162}],47:[function(require,module,exports){
 function Fixmove (data) {
   if (!data) data = {}
   this.speed = data.speed || {translation: 1, rotation: 10}
@@ -18794,7 +19135,7 @@ Fixmove.prototype.delta = function (current, target) {
 
 module.exports = Fixmove
 
-},{}],43:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 function Freemove (data) {
   this.velocity = data.velocity || {translation: [0, 0], rotation: 0, scale: 0}
   this.speed = data.speed || {translation: 1, rotation: 10, scale: 0}
@@ -18848,7 +19189,7 @@ Freemove.prototype.dampen = function () {
 
 module.exports = Freemove
 
-},{}],44:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 // for compression
 var win = require('global/window');
 var doc = require('global/document');
@@ -18968,7 +19309,7 @@ var typeOf = (function () {
     };
 })();
 
-},{"./init.json":45,"./types.json":46,"global/document":136,"global/window":137}],45:[function(require,module,exports){
+},{"./init.json":50,"./types.json":51,"global/document":143,"global/window":144}],50:[function(require,module,exports){
 module.exports={
   "initEvent" : [
     "type",
@@ -19035,7 +19376,7 @@ module.exports={
   ]
 }
 
-},{}],46:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 module.exports={
   "MouseEvent" : [
     "click",
@@ -19080,7 +19421,7 @@ module.exports={
   ]
 }
 
-},{}],47:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 addEventListener.removeEventListener = removeEventListener
 addEventListener.addEventListener = addEventListener
 
@@ -19128,7 +19469,7 @@ function oldIEDetach(el, eventName, listener, useCapture) {
   el.detachEvent('on' + eventName, listener)
 }
 
-},{}],48:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 var padLeft = require('pad-left')
 
 module.exports = addLineNumbers
@@ -19146,9 +19487,11 @@ function addLineNumbers (string, start, delim) {
   }).join('\n')
 }
 
-},{"pad-left":170}],49:[function(require,module,exports){
+},{"pad-left":169}],54:[function(require,module,exports){
 arguments[4][13][0].apply(exports,arguments)
-},{"dup":13}],50:[function(require,module,exports){
+},{"dup":13}],55:[function(require,module,exports){
+arguments[4][14][0].apply(exports,arguments)
+},{"dup":14}],56:[function(require,module,exports){
 var dtype = require('dtype')
 
 module.exports = pack
@@ -19176,7 +19519,7 @@ function pack(arr, type) {
   return out
 }
 
-},{"dtype":51}],51:[function(require,module,exports){
+},{"dtype":57}],57:[function(require,module,exports){
 (function (Buffer){
 module.exports = function(dtype) {
   switch (dtype) {
@@ -19211,18 +19554,18 @@ module.exports = function(dtype) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":4}],52:[function(require,module,exports){
+},{"buffer":4}],58:[function(require,module,exports){
 module.exports = function numtype(num, def) {
 	return typeof num === 'number'
 		? num 
 		: (typeof def === 'number' ? def : 0)
 }
-},{}],53:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = function _atob(str) {
   return atob(str)
 }
 
-},{}],54:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 /**
  * Bit twiddling hacks for JavaScript.
  *
@@ -19428,7 +19771,7 @@ exports.nextCombination = function(v) {
 }
 
 
-},{}],55:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 /**
  * Module Dependencies
  */
@@ -19462,7 +19805,7 @@ function closest (el, selector, scope) {
   return matches(el, selector) ? el : null;
 }
 
-},{"matches-selector":56}],56:[function(require,module,exports){
+},{"matches-selector":62}],62:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -19510,7 +19853,7 @@ function match(el, selector) {
   return false;
 }
 
-},{"query":57}],57:[function(require,module,exports){
+},{"query":63}],63:[function(require,module,exports){
 function one(selector, el) {
   return el.querySelector(selector);
 }
@@ -19533,7 +19876,7 @@ exports.engine = function(obj){
   return exports;
 };
 
-},{}],58:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 var EventEmitter = require('eventemitter2').EventEmitter2
 var inherits = require('inherits')
 
@@ -19624,7 +19967,7 @@ Entity.prototype.findEntity = function (entity, callback) {
   callback(exists, entities, index)
 }
 
-},{"eventemitter2":78,"inherits":146}],59:[function(require,module,exports){
+},{"eventemitter2":85,"inherits":153}],65:[function(require,module,exports){
 var EventEmitter = require('eventemitter2').EventEmitter2
 var inherits = require('inherits')
 var vkey = require('vkey')
@@ -19682,7 +20025,7 @@ Keyboard.prototype.initializeListeners = function () {
   }, false)
 }
 
-},{"eventemitter2":78,"inherits":146,"vkey":60}],60:[function(require,module,exports){
+},{"eventemitter2":85,"inherits":153,"vkey":66}],66:[function(require,module,exports){
 var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
   , isOSX = /OS X/.test(ua)
   , isOpera = /Opera/.test(ua)
@@ -19820,7 +20163,7 @@ for(i = 112; i < 136; ++i) {
   output[i] = 'F'+(i-111)
 }
 
-},{}],61:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 var _ = require('lodash')
 var inherits = require('inherits')
 var touchy = require('touchy')
@@ -19908,7 +20251,7 @@ Touch.prototype.offset = function (e, xy, callback) {
   callback(loc)
 }
 
-},{"eventemitter2":78,"inherits":146,"lodash":163,"touch-position":183,"touchy":184}],62:[function(require,module,exports){
+},{"eventemitter2":85,"inherits":153,"lodash":162,"touch-position":187,"touchy":188}],68:[function(require,module,exports){
 "use strict"
 
 var createThunk = require("./lib/thunk.js")
@@ -20019,7 +20362,7 @@ function compileCwise(user_args) {
 
 module.exports = compileCwise
 
-},{"./lib/thunk.js":64}],63:[function(require,module,exports){
+},{"./lib/thunk.js":70}],69:[function(require,module,exports){
 "use strict"
 
 var uniq = require("uniq")
@@ -20375,7 +20718,7 @@ function generateCWiseOp(proc, typesig) {
 }
 module.exports = generateCWiseOp
 
-},{"uniq":192}],64:[function(require,module,exports){
+},{"uniq":196}],70:[function(require,module,exports){
 "use strict"
 
 // The function below is called when constructing a cwise function object, and does the following:
@@ -20463,7 +20806,7 @@ function createThunk(proc) {
 
 module.exports = createThunk
 
-},{"./compile.js":63}],65:[function(require,module,exports){
+},{"./compile.js":69}],71:[function(require,module,exports){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define('d3-color', ['exports'], factory) :
@@ -21138,7 +21481,7 @@ module.exports = createThunk
   exports.interpolateHclLong = interpolateHclLong;
 
 }));
-},{}],66:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 
 var now = function () {
   return Date.now();
@@ -21199,7 +21542,7 @@ module.exports = function debounce( f, ms, ctx, immediate ) {
   return fn;
 };
 
-},{}],67:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 "use strict"
 
 var ch = require("incremental-convex-hull")
@@ -21359,7 +21702,7 @@ function triangulate(points, includePointAtInfinity) {
 
   return hull
 }
-},{"incremental-convex-hull":145,"uniq":192}],68:[function(require,module,exports){
+},{"incremental-convex-hull":152,"uniq":196}],74:[function(require,module,exports){
 'use strict'
 
 var DOMEvent = require('@bendrucker/synthetic-dom-events')
@@ -21374,7 +21717,9 @@ module.exports = function dispatchEvent (element, event, options) {
   return event
 }
 
-},{"@bendrucker/synthetic-dom-events":44,"assert":1}],69:[function(require,module,exports){
+},{"@bendrucker/synthetic-dom-events":49,"assert":1}],75:[function(require,module,exports){
+arguments[4][15][0].apply(exports,arguments)
+},{"add-px-to-style":54,"dup":15,"prefix-style":174,"to-camel-case":184}],76:[function(require,module,exports){
 var evtLifeCycle = { };
 var extend = require( 'extend' );
 var cache = require( './lib/event-cache' );
@@ -21599,7 +21944,7 @@ module.exports = {
   }
 };
 
-},{"./lib/dispatch-event":70,"./lib/event-cache":71,"./lib/get-callback-id":72,"./lib/wrap-callback":74,"dom-event":75,"extend":80}],70:[function(require,module,exports){
+},{"./lib/dispatch-event":77,"./lib/event-cache":78,"./lib/get-callback-id":79,"./lib/wrap-callback":81,"dom-event":82,"extend":87}],77:[function(require,module,exports){
 (function (global){
 module.exports = function ( ele, event, options ) {
   var extend = require( 'extend' );
@@ -21624,7 +21969,7 @@ module.exports = function ( ele, event, options ) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"dispatch-event":68,"extend":80}],71:[function(require,module,exports){
+},{"dispatch-event":74,"extend":87}],78:[function(require,module,exports){
 var cache = { };
 var idGen = require( './id-gen' );
 var getId = idGen.create( 'dom-ele' );
@@ -21667,7 +22012,7 @@ module.exports = {
   }
 };
 
-},{"./id-gen":73}],72:[function(require,module,exports){
+},{"./id-gen":80}],79:[function(require,module,exports){
 var idGen = require( './id-gen' );
 var getFnId = idGen.create( 'fn' );
 
@@ -21680,7 +22025,7 @@ module.exports = function getIdOfCallback( callback ) {
   return eleId;
 };
 
-},{"./id-gen":73}],73:[function(require,module,exports){
+},{"./id-gen":80}],80:[function(require,module,exports){
 module.exports = {
   create: function ( prefix ) {
     var counter = 0;
@@ -21690,7 +22035,7 @@ module.exports = {
   }
 };
 
-},{}],74:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 var closest = require( 'component-closest' );
 
 var getIdOfCallback = require( './get-callback-id' );
@@ -21719,7 +22064,7 @@ module.exports = function wrapCallback( ele, callback, ns, selector ) {
   return fn;
 };
 
-},{"./get-callback-id":72,"component-closest":55}],75:[function(require,module,exports){
+},{"./get-callback-id":79,"component-closest":61}],82:[function(require,module,exports){
 module.exports = on;
 module.exports.on = on;
 module.exports.off = off;
@@ -21736,7 +22081,7 @@ function off (element, event, callback, capture) {
   return callback;
 }
 
-},{}],76:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = function(dtype) {
   switch (dtype) {
     case 'int8':
@@ -21759,7 +22104,7 @@ module.exports = function(dtype) {
       return Array
   }
 }
-},{}],77:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 "use strict"
 
 function dupe_array(count, value, i) {
@@ -21809,7 +22154,7 @@ function dupe(count, value) {
 }
 
 module.exports = dupe
-},{}],78:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 /*!
  * EventEmitter2
  * https://github.com/hij1nx/EventEmitter2
@@ -22384,9 +22729,9 @@ module.exports = dupe
   }
 }();
 
-},{}],79:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 arguments[4][6][0].apply(exports,arguments)
-},{"dup":6}],80:[function(require,module,exports){
+},{"dup":6}],87:[function(require,module,exports){
 'use strict';
 
 var hasOwn = Object.prototype.hasOwnProperty;
@@ -22474,7 +22819,7 @@ module.exports = function extend() {
 };
 
 
-},{}],81:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 var number = require('as-number')
 var vec = require('./vecutil')
 
@@ -22660,7 +23005,7 @@ function extrusions(positions, point, normal, scale) {
 }
 
 module.exports = Stroke
-},{"./vecutil":82,"as-number":52,"polyline-miter-util":173}],82:[function(require,module,exports){
+},{"./vecutil":89,"as-number":58,"polyline-miter-util":173}],89:[function(require,module,exports){
 function clone(arr) {
     return [arr[0], arr[1]]
 }
@@ -22676,8 +23021,8 @@ module.exports = {
     scaleAndAdd: require('gl-vec2/scaleAndAdd'),
     dot: require('gl-vec2/dot')
 }
-},{"gl-vec2/copy":130,"gl-vec2/dot":131,"gl-vec2/scaleAndAdd":133}],83:[function(require,module,exports){
-var triangulate = require('delaunay-triangulate')
+},{"gl-vec2/copy":137,"gl-vec2/dot":138,"gl-vec2/scaleAndAdd":140}],90:[function(require,module,exports){
+var pnltri = require('pnltri')
 var defaults = require('lodash.defaults')
 
 module.exports = function (points, opts) {
@@ -22690,9 +23035,14 @@ module.exports = function (points, opts) {
 
   (opts.top === opts.bottom) ? flat() : full()
 
+  function triangulate (points) {
+    points = points.map(function (p) { return {x: p[0], y: p[1]} })
+    return new pnltri.Triangulator().triangulate_polygon([points])
+  }
+
   function flat () {
     positions = points.map(function (p) { return [p[0], p[1], opts.top] })
-    cells = triangulate(points).map(function (p) { return p.sort() })
+    cells = triangulate(points)
   }
 
   function full () {
@@ -22712,7 +23062,7 @@ module.exports = function (points, opts) {
     }
 
     if (opts.closed) {
-      var top = triangulate(points).map(function (p) { return p.sort() })
+      var top = triangulate(points)
       var bottom = top.map(function (p) { return p.map(function (v) { return v + n }) })
       bottom = bottom.map(function (p) { return [p[0], p[2], p[1]] })
       cells = cells.concat(top).concat(bottom)
@@ -22725,7 +23075,7 @@ module.exports = function (points, opts) {
   }
 }
 
-},{"delaunay-triangulate":67,"lodash.defaults":158}],84:[function(require,module,exports){
+},{"lodash.defaults":160,"pnltri":171}],91:[function(require,module,exports){
 var mat4 = require('gl-matrix').mat4
 var scratch = new Float32Array(16)
 
@@ -22740,7 +23090,7 @@ function getEyeVector(viewMatrix, out) {
   return out
 }
 
-},{"gl-matrix":85}],85:[function(require,module,exports){
+},{"gl-matrix":92}],92:[function(require,module,exports){
 /**
  * @fileoverview gl-matrix - High performance matrix and vector operations
  * @author Brandon Jones
@@ -25813,7 +26163,7 @@ if(typeof(exports) !== 'undefined') {
   })(shim.exports);
 })();
 
-},{}],86:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 var Emitter = require('eventemitter2').EventEmitter2
 var now = require('performance-now')
 var inherits = require('inherits')
@@ -26019,7 +26369,7 @@ Game.prototype.toggle = function gameloop_toggle () {
 * game.on('resume', function () {})
 */
 
-},{"eventemitter2":78,"inherits":146,"performance-now":171,"raf":174}],87:[function(require,module,exports){
+},{"eventemitter2":85,"inherits":153,"performance-now":170,"raf":175}],94:[function(require,module,exports){
 "use strict"
 
 var pool = require("typedarray-pool")
@@ -26173,7 +26523,7 @@ function createBuffer(gl, data, type, usage) {
 
 module.exports = createBuffer
 
-},{"ndarray":168,"ndarray-ops":167,"typedarray-pool":189}],88:[function(require,module,exports){
+},{"ndarray":167,"ndarray-ops":166,"typedarray-pool":193}],95:[function(require,module,exports){
 module.exports = {
   0: 'NONE',
   1: 'ONE',
@@ -26473,14 +26823,14 @@ module.exports = {
   37444: 'BROWSER_DEFAULT_WEBGL'
 }
 
-},{}],89:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 var gl10 = require('./1.0/numbers')
 
 module.exports = function lookupConstant (number) {
   return gl10[number]
 }
 
-},{"./1.0/numbers":88}],90:[function(require,module,exports){
+},{"./1.0/numbers":95}],97:[function(require,module,exports){
 
 var sprintf = require('sprintf-js').sprintf;
 var glConstants = require('gl-constants/lookup');
@@ -26535,7 +26885,7 @@ function formatCompilerError(errLog, src, type) {
 }
 
 
-},{"add-line-numbers":48,"gl-constants/lookup":89,"glsl-shader-name":138,"sprintf-js":182}],91:[function(require,module,exports){
+},{"add-line-numbers":53,"gl-constants/lookup":96,"glsl-shader-name":145,"sprintf-js":183}],98:[function(require,module,exports){
 var normalize = require('./normalize')
 var glType = require('gl-to-dtype')
 var createVAO = require('gl-vao')
@@ -26689,7 +27039,7 @@ GLGeometry.prototype.update = function update() {
   ).BYTES_PER_ELEMENT || 2
 }
 
-},{"./normalize":92,"dtype":76,"gl-to-dtype":124,"gl-vao":128}],92:[function(require,module,exports){
+},{"./normalize":99,"dtype":83,"gl-to-dtype":131,"gl-vao":135}],99:[function(require,module,exports){
 var pack         = require('array-pack-2d')
 var ista         = require('is-typedarray')
 var createBuffer = require('gl-buffer')
@@ -26778,7 +27128,7 @@ function convert(a, b) {
   return b
 }
 
-},{"array-pack-2d":50,"dtype":76,"gl-buffer":87,"is-typedarray":149,"isndarray":150}],93:[function(require,module,exports){
+},{"array-pack-2d":56,"dtype":83,"gl-buffer":94,"is-typedarray":156,"isndarray":157}],100:[function(require,module,exports){
 module.exports = adjoint;
 
 /**
@@ -26812,7 +27162,7 @@ function adjoint(out, a) {
     out[15] =  (a00 * (a11 * a22 - a12 * a21) - a10 * (a01 * a22 - a02 * a21) + a20 * (a01 * a12 - a02 * a11));
     return out;
 };
-},{}],94:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 module.exports = clone;
 
 /**
@@ -26841,7 +27191,7 @@ function clone(a) {
     out[15] = a[15];
     return out;
 };
-},{}],95:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 module.exports = copy;
 
 /**
@@ -26870,7 +27220,7 @@ function copy(out, a) {
     out[15] = a[15];
     return out;
 };
-},{}],96:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 module.exports = create;
 
 /**
@@ -26898,7 +27248,7 @@ function create() {
     out[15] = 1;
     return out;
 };
-},{}],97:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 module.exports = determinant;
 
 /**
@@ -26929,7 +27279,7 @@ function determinant(a) {
     // Calculate the determinant
     return b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
 };
-},{}],98:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = fromQuat;
 
 /**
@@ -26977,7 +27327,7 @@ function fromQuat(out, q) {
 
     return out;
 };
-},{}],99:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = fromRotationTranslation;
 
 /**
@@ -27031,7 +27381,7 @@ function fromRotationTranslation(out, q, v) {
     
     return out;
 };
-},{}],100:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 module.exports = frustum;
 
 /**
@@ -27068,7 +27418,7 @@ function frustum(out, left, right, bottom, top, near, far) {
     out[15] = 0;
     return out;
 };
-},{}],101:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 module.exports = identity;
 
 /**
@@ -27096,7 +27446,7 @@ function identity(out) {
     out[15] = 1;
     return out;
 };
-},{}],102:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = {
   create: require('./create')
   , clone: require('./clone')
@@ -27122,7 +27472,7 @@ module.exports = {
   , lookAt: require('./lookAt')
   , str: require('./str')
 }
-},{"./adjoint":93,"./clone":94,"./copy":95,"./create":96,"./determinant":97,"./fromQuat":98,"./fromRotationTranslation":99,"./frustum":100,"./identity":101,"./invert":103,"./lookAt":104,"./multiply":105,"./ortho":106,"./perspective":107,"./perspectiveFromFieldOfView":108,"./rotate":109,"./rotateX":110,"./rotateY":111,"./rotateZ":112,"./scale":113,"./str":114,"./translate":115,"./transpose":116}],103:[function(require,module,exports){
+},{"./adjoint":100,"./clone":101,"./copy":102,"./create":103,"./determinant":104,"./fromQuat":105,"./fromRotationTranslation":106,"./frustum":107,"./identity":108,"./invert":110,"./lookAt":111,"./multiply":112,"./ortho":113,"./perspective":114,"./perspectiveFromFieldOfView":115,"./rotate":116,"./rotateX":117,"./rotateY":118,"./rotateZ":119,"./scale":120,"./str":121,"./translate":122,"./transpose":123}],110:[function(require,module,exports){
 module.exports = invert;
 
 /**
@@ -27178,7 +27528,7 @@ function invert(out, a) {
 
     return out;
 };
-},{}],104:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 var identity = require('./identity');
 
 module.exports = lookAt;
@@ -27269,7 +27619,7 @@ function lookAt(out, eye, center, up) {
 
     return out;
 };
-},{"./identity":101}],105:[function(require,module,exports){
+},{"./identity":108}],112:[function(require,module,exports){
 module.exports = multiply;
 
 /**
@@ -27312,7 +27662,7 @@ function multiply(out, a, b) {
     out[15] = b0*a03 + b1*a13 + b2*a23 + b3*a33;
     return out;
 };
-},{}],106:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = ortho;
 
 /**
@@ -27349,7 +27699,7 @@ function ortho(out, left, right, bottom, top, near, far) {
     out[15] = 1;
     return out;
 };
-},{}],107:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 module.exports = perspective;
 
 /**
@@ -27383,7 +27733,7 @@ function perspective(out, fovy, aspect, near, far) {
     out[15] = 0;
     return out;
 };
-},{}],108:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 module.exports = perspectiveFromFieldOfView;
 
 /**
@@ -27425,7 +27775,7 @@ function perspectiveFromFieldOfView(out, fov, near, far) {
 }
 
 
-},{}],109:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = rotate;
 
 /**
@@ -27490,7 +27840,7 @@ function rotate(out, a, rad, axis) {
     }
     return out;
 };
-},{}],110:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 module.exports = rotateX;
 
 /**
@@ -27535,7 +27885,7 @@ function rotateX(out, a, rad) {
     out[11] = a23 * c - a13 * s;
     return out;
 };
-},{}],111:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = rotateY;
 
 /**
@@ -27580,7 +27930,7 @@ function rotateY(out, a, rad) {
     out[11] = a03 * s + a23 * c;
     return out;
 };
-},{}],112:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = rotateZ;
 
 /**
@@ -27625,7 +27975,7 @@ function rotateZ(out, a, rad) {
     out[7] = a13 * c - a03 * s;
     return out;
 };
-},{}],113:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 module.exports = scale;
 
 /**
@@ -27657,7 +28007,7 @@ function scale(out, a, v) {
     out[15] = a[15];
     return out;
 };
-},{}],114:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 module.exports = str;
 
 /**
@@ -27672,7 +28022,7 @@ function str(a) {
                     a[8] + ', ' + a[9] + ', ' + a[10] + ', ' + a[11] + ', ' + 
                     a[12] + ', ' + a[13] + ', ' + a[14] + ', ' + a[15] + ')';
 };
-},{}],115:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = translate;
 
 /**
@@ -27711,7 +28061,7 @@ function translate(out, a, v) {
 
     return out;
 };
-},{}],116:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports = transpose;
 
 /**
@@ -27761,7 +28111,7 @@ function transpose(out, a) {
     
     return out;
 };
-},{}],117:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict'
 
 var createUniformWrapper   = require('./lib/create-uniforms')
@@ -27997,7 +28347,7 @@ function createShader(
 
 module.exports = createShader
 
-},{"./lib/GLError":118,"./lib/create-attributes":119,"./lib/create-uniforms":120,"./lib/reflect":121,"./lib/runtime-reflect":122,"./lib/shader-cache":123}],118:[function(require,module,exports){
+},{"./lib/GLError":125,"./lib/create-attributes":126,"./lib/create-uniforms":127,"./lib/reflect":128,"./lib/runtime-reflect":129,"./lib/shader-cache":130}],125:[function(require,module,exports){
 function GLError (rawError, shortMessage, longMessage) {
     this.shortMessage = shortMessage || ''
     this.longMessage = longMessage || ''
@@ -28012,7 +28362,7 @@ GLError.prototype.name = 'GLError'
 GLError.prototype.constructor = GLError
 module.exports = GLError
 
-},{}],119:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict'
 
 module.exports = createAttributeWrapper
@@ -28277,7 +28627,7 @@ function createAttributeWrapper(
   return obj
 }
 
-},{"./GLError":118}],120:[function(require,module,exports){
+},{"./GLError":125}],127:[function(require,module,exports){
 'use strict'
 
 var coallesceUniforms = require('./reflect')
@@ -28470,7 +28820,7 @@ function createUniformWrapper(gl, wrapper, uniforms, locations) {
   }
 }
 
-},{"./GLError":118,"./reflect":121}],121:[function(require,module,exports){
+},{"./GLError":125,"./reflect":128}],128:[function(require,module,exports){
 'use strict'
 
 module.exports = makeReflectTypes
@@ -28528,7 +28878,7 @@ function makeReflectTypes(uniforms, useIndex) {
   }
   return obj
 }
-},{}],122:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict'
 
 exports.uniforms    = runtimeUniforms
@@ -28608,7 +28958,7 @@ function runtimeAttributes(gl, program) {
   return result
 }
 
-},{}],123:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict'
 
 exports.shader   = getShaderReference
@@ -28746,7 +29096,7 @@ function createProgram(gl, vref, fref, attribs, locations) {
   return getCache(gl).getProgram(vref, fref, attribs, locations)
 }
 
-},{"./GLError":118,"gl-format-compiler-error":90,"weakmap-shim":195}],124:[function(require,module,exports){
+},{"./GLError":125,"gl-format-compiler-error":97,"weakmap-shim":199}],131:[function(require,module,exports){
 module.exports = glToType
 function glToType (flag) {
   switch (flag) {
@@ -28764,7 +29114,7 @@ function glToType (flag) {
   }
 }
 
-},{}],125:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 "use strict"
 
 function doBind(gl, elements, attributes) {
@@ -28819,7 +29169,7 @@ function doBind(gl, elements, attributes) {
 }
 
 module.exports = doBind
-},{}],126:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 "use strict"
 
 var bindAttribs = require("./do-bind.js")
@@ -28859,7 +29209,7 @@ function createVAOEmulated(gl) {
 }
 
 module.exports = createVAOEmulated
-},{"./do-bind.js":125}],127:[function(require,module,exports){
+},{"./do-bind.js":132}],134:[function(require,module,exports){
 "use strict"
 
 var bindAttribs = require("./do-bind.js")
@@ -28947,7 +29297,7 @@ function createVAONative(gl, ext) {
 }
 
 module.exports = createVAONative
-},{"./do-bind.js":125}],128:[function(require,module,exports){
+},{"./do-bind.js":132}],135:[function(require,module,exports){
 "use strict"
 
 var createVAONative = require("./lib/vao-native.js")
@@ -28967,7 +29317,7 @@ function createVAO(gl, attributes, elements, elementsType) {
 
 module.exports = createVAO
 
-},{"./lib/vao-emulated.js":126,"./lib/vao-native.js":127}],129:[function(require,module,exports){
+},{"./lib/vao-emulated.js":133,"./lib/vao-native.js":134}],136:[function(require,module,exports){
 module.exports = add
 
 /**
@@ -28983,7 +29333,7 @@ function add(out, a, b) {
     out[1] = a[1] + b[1]
     return out
 }
-},{}],130:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 module.exports = copy
 
 /**
@@ -28998,7 +29348,7 @@ function copy(out, a) {
     out[1] = a[1]
     return out
 }
-},{}],131:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 module.exports = dot
 
 /**
@@ -29011,7 +29361,7 @@ module.exports = dot
 function dot(a, b) {
     return a[0] * b[0] + a[1] * b[1]
 }
-},{}],132:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 module.exports = normalize
 
 /**
@@ -29033,7 +29383,7 @@ function normalize(out, a) {
     }
     return out
 }
-},{}],133:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 module.exports = scaleAndAdd
 
 /**
@@ -29050,7 +29400,7 @@ function scaleAndAdd(out, a, b, scale) {
     out[1] = a[1] + (b[1] * scale)
     return out
 }
-},{}],134:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 module.exports = set
 
 /**
@@ -29066,7 +29416,7 @@ function set(out, x, y) {
     out[1] = y
     return out
 }
-},{}],135:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 module.exports = subtract
 
 /**
@@ -29082,7 +29432,7 @@ function subtract(out, a, b) {
     out[1] = a[1] - b[1]
     return out
 }
-},{}],136:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
@@ -29101,7 +29451,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":3}],137:[function(require,module,exports){
+},{"min-document":3}],144:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -29114,7 +29464,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],138:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 var tokenize = require('glsl-tokenizer')
 var atob     = require('atob-lite')
 
@@ -29139,7 +29489,7 @@ function getName(src) {
   }
 }
 
-},{"atob-lite":53,"glsl-tokenizer":143}],139:[function(require,module,exports){
+},{"atob-lite":59,"glsl-tokenizer":150}],146:[function(require,module,exports){
 module.exports = tokenize
 
 var literals = require('./lib/literals')
@@ -29486,7 +29836,7 @@ function tokenize() {
   }
 }
 
-},{"./lib/builtins":140,"./lib/literals":141,"./lib/operators":142}],140:[function(require,module,exports){
+},{"./lib/builtins":147,"./lib/literals":148,"./lib/operators":149}],147:[function(require,module,exports){
 module.exports = [
     'gl_Position'
   , 'gl_PointSize'
@@ -29634,7 +29984,7 @@ module.exports = [
   , 'dFdy'
 ]
 
-},{}],141:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 module.exports = [
   // current
     'precision'
@@ -29729,7 +30079,7 @@ module.exports = [
   , 'using'
 ]
 
-},{}],142:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 module.exports = [
     '<<='
   , '>>='
@@ -29778,7 +30128,7 @@ module.exports = [
   , '}'
 ]
 
-},{}],143:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 var tokenize = require('./index')
 
 module.exports = tokenizeString
@@ -29793,7 +30143,7 @@ function tokenizeString(str) {
   return tokens
 }
 
-},{"./index":139}],144:[function(require,module,exports){
+},{"./index":146}],151:[function(require,module,exports){
 'use strict';
 module.exports = function (hex) {
 	if (typeof hex !== 'string') {
@@ -29811,7 +30161,7 @@ module.exports = function (hex) {
 	return [num >> 16, num >> 8 & 255, num & 255];
 };
 
-},{}],145:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 "use strict"
 
 //High level idea:
@@ -30258,9 +30608,9 @@ function incrementalConvexHull(points, randomSearch) {
   //Extract boundary cells
   return triangles.boundary()
 }
-},{"robust-orientation":176,"simplicial-complex":181}],146:[function(require,module,exports){
+},{"robust-orientation":177,"simplicial-complex":182}],153:[function(require,module,exports){
 arguments[4][8][0].apply(exports,arguments)
-},{"dup":8}],147:[function(require,module,exports){
+},{"dup":8}],154:[function(require,module,exports){
 "use strict"
 
 function iota(n) {
@@ -30272,7 +30622,7 @@ function iota(n) {
 }
 
 module.exports = iota
-},{}],148:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -30291,7 +30641,7 @@ module.exports = function (obj) {
     ))
 }
 
-},{}],149:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 module.exports      = isTypedArray
 isTypedArray.strict = isStrictTypedArray
 isTypedArray.loose  = isLooseTypedArray
@@ -30332,7 +30682,7 @@ function isLooseTypedArray(arr) {
   return names[toString.call(arr)]
 }
 
-},{}],150:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 module.exports = function(arr) {
   if (!arr) return false
   if (!arr.dtype) return false
@@ -30340,222 +30690,45 @@ module.exports = function(arr) {
   return re.test(String(arr.constructor))
 }
 
-},{}],151:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
+(function (global){
 /**
- * lodash 3.2.0 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var baseCopy = require('lodash._basecopy'),
-    keys = require('lodash.keys');
+var keysIn = require('lodash.keysin'),
+    rest = require('lodash.rest');
 
-/**
- * The base implementation of `_.assign` without support for argument juggling,
- * multiple sources, and `customizer` functions.
- *
- * @private
- * @param {Object} object The destination object.
- * @param {Object} source The source object.
- * @returns {Object} Returns `object`.
- */
-function baseAssign(object, source) {
-  return source == null
-    ? object
-    : baseCopy(source, keys(source), object);
-}
-
-module.exports = baseAssign;
-
-},{"lodash._basecopy":152,"lodash.keys":161}],152:[function(require,module,exports){
-/**
- * lodash 3.0.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/**
- * Copies properties of `source` to `object`.
- *
- * @private
- * @param {Object} source The object to copy properties from.
- * @param {Array} props The property names to copy.
- * @param {Object} [object={}] The object to copy properties to.
- * @returns {Object} Returns `object`.
- */
-function baseCopy(source, props, object) {
-  object || (object = {});
-
-  var index = -1,
-      length = props.length;
-
-  while (++index < length) {
-    var key = props[index];
-    object[key] = source[key];
-  }
-  return object;
-}
-
-module.exports = baseCopy;
-
-},{}],153:[function(require,module,exports){
-/**
- * lodash 3.0.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/**
- * A specialized version of `baseCallback` which only supports `this` binding
- * and specifying the number of arguments to provide to `func`.
- *
- * @private
- * @param {Function} func The function to bind.
- * @param {*} thisArg The `this` binding of `func`.
- * @param {number} [argCount] The number of arguments to provide to `func`.
- * @returns {Function} Returns the callback.
- */
-function bindCallback(func, thisArg, argCount) {
-  if (typeof func != 'function') {
-    return identity;
-  }
-  if (thisArg === undefined) {
-    return func;
-  }
-  switch (argCount) {
-    case 1: return function(value) {
-      return func.call(thisArg, value);
-    };
-    case 3: return function(value, index, collection) {
-      return func.call(thisArg, value, index, collection);
-    };
-    case 4: return function(accumulator, value, index, collection) {
-      return func.call(thisArg, accumulator, value, index, collection);
-    };
-    case 5: return function(value, other, key, object, source) {
-      return func.call(thisArg, value, other, key, object, source);
-    };
-  }
-  return function() {
-    return func.apply(thisArg, arguments);
-  };
-}
-
-/**
- * This method returns the first argument provided to it.
- *
- * @static
- * @memberOf _
- * @category Utility
- * @param {*} value Any value.
- * @returns {*} Returns `value`.
- * @example
- *
- * var object = { 'user': 'fred' };
- *
- * _.identity(object) === object;
- * // => true
- */
-function identity(value) {
-  return value;
-}
-
-module.exports = bindCallback;
-
-},{}],154:[function(require,module,exports){
-/**
- * lodash 3.1.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var bindCallback = require('lodash._bindcallback'),
-    isIterateeCall = require('lodash._isiterateecall'),
-    restParam = require('lodash.restparam');
-
-/**
- * Creates a function that assigns properties of source object(s) to a given
- * destination object.
- *
- * **Note:** This function is used to create `_.assign`, `_.defaults`, and `_.merge`.
- *
- * @private
- * @param {Function} assigner The function to assign values.
- * @returns {Function} Returns the new assigner function.
- */
-function createAssigner(assigner) {
-  return restParam(function(object, sources) {
-    var index = -1,
-        length = object == null ? 0 : sources.length,
-        customizer = length > 2 ? sources[length - 2] : undefined,
-        guard = length > 2 ? sources[2] : undefined,
-        thisArg = length > 1 ? sources[length - 1] : undefined;
-
-    if (typeof customizer == 'function') {
-      customizer = bindCallback(customizer, thisArg, 5);
-      length -= 2;
-    } else {
-      customizer = typeof thisArg == 'function' ? thisArg : undefined;
-      length -= (customizer ? 1 : 0);
-    }
-    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
-      customizer = length < 3 ? undefined : customizer;
-      length = 1;
-    }
-    while (++index < length) {
-      var source = sources[index];
-      if (source) {
-        assigner(object, source, customizer);
-      }
-    }
-    return object;
-  });
-}
-
-module.exports = createAssigner;
-
-},{"lodash._bindcallback":153,"lodash._isiterateecall":156,"lodash.restparam":162}],155:[function(require,module,exports){
-/**
- * lodash 3.9.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
 
 /** `Object#toString` result references. */
-var funcTag = '[object Function]';
+var funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]';
 
-/** Used to detect host constructors (Safari > 5). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
 
 /**
- * Checks if `value` is object-like.
+ * Checks if `value` is a valid array-like index.
  *
  * @private
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
  */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
+function isIndex(value, length) {
+  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return value > -1 && value % 1 == 0 && value < length;
 }
 
-/** Used for native method references. */
-var objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var fnToString = Function.prototype.toString;
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
@@ -30564,123 +30737,26 @@ var hasOwnProperty = objectProto.hasOwnProperty;
  * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
  * of values.
  */
-var objToString = objectProto.toString;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
+var objectToString = objectProto.toString;
 
 /**
- * Gets the native function at `key` of `object`.
+ * Assigns `value` to `key` of `object` if the existing value is not equivalent
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+ * for equality comparisons.
  *
  * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
  */
-function getNative(object, key) {
-  var value = object == null ? undefined : object[key];
-  return isNative(value) ? value : undefined;
-}
-
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isFunction(_);
- * // => true
- *
- * _.isFunction(/abc/);
- * // => false
- */
-function isFunction(value) {
-  // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in older versions of Chrome and Safari which return 'function' for regexes
-  // and Safari 8 equivalents which return 'object' for typed array constructors.
-  return isObject(value) && objToString.call(value) == funcTag;
-}
-
-/**
- * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
- * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(1);
- * // => false
- */
-function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-/**
- * Checks if `value` is a native function.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
- * @example
- *
- * _.isNative(Array.prototype.push);
- * // => true
- *
- * _.isNative(_);
- * // => false
- */
-function isNative(value) {
-  if (value == null) {
-    return false;
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if ((!eq(objValue, value) ||
+        (eq(objValue, objectProto[key]) && !hasOwnProperty.call(object, key))) ||
+      (value === undefined && !(key in object))) {
+    object[key] = value;
   }
-  if (isFunction(value)) {
-    return reIsNative.test(fnToString.call(value));
-  }
-  return isObjectLike(value) && reIsHostCtor.test(value);
 }
-
-module.exports = getNative;
-
-},{}],156:[function(require,module,exports){
-/**
- * lodash 3.0.9 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/** Used to detect unsigned integer values. */
-var reIsUint = /^\d+$/;
-
-/**
- * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
- * of an array-like value.
- */
-var MAX_SAFE_INTEGER = 9007199254740991;
 
 /**
  * The base implementation of `_.property` without support for deep paths.
@@ -30696,6 +30772,62 @@ function baseProperty(key) {
 }
 
 /**
+ * This function is like `copyObject` except that it accepts a function to
+ * customize copied values.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property names to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @param {Function} [customizer] The function to customize copied values.
+ * @returns {Object} Returns `object`.
+ */
+function copyObjectWith(source, props, object, customizer) {
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index],
+        newValue = customizer ? customizer(object[key], source[key], key, object, source) : source[key];
+
+    assignValue(object, key, newValue);
+  }
+  return object;
+}
+
+/**
+ * Creates a function like `_.assign`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return rest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = typeof customizer == 'function' ? (length--, customizer) : undefined;
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+/**
  * Gets the "length" property value of `object`.
  *
  * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
@@ -30706,31 +30838,6 @@ function baseProperty(key) {
  * @returns {*} Returns the "length" value.
  */
 var getLength = baseProperty('length');
-
-/**
- * Checks if `value` is array-like.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- */
-function isArrayLike(value) {
-  return value != null && isLength(getLength(value));
-}
-
-/**
- * Checks if `value` is a valid array-like index.
- *
- * @private
- * @param {*} value The value to check.
- * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
- * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
- */
-function isIndex(value, length) {
-  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
-  length = length == null ? MAX_SAFE_INTEGER : length;
-  return value > -1 && value % 1 == 0 && value < length;
-}
 
 /**
  * Checks if the provided arguments are from an iteratee call.
@@ -30749,412 +30856,74 @@ function isIterateeCall(value, index, object) {
   if (type == 'number'
       ? (isArrayLike(object) && isIndex(index, object.length))
       : (type == 'string' && index in object)) {
-    var other = object[index];
-    return value === value ? (value === other) : (other !== other);
+    return eq(object[index], value);
   }
   return false;
 }
 
 /**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- */
-function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
- * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
  *
  * @static
  * @memberOf _
  * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
  * @example
  *
- * _.isObject({});
+ * var object = { 'user': 'fred' };
+ * var other = { 'user': 'fred' };
+ *
+ * _.eq(object, object);
  * // => true
  *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(1);
+ * _.eq(object, other);
  * // => false
- */
-function isObject(value) {
-  // Avoid a V8 JIT bug in Chrome 19-20.
-  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-module.exports = isIterateeCall;
-
-},{}],157:[function(require,module,exports){
-/**
- * lodash 3.2.0 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var baseAssign = require('lodash._baseassign'),
-    createAssigner = require('lodash._createassigner'),
-    keys = require('lodash.keys');
-
-/**
- * A specialized version of `_.assign` for customizing assigned values without
- * support for argument juggling, multiple sources, and `this` binding `customizer`
- * functions.
  *
- * @private
- * @param {Object} object The destination object.
- * @param {Object} source The source object.
- * @param {Function} customizer The function to customize assigned values.
- * @returns {Object} Returns `object`.
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
  */
-function assignWith(object, source, customizer) {
-  var index = -1,
-      props = keys(source),
-      length = props.length;
-
-  while (++index < length) {
-    var key = props[index],
-        value = object[key],
-        result = customizer(value, source[key], key, object, source);
-
-    if ((result === result ? (result !== value) : (value === value)) ||
-        (value === undefined && !(key in object))) {
-      object[key] = result;
-    }
-  }
-  return object;
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
 }
 
 /**
- * Assigns own enumerable properties of source object(s) to the destination
- * object. Subsequent sources overwrite property assignments of previous sources.
- * If `customizer` is provided it is invoked to produce the assigned values.
- * The `customizer` is bound to `thisArg` and invoked with five arguments:
- * (objectValue, sourceValue, key, object, source).
- *
- * **Note:** This method mutates `object` and is based on
- * [`Object.assign`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-object.assign).
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
  *
  * @static
  * @memberOf _
- * @alias extend
- * @category Object
- * @param {Object} object The destination object.
- * @param {...Object} [sources] The source objects.
- * @param {Function} [customizer] The function to customize assigned values.
- * @param {*} [thisArg] The `this` binding of `customizer`.
- * @returns {Object} Returns `object`.
- * @example
- *
- * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
- * // => { 'user': 'fred', 'age': 40 }
- *
- * // using a customizer callback
- * var defaults = _.partialRight(_.assign, function(value, other) {
- *   return _.isUndefined(value) ? other : value;
- * });
- *
- * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
- * // => { 'user': 'barney', 'age': 36 }
- */
-var assign = createAssigner(function(object, source, customizer) {
-  return customizer
-    ? assignWith(object, source, customizer)
-    : baseAssign(object, source);
-});
-
-module.exports = assign;
-
-},{"lodash._baseassign":151,"lodash._createassigner":154,"lodash.keys":161}],158:[function(require,module,exports){
-/**
- * lodash 3.1.2 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-var assign = require('lodash.assign'),
-    restParam = require('lodash.restparam');
-
-/**
- * Used by `_.defaults` to customize its `_.assign` use.
- *
- * @private
- * @param {*} objectValue The destination object property value.
- * @param {*} sourceValue The source object property value.
- * @returns {*} Returns the value to assign to the destination object.
- */
-function assignDefaults(objectValue, sourceValue) {
-  return objectValue === undefined ? sourceValue : objectValue;
-}
-
-/**
- * Creates a `_.defaults` or `_.defaultsDeep` function.
- *
- * @private
- * @param {Function} assigner The function to assign values.
- * @param {Function} customizer The function to customize assigned values.
- * @returns {Function} Returns the new defaults function.
- */
-function createDefaults(assigner, customizer) {
-  return restParam(function(args) {
-    var object = args[0];
-    if (object == null) {
-      return object;
-    }
-    args.push(customizer);
-    return assigner.apply(undefined, args);
-  });
-}
-
-/**
- * Assigns own enumerable properties of source object(s) to the destination
- * object for all destination properties that resolve to `undefined`. Once a
- * property is set, additional values of the same property are ignored.
- *
- * **Note:** This method mutates `object`.
- *
- * @static
- * @memberOf _
- * @category Object
- * @param {Object} object The destination object.
- * @param {...Object} [sources] The source objects.
- * @returns {Object} Returns `object`.
- * @example
- *
- * _.defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
- * // => { 'user': 'barney', 'age': 36 }
- */
-var defaults = createDefaults(assign, assignDefaults);
-
-module.exports = defaults;
-
-},{"lodash.assign":157,"lodash.restparam":162}],159:[function(require,module,exports){
-/**
- * lodash 3.0.4 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/**
- * Checks if `value` is object-like.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/** Used for native method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/** Native method references. */
-var propertyIsEnumerable = objectProto.propertyIsEnumerable;
-
-/**
- * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
- * of an array-like value.
- */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/**
- * The base implementation of `_.property` without support for deep paths.
- *
- * @private
- * @param {string} key The key of the property to get.
- * @returns {Function} Returns the new function.
- */
-function baseProperty(key) {
-  return function(object) {
-    return object == null ? undefined : object[key];
-  };
-}
-
-/**
- * Gets the "length" property value of `object`.
- *
- * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
- * that affects Safari on at least iOS 8.1-8.3 ARM64.
- *
- * @private
- * @param {Object} object The object to query.
- * @returns {*} Returns the "length" value.
- */
-var getLength = baseProperty('length');
-
-/**
- * Checks if `value` is array-like.
- *
- * @private
+ * @type Function
+ * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
  */
 function isArrayLike(value) {
-  return value != null && isLength(getLength(value));
+  return value != null &&
+    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
 }
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- */
-function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is classified as an `arguments` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isArguments(function() { return arguments; }());
- * // => true
- *
- * _.isArguments([1, 2, 3]);
- * // => false
- */
-function isArguments(value) {
-  return isObjectLike(value) && isArrayLike(value) &&
-    hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
-}
-
-module.exports = isArguments;
-
-},{}],160:[function(require,module,exports){
-/**
- * lodash 3.0.4 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/** `Object#toString` result references. */
-var arrayTag = '[object Array]',
-    funcTag = '[object Function]';
-
-/** Used to detect host constructors (Safari > 5). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-/**
- * Checks if `value` is object-like.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- */
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-/** Used for native method references. */
-var objectProto = Object.prototype;
-
-/** Used to resolve the decompiled source of functions. */
-var fnToString = Function.prototype.toString;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
- * of values.
- */
-var objToString = objectProto.toString;
-
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
-
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeIsArray = getNative(Array, 'isArray');
-
-/**
- * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
- * of an array-like value.
- */
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative(object, key) {
-  var value = object == null ? undefined : object[key];
-  return isNative(value) ? value : undefined;
-}
-
-/**
- * Checks if `value` is a valid array-like length.
- *
- * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
- */
-function isLength(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * Checks if `value` is classified as an `Array` object.
- *
- * @static
- * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
- * @example
- *
- * _.isArray([1, 2, 3]);
- * // => true
- *
- * _.isArray(function() { return arguments; }());
- * // => false
- */
-var isArray = nativeIsArray || function(value) {
-  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
-};
 
 /**
  * Checks if `value` is classified as a `Function` object.
@@ -31174,9 +30943,38 @@ var isArray = nativeIsArray || function(value) {
  */
 function isFunction(value) {
   // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in older versions of Chrome and Safari which return 'function' for regexes
-  // and Safari 8 equivalents which return 'object' for typed array constructors.
-  return isObject(value) && objToString.call(value) == funcTag;
+  // in Safari 8 which returns 'object' for typed array constructors, and
+  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 }
 
 /**
@@ -31196,7 +30994,10 @@ function isFunction(value) {
  * _.isObject([1, 2, 3]);
  * // => true
  *
- * _.isObject(1);
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
  * // => false
  */
 function isObject(value) {
@@ -31207,63 +31008,153 @@ function isObject(value) {
 }
 
 /**
- * Checks if `value` is a native function.
+ * This method is like `_.assignIn` except that it accepts `customizer` which
+ * is invoked to produce the assigned values. If `customizer` returns `undefined`
+ * assignment is handled by the method instead. The `customizer` is invoked
+ * with five arguments: (objValue, srcValue, key, object, source).
+ *
+ * **Note:** This method mutates `object`.
  *
  * @static
  * @memberOf _
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @alias extendWith
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} sources The source objects.
+ * @param {Function} [customizer] The function to customize assigned values.
+ * @returns {Object} Returns `object`.
  * @example
  *
- * _.isNative(Array.prototype.push);
- * // => true
+ * function customizer(objValue, srcValue) {
+ *   return _.isUndefined(objValue) ? srcValue : objValue;
+ * }
  *
- * _.isNative(_);
- * // => false
+ * var defaults = _.partialRight(_.assignInWith, customizer);
+ *
+ * defaults({ 'a': 1 }, { 'b': 2 }, { 'a': 3 });
+ * // => { 'a': 1, 'b': 2 }
  */
-function isNative(value) {
-  if (value == null) {
-    return false;
-  }
-  if (isFunction(value)) {
-    return reIsNative.test(fnToString.call(value));
-  }
-  return isObjectLike(value) && reIsHostCtor.test(value);
-}
+var assignInWith = createAssigner(function(object, source, customizer) {
+  copyObjectWith(source, keysIn(source), object, customizer);
+});
 
-module.exports = isArray;
+module.exports = assignInWith;
 
-},{}],161:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"lodash.keysin":159,"lodash.rest":161}],159:[function(require,module,exports){
+(function (global){
 /**
- * lodash 3.1.2 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
-var getNative = require('lodash._getnative'),
-    isArguments = require('lodash.isarguments'),
-    isArray = require('lodash.isarray');
+
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/** `Object#toString` result references. */
+var argsTag = '[object Arguments]',
+    funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    stringTag = '[object String]';
 
 /** Used to detect unsigned integer values. */
-var reIsUint = /^\d+$/;
+var reIsUint = /^(?:0|[1-9]\d*)$/;
 
-/** Used for native method references. */
-var objectProto = Object.prototype;
+/**
+ * The base implementation of `_.times` without support for iteratee shorthands
+ * or max array length checks.
+ *
+ * @private
+ * @param {number} n The number of times to invoke `iteratee`.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the array of results.
+ */
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return value > -1 && value % 1 == 0 && value < length;
+}
+
+/**
+ * Converts `iterator` to an array.
+ *
+ * @private
+ * @param {Object} iterator The iterator to convert.
+ * @returns {Array} Returns the converted array.
+ */
+function iteratorToArray(iterator) {
+  var data,
+      result = [];
+
+  while (!(data = iterator.next()).done) {
+    result.push(data.value);
+  }
+  return result;
+}
+
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
 
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeKeys = getNative(Object, 'keys');
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var Reflect = global.Reflect,
+    enumerate = Reflect ? Reflect.enumerate : undefined,
+    propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
 /**
- * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
- * of an array-like value.
+ * The base implementation of `_.keysIn` which doesn't skip the constructor
+ * property of prototypes or treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
  */
-var MAX_SAFE_INTEGER = 9007199254740991;
+function baseKeysIn(object) {
+  object = object == null ? object : Object(object);
+
+  var result = [];
+  for (var key in object) {
+    result.push(key);
+  }
+  return result;
+}
+
+// Fallback for IE < 9 with es6-shim.
+if (enumerate && !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf')) {
+  baseKeysIn = function(object) {
+    return iteratorToArray(enumerate(object));
+  };
+}
 
 /**
  * The base implementation of `_.property` without support for deep paths.
@@ -31291,69 +31182,189 @@ function baseProperty(key) {
 var getLength = baseProperty('length');
 
 /**
- * Checks if `value` is array-like.
+ * Creates an array of index keys for `object` values of arrays,
+ * `arguments` objects, and strings, otherwise `null` is returned.
  *
  * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @param {Object} object The object to query.
+ * @returns {Array|null} Returns index keys, else `null`.
  */
-function isArrayLike(value) {
-  return value != null && isLength(getLength(value));
+function indexKeys(object) {
+  var length = object ? object.length : undefined;
+  return (isLength(length) && (isArray(object) || isString(object) || isArguments(object)))
+    ? baseTimes(length, String)
+    : null;
 }
 
 /**
- * Checks if `value` is a valid array-like index.
+ * Checks if `value` is likely a prototype object.
  *
  * @private
  * @param {*} value The value to check.
- * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
- * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
  */
-function isIndex(value, length) {
-  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
-  length = length == null ? MAX_SAFE_INTEGER : length;
-  return value > -1 && value % 1 == 0 && value < length;
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+
+  return value === proto;
+}
+
+/**
+ * Checks if `value` is likely an `arguments` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isArguments(function() { return arguments; }());
+ * // => true
+ *
+ * _.isArguments([1, 2, 3]);
+ * // => false
+ */
+function isArguments(value) {
+  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+}
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @type Function
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @type Function
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null &&
+    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+}
+
+/**
+ * This method is like `_.isArrayLike` except that it also checks if `value`
+ * is an object.
+ *
+ * @static
+ * @memberOf _
+ * @type Function
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+ * @example
+ *
+ * _.isArrayLikeObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLikeObject(document.body.children);
+ * // => true
+ *
+ * _.isArrayLikeObject('abc');
+ * // => false
+ *
+ * _.isArrayLikeObject(_.noop);
+ * // => false
+ */
+function isArrayLikeObject(value) {
+  return isObjectLike(value) && isArrayLike(value);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8 which returns 'object' for typed array constructors, and
+  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
 }
 
 /**
  * Checks if `value` is a valid array-like length.
  *
- * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+ * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
  *
- * @private
+ * @static
+ * @memberOf _
+ * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
  */
 function isLength(value) {
   return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-/**
- * A fallback implementation of `Object.keys` which creates an array of the
- * own enumerable property names of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property names.
- */
-function shimKeys(object) {
-  var props = keysIn(object),
-      propsLength = props.length,
-      length = propsLength && object.length;
-
-  var allowIndexes = !!length && isLength(length) &&
-    (isArray(object) || isArguments(object));
-
-  var index = -1,
-      result = [];
-
-  while (++index < propsLength) {
-    var key = props[index];
-    if ((allowIndexes && isIndex(key, length)) || hasOwnProperty.call(object, key)) {
-      result.push(key);
-    }
-  }
-  return result;
 }
 
 /**
@@ -31373,7 +31384,10 @@ function shimKeys(object) {
  * _.isObject([1, 2, 3]);
  * // => true
  *
- * _.isObject(1);
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
  * // => false
  */
 function isObject(value) {
@@ -31384,40 +31398,52 @@ function isObject(value) {
 }
 
 /**
- * Creates an array of the own enumerable property names of `object`.
- *
- * **Note:** Non-object values are coerced to objects. See the
- * [ES spec](http://ecma-international.org/ecma-262/6.0/#sec-object.keys)
- * for more details.
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
  *
  * @static
  * @memberOf _
- * @category Object
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property names.
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
  * @example
  *
- * function Foo() {
- *   this.a = 1;
- *   this.b = 2;
- * }
+ * _.isObjectLike({});
+ * // => true
  *
- * Foo.prototype.c = 3;
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
  *
- * _.keys(new Foo);
- * // => ['a', 'b'] (iteration order is not guaranteed)
+ * _.isObjectLike(_.noop);
+ * // => false
  *
- * _.keys('hi');
- * // => ['0', '1']
+ * _.isObjectLike(null);
+ * // => false
  */
-var keys = !nativeKeys ? shimKeys : function(object) {
-  var Ctor = object == null ? undefined : object.constructor;
-  if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
-      (typeof object != 'function' && isArrayLike(object))) {
-    return shimKeys(object);
-  }
-  return isObject(object) ? nativeKeys(object) : [];
-};
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `String` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isString('abc');
+ * // => true
+ *
+ * _.isString(1);
+ * // => false
+ */
+function isString(value) {
+  return typeof value == 'string' ||
+    (!isArray(value) && isObjectLike(value) && objectToString.call(value) == stringTag);
+}
 
 /**
  * Creates an array of the own and inherited enumerable property names of `object`.
@@ -31442,27 +31468,18 @@ var keys = !nativeKeys ? shimKeys : function(object) {
  * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
  */
 function keysIn(object) {
-  if (object == null) {
-    return [];
-  }
-  if (!isObject(object)) {
-    object = Object(object);
-  }
-  var length = object.length;
-  length = (length && isLength(length) &&
-    (isArray(object) || isArguments(object)) && length) || 0;
+  var index = -1,
+      isProto = isPrototype(object),
+      props = baseKeysIn(object),
+      propsLength = props.length,
+      indexes = indexKeys(object),
+      skipIndexes = !!indexes,
+      result = indexes || [],
+      length = result.length;
 
-  var Ctor = object.constructor,
-      index = -1,
-      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
-      result = Array(length),
-      skipIndexes = length > 0;
-
-  while (++index < length) {
-    result[index] = (index + '');
-  }
-  for (var key in object) {
-    if (!(skipIndexes && isIndex(key, length)) &&
+  while (++index < propsLength) {
+    var key = props[index];
+    if (!(skipIndexes && (key == 'length' || isIndex(key, length))) &&
         !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
       result.push(key);
     }
@@ -31470,29 +31487,204 @@ function keysIn(object) {
   return result;
 }
 
-module.exports = keys;
+module.exports = keysIn;
 
-},{"lodash._getnative":155,"lodash.isarguments":159,"lodash.isarray":160}],162:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],160:[function(require,module,exports){
+(function (global){
 /**
- * lodash 3.6.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modern modularize exports="npm" -o ./`
- * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var assignInWith = require('lodash.assigninwith'),
+    rest = require('lodash.rest');
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {...*} [args] The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  var length = args ? args.length : 0;
+  switch (length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used by `_.defaults` to customize its `_.assignIn` use.
+ *
+ * @private
+ * @param {*} objValue The destination value.
+ * @param {*} srcValue The source value.
+ * @param {string} key The key of the property to assign.
+ * @param {Object} object The parent object of `objValue`.
+ * @returns {*} Returns the value to assign.
+ */
+function assignInDefaults(objValue, srcValue, key, object) {
+  if (objValue === undefined ||
+      (eq(objValue, objectProto[key]) && !hasOwnProperty.call(object, key))) {
+    return srcValue;
+  }
+  return objValue;
+}
+
+/**
+ * Performs a [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'user': 'fred' };
+ * var other = { 'user': 'fred' };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+/**
+ * Assigns own and inherited enumerable properties of source objects to the
+ * destination object for all destination properties that resolve to `undefined`.
+ * Source objects are applied from left to right. Once a property is set,
+ * additional values of the same property are ignored.
+ *
+ * **Note:** This method mutates `object`.
+ *
+ * @static
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @returns {Object} Returns `object`.
+ * @example
+ *
+ * _.defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
+ * // => { 'user': 'barney', 'age': 36 }
+ */
+var defaults = rest(function(args) {
+  args.push(undefined, assignInDefaults);
+  return apply(assignInWith, undefined, args);
+});
+
+module.exports = defaults;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"lodash.assigninwith":158,"lodash.rest":161}],161:[function(require,module,exports){
+(function (global){
+/**
+ * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  * Available under MIT license <https://lodash.com/license>
  */
 
 /** Used as the `TypeError` message for "Functions" methods. */
 var FUNC_ERROR_TEXT = 'Expected a function';
 
-/* Native method references for those with the same name as other `lodash` methods. */
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0,
+    MAX_INTEGER = 1.7976931348623157e+308,
+    NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `global`. */
+var freeParseInt = parseInt;
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {...*} [args] The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  var length = args ? args.length : 0;
+  switch (length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
 
 /**
  * Creates a function that invokes `func` with the `this` binding of the
  * created function and arguments from `start` and beyond provided as an array.
  *
- * **Note:** This method is based on the [rest parameter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters).
+ * **Note:** This method is based on the [rest parameter](https://mdn.io/rest_parameters).
  *
  * @static
  * @memberOf _
@@ -31502,7 +31694,7 @@ var nativeMax = Math.max;
  * @returns {Function} Returns the new function.
  * @example
  *
- * var say = _.restParam(function(what, names) {
+ * var say = _.rest(function(what, names) {
  *   return what + ' ' + _.initial(names).join(', ') +
  *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
  * });
@@ -31510,40 +31702,169 @@ var nativeMax = Math.max;
  * say('hello', 'fred', 'barney', 'pebbles');
  * // => 'hello fred, barney, & pebbles'
  */
-function restParam(func, start) {
+function rest(func, start) {
   if (typeof func != 'function') {
     throw new TypeError(FUNC_ERROR_TEXT);
   }
-  start = nativeMax(start === undefined ? (func.length - 1) : (+start || 0), 0);
+  start = nativeMax(start === undefined ? (func.length - 1) : toInteger(start), 0);
   return function() {
     var args = arguments,
         index = -1,
         length = nativeMax(args.length - start, 0),
-        rest = Array(length);
+        array = Array(length);
 
     while (++index < length) {
-      rest[index] = args[start + index];
+      array[index] = args[start + index];
     }
     switch (start) {
-      case 0: return func.call(this, rest);
-      case 1: return func.call(this, args[0], rest);
-      case 2: return func.call(this, args[0], args[1], rest);
+      case 0: return func.call(this, array);
+      case 1: return func.call(this, args[0], array);
+      case 2: return func.call(this, args[0], args[1], array);
     }
     var otherArgs = Array(start + 1);
     index = -1;
     while (++index < start) {
       otherArgs[index] = args[index];
     }
-    otherArgs[start] = rest;
-    return func.apply(this, otherArgs);
+    otherArgs[start] = array;
+    return apply(func, this, otherArgs);
   };
 }
 
-module.exports = restParam;
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8 which returns 'object' for typed array constructors, and
+  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
 
-},{}],163:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],164:[function(require,module,exports){
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This function is loosely based on [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3');
+ * // => 3
+ */
+function toInteger(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  var remainder = value % 1;
+  return value === value ? (remainder ? value - remainder : value) : 0;
+}
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3);
+ * // => 3
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3');
+ * // => 3
+ */
+function toNumber(value) {
+  if (isObject(value)) {
+    var other = isFunction(value.valueOf) ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+module.exports = rest;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],162:[function(require,module,exports){
+arguments[4][17][0].apply(exports,arguments)
+},{"dup":17}],163:[function(require,module,exports){
 var lookAt = require('gl-mat4/lookAt')
 
 module.exports = Camera
@@ -31567,7 +31888,7 @@ Camera.prototype.view = function(view) {
   return view
 }
 
-},{"gl-mat4/lookAt":104}],165:[function(require,module,exports){
+},{"gl-mat4/lookAt":111}],164:[function(require,module,exports){
 module.exports = reindex
 
 function reindex(array) {
@@ -31599,7 +31920,7 @@ function reindex(array) {
   }
 }
 
-},{}],166:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 
 module.exports = function offset(ev, options) {
     ev = ev || window.event;
@@ -31630,7 +31951,7 @@ function getOffset(element) {
     }
     return tmpRect
 }
-},{}],167:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 "use strict"
 
 var compile = require("cwise-compiler")
@@ -32093,7 +32414,7 @@ exports.equals = compile({
 
 
 
-},{"cwise-compiler":62}],168:[function(require,module,exports){
+},{"cwise-compiler":68}],167:[function(require,module,exports){
 var iota = require("iota-array")
 var isBuffer = require("is-buffer")
 
@@ -32438,7 +32759,7 @@ function wrappedNDArrayCtor(data, shape, stride, offset) {
 
 module.exports = wrappedNDArrayCtor
 
-},{"iota-array":147,"is-buffer":148}],169:[function(require,module,exports){
+},{"iota-array":154,"is-buffer":155}],168:[function(require,module,exports){
 var EPSILON = 1e-6;
 
 //Estimate the vertex normals of a mesh
@@ -32559,7 +32880,7 @@ exports.faceNormals = function(faces, positions) {
 
 
 
-},{}],170:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 /*!
  * pad-left <https://github.com/jonschlinkert/pad-left>
  *
@@ -32575,7 +32896,7 @@ module.exports = function padLeft(str, num, ch) {
   ch = typeof ch !== 'undefined' ? (ch + '') : ' ';
   return repeat(ch, num) + str;
 };
-},{"repeat-string":175}],171:[function(require,module,exports){
+},{"repeat-string":176}],170:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.7.1
 (function() {
@@ -32611,7 +32932,2122 @@ module.exports = function padLeft(str, num, ch) {
 }).call(this);
 
 }).call(this,require('_process'))
-},{"_process":9}],172:[function(require,module,exports){
+},{"_process":9}],171:[function(require,module,exports){
+// pnltri.js / raw.github.com/jahting/pnltri.js/master/LICENSE
+
+var self = self || {};
+
+/**
+ * @author jahting / http://www.ameco.tv/
+ *
+ *	(Simple) Polygon Near-Linear Triangulation
+ *	  with fast ear-clipping for polygons without holes
+ *
+ */
+ 
+var PNLTRI = { REVISION: '2.1.1' };
+
+//	#####  Global Constants  #####
+
+
+//	#####  Global Variables  #####
+
+
+/**
+ * @author jahting / http://www.ameco.tv/
+ */
+
+PNLTRI.Math = {
+
+	random: Math.random,		// function to use for random number generation
+
+	// generate random ordering in place:
+	//	Fisher-Yates shuffle
+	array_shuffle: function( inoutArray ) {
+		for (var i = inoutArray.length - 1; i > 0; i-- ) {
+			var j = Math.floor( PNLTRI.Math.random() * (i+1) );
+			var tmp = inoutArray[i];
+			inoutArray[i] = inoutArray[j];
+			inoutArray[j] = tmp;
+		}
+		return	inoutArray;
+	},
+
+
+	//	like compare (<=>)
+	//		yA > yB resp. xA > xB: 1, equal: 0, otherwise: -1
+	compare_pts_yx: function ( inPtA, inPtB ) {
+		var deltaY = inPtA.y - inPtB.y;
+		if ( deltaY < PNLTRI.Math.EPSILON_N ) {
+			return -1;
+		} else if ( deltaY > PNLTRI.Math.EPSILON_P ) {
+			return 1;
+		} else {
+			var deltaX = inPtA.x - inPtB.x;
+			if ( deltaX < PNLTRI.Math.EPSILON_N ) {
+				return -1;
+			} else if ( deltaX > PNLTRI.Math.EPSILON_P ) {
+				return  1;
+			} else {
+				return  0;
+			}
+		}
+	},
+
+
+	ptsCrossProd: function ( inPtVertex, inPtFrom, inPtTo ) {
+		// two vectors: ( v0: inPtVertex -> inPtFrom ), ( v1: inPtVertex -> inPtTo )
+		// CROSS_SINE: sin(theta) * len(v0) * len(v1)
+		return	( inPtFrom.x - inPtVertex.x ) * ( inPtTo.y - inPtVertex.y ) -
+				( inPtFrom.y - inPtVertex.y ) * ( inPtTo.x - inPtVertex.x );
+		// <=> crossProd( inPtFrom-inPtVertex, inPtTo-inPtVertex )
+		// == 0: colinear (angle == 0 or 180 deg == PI rad)
+		// > 0:  v1 lies left of v0, CCW angle from v0 to v1 is convex ( < 180 deg )
+		// < 0:  v1 lies right of v0, CW angle from v0 to v1 is convex ( < 180 deg )
+	},
+
+};
+
+// precision of floating point arithmetic
+//	PNLTRI.Math.EPSILON_P = Math.pow(2,-32);	// ~ 0.0000000001
+	PNLTRI.Math.EPSILON_P = Math.pow(2,-43);	// ~ 0.0000000000001
+	PNLTRI.Math.EPSILON_N = -PNLTRI.Math.EPSILON_P;
+
+//	Problem with EPSILON-compares:
+//	- especially when there is a x-coordinate ordering on equal y-coordinates
+//		=> either NO EPSILON-compares on y-coordinates, since almost equal y
+//			can have very different x - so they are not nearly close
+//		or EPSILON must be bigger: Solution so far.
+/**
+ * @author jahting / http://www.ameco.tv/
+ */
+
+/** @constructor */
+PNLTRI.PolygonData = function ( inPolygonChainList ) {
+
+	// list of polygon vertices
+	//	.x, .y: coordinates
+	this.vertices = [];
+
+	// list of polygon segments, original polygons ane holes
+	//	and additional ones added during the subdivision into
+	//	uni-y-monotone polygons (s. this.monoSubPolyChains)
+	//	doubly linked by: snext, sprev
+	this.segments = [];
+	this.diagonals = [];
+
+	// for the ORIGINAL polygon chains
+	this.idNextPolyChain = 0;
+	//	for each original chain: lies the polygon inside to the left?
+	//	"true": winding order is CCW for a contour or CW for a hole
+	//	"false": winding order is CW for a contour or CCW for a hole
+	this.PolyLeftArr = [];
+
+	// indices into this.segments: at least one for each monoton chain for the polygon
+	//  these subdivide the polygon into uni-y-monotone polygons, that is
+	//  polygons that have only one segment between ymax and ymin on one side
+	//  and the other side has monotone increasing y from ymin to ymax
+	// the monoSubPolyChains are doubly linked by: mnext, mprev
+	this.monoSubPolyChains = [];
+
+	// list of triangles: each 3 indices into this.vertices
+	this.triangles = [];
+
+	// initialize optional polygon chains
+	if ( inPolygonChainList ) {
+		for (var i=0, j=inPolygonChainList.length; i<j; i++) {
+			this.addPolygonChain( inPolygonChainList[i] );
+		}
+	}
+
+};
+
+
+PNLTRI.PolygonData.prototype = {
+
+	constructor: PNLTRI.PolygonData,
+
+
+	/*	Accessors  */
+
+	nbVertices: function () {
+		return	this.vertices.length;
+	},
+	getSegments: function () {
+		return	this.segments;
+	},
+	getFirstSegment: function () {
+		return	this.segments[0];
+	},
+	getMonoSubPolys: function () {
+		return	this.monoSubPolyChains;
+	},
+	getTriangles: function () {
+		return	this.triangles.concat();
+	},
+
+	nbPolyChains: function () {
+		return	this.idNextPolyChain;
+	},
+
+	// for the polygon data AFTER triangulation
+	//	returns an Array of flags, one flag for each polygon chain:
+	//		lies the inside of the polygon to the left?
+	//		"true" implies CCW for contours and CW for holes
+	get_PolyLeftArr: function () {
+		return	this.PolyLeftArr.concat();
+	},
+	set_PolyLeft_wrong: function ( inChainId ) {
+		this.PolyLeftArr[inChainId] = false;
+	},
+
+
+	/*	Helper  */
+
+	// checks winding order by calculating the area of the polygon
+	isClockWise: function ( inStartSeg ) {
+		var cursor = inStartSeg, doubleArea = 0;
+		do {
+			doubleArea += ( cursor.vFrom.x - cursor.vTo.x ) * ( cursor.vFrom.y + cursor.vTo.y );
+			cursor = cursor.snext;
+		} while ( cursor != inStartSeg );
+		return	( doubleArea < 0 );
+	},
+
+
+	/*	Operations  */
+
+	appendVertexEntry: function ( inVertexX, inVertexY ) {			// private
+		var vertex = {
+				id: this.vertices.length,	// vertex id, representing input sequence
+				x: inVertexX,				// coordinates
+				y: inVertexY,
+			};
+		this.vertices.push( vertex );
+		return	vertex;
+	},
+
+
+	createSegmentEntry: function ( inVertexFrom, inVertexTo ) {			// private
+		return	{
+			chainId: this.idNextPolyChain,
+			// end points of segment
+			vFrom: inVertexFrom,	// -> start point entry in vertices
+			vTo: inVertexTo,		// -> end point entry in vertices
+			// upward segment? (i.e. vTo > vFrom) !!! only valid for sprev,snext NOT for mprev,mnext !!!
+			upward: ( PNLTRI.Math.compare_pts_yx(inVertexTo, inVertexFrom) == 1 ),
+			// doubly linked list of original polygon chains (not the monoChains !)
+			sprev: null,			// previous segment
+			snext: null,			// next segment
+			//
+			//	for performance reasons:
+			//	 initialization of all fields added later
+			//
+			// for trapezoids
+			rootFrom: null,			// root of partial tree where vFrom is located
+			rootTo: null,			// root of partial tree where vTo is located
+			is_inserted: false,		// already inserted into QueryStructure ?
+			// for assigning depth: trapezoids
+			trLeft: null,			// one trapezoid bordering on the left of this segment
+			trRight: null,			// one trapezoid bordering on the right of this segment
+			// for monochains
+			mprev: null,			// doubly linked list for monotone chains (sub-polygons)
+			mnext: null,
+			marked: false,			// already visited during unique monoChain identification ?
+		};
+	},
+
+	appendSegmentEntry: function ( inSegment ) {				// private
+		this.segments.push( inSegment );
+		return	inSegment;
+	},
+
+
+	appendDiagonalsEntry: function ( inDiagonal ) {				// <<<<<	public
+		this.diagonals.push( inDiagonal );
+		return	inDiagonal;
+	},
+
+
+	addVertexChain: function ( inRawPointList ) {			// private
+
+		function verts_equal( inVert1, inVert2 ) {
+			return ( ( Math.abs(inVert1.x - inVert2.x) < PNLTRI.Math.EPSILON_P ) &&
+					 ( Math.abs(inVert1.y - inVert2.y) < PNLTRI.Math.EPSILON_P ) );
+		}
+
+		function verts_colinear_chain( inVert1, inVert2, inVert3 ) {
+			if ( Math.abs( PNLTRI.Math.ptsCrossProd( inVert2, inVert1, inVert3 ) ) > PNLTRI.Math.EPSILON_P )	return false;
+			// only real sequences, not direction reversals
+			var low, middle, high;
+			if ( Math.abs( inVert1.y - inVert2.y ) < PNLTRI.Math.EPSILON_P ) {
+				// horizontal line
+				middle = inVert2.x;
+				if ( inVert1.x < inVert3.x ) {
+					low = inVert1.x;
+					high = inVert3.x;
+				} else {
+					low = inVert3.x;
+					high = inVert1.x;
+				}
+			} else {
+				middle = inVert2.y;
+				if ( inVert1.y < inVert3.y ) {
+					low = inVert1.y;
+					high = inVert3.y;
+				} else {
+					low = inVert3.y;
+					high = inVert1.y;
+				}
+			}
+			return	( ( ( low - middle ) < PNLTRI.Math.EPSILON_P ) && ( ( middle - high ) < PNLTRI.Math.EPSILON_P ) );
+		}
+
+		var newVertices = [];
+		var newVertex, acceptVertex, lastIdx;
+		for ( var i=0; i < inRawPointList.length; i++ ) {
+			newVertex = this.appendVertexEntry( inRawPointList[i].x, inRawPointList[i].y );
+			// suppresses zero-length segments
+			acceptVertex = true;
+			lastIdx = newVertices.length-1;
+			if ( lastIdx >= 0 ) {
+				if ( verts_equal( newVertex, newVertices[lastIdx] ) ) {
+					acceptVertex = false;
+				} else if ( lastIdx > 0 ) {
+					if ( verts_colinear_chain( newVertices[lastIdx-1], newVertices[lastIdx], newVertex ) ) {
+						newVertices.pop();
+					}
+				}
+			}
+			if ( acceptVertex )	newVertices.push( newVertex );
+		}
+		// compare last vertices to first: suppresses zero-length and co-linear segments
+		lastIdx = newVertices.length - 1;
+		if ( ( lastIdx > 0 ) &&
+			 verts_equal( newVertices[lastIdx], newVertices[0] ) ) {
+			newVertices.pop();
+			lastIdx--;
+		}
+		if ( lastIdx > 1 ) {
+			if ( verts_colinear_chain( newVertices[lastIdx-1], newVertices[lastIdx], newVertices[0] ) ) {
+				newVertices.pop();
+				lastIdx--;
+			}
+			if ( ( lastIdx > 1 ) &&
+				 verts_colinear_chain( newVertices[lastIdx], newVertices[0], newVertices[1] ) ) {
+				newVertices.shift();
+			}
+		}
+
+		return	newVertices;
+	},
+
+
+	addPolygonChain: function ( inRawPointList ) {			// <<<<<< public
+
+		// vertices
+		var newVertices = this.addVertexChain( inRawPointList );
+		if ( newVertices.length < 3 ) {
+			console.log( "Polygon has < 3 vertices!", newVertices );
+			return	0;
+		}
+
+		// segments
+		var	saveSegListLength = this.segments.length;
+		//
+		var	segment, firstSeg, prevSeg;
+		for ( var i=0; i < newVertices.length-1; i++ ) {
+			segment = this.createSegmentEntry( newVertices[i], newVertices[i+1] );
+			if (prevSeg) {
+				segment.sprev = prevSeg;
+				prevSeg.snext = segment;
+			} else {
+				firstSeg = segment;
+			}
+			prevSeg = segment;
+			this.appendSegmentEntry( segment );
+		}
+		// close polygon
+		segment = this.createSegmentEntry( newVertices[newVertices.length-1], newVertices[0] );
+		segment.sprev = prevSeg;
+		prevSeg.snext = segment;
+		this.appendSegmentEntry( segment );
+		firstSeg.sprev = segment;
+		segment.snext = firstSeg;
+
+		this.PolyLeftArr[this.idNextPolyChain++] = true;
+		return	this.segments.length - saveSegListLength;
+	},
+
+
+	/* Monotone Polygon Chains */
+
+	// Generate the uni-y-monotone sub-polygons from
+	//	the trapezoidation of the polygon.
+
+	create_mono_chains: function () {						// <<<<<< public
+		var newMono, newMonoTo, toFirstOutSeg, fromRevSeg;
+		for ( var i = 0, j = this.segments.length; i < j; i++) {
+			newMono = this.segments[i];
+			if ( this.PolyLeftArr[newMono.chainId] ) {
+				// preserve winding order
+				newMonoTo = newMono.vTo;			// target of segment
+				newMono.mprev = newMono.sprev;		// doubly linked list for monotone chains (sub-polygons)
+				newMono.mnext = newMono.snext;
+			} else {
+				// reverse winding order
+				newMonoTo = newMono.vFrom;
+				newMono = newMono.snext;
+				newMono.mprev = newMono.snext;
+				newMono.mnext = newMono.sprev;
+			}
+			if ( fromRevSeg = newMono.vFrom.lastInDiag ) {		// assignment !
+				fromRevSeg.mnext = newMono;
+				newMono.mprev = fromRevSeg;
+				newMono.vFrom.lastInDiag = null;		// cleanup
+			}
+			if ( toFirstOutSeg = newMonoTo.firstOutDiag ) {		// assignment !
+				toFirstOutSeg.mprev = newMono;
+				newMono.mnext = toFirstOutSeg;
+				newMonoTo.firstOutDiag = null;			// cleanup
+			}
+		}
+	},
+
+	// For each monotone polygon, find the ymax (to determine the two
+	// y-monotone chains) and skip duplicate monotone polygons
+
+	unique_monotone_chains_max: function () {			// <<<<<< public
+
+		function find_monotone_chain_max( frontMono ) {
+			var frontPt, firstPt, ymaxPt;
+
+			var monoPosmax = frontMono;
+			firstPt = ymaxPt = frontMono.vFrom;
+
+			frontMono.marked = true;
+			frontMono = frontMono.mnext;
+			while ( frontPt = frontMono.vFrom ) {				// assignment !
+				if (frontMono.marked) {
+					if ( frontPt == firstPt )	break;	// mono chain completed
+					console.log("ERR unique_monotone: segment in two chains", firstPt, frontMono );
+					return	null;
+				} else {
+/*					if ( frontPt == firstPt ) {			// check for robustness
+						console.log("ERR unique_monotone: point double", firstPt, frontMono );
+					}		*/
+					frontMono.marked = true;
+				}
+				if ( PNLTRI.Math.compare_pts_yx( frontPt, ymaxPt ) == 1 ) {
+					ymaxPt = frontPt;
+					monoPosmax = frontMono;
+				}
+				frontMono = frontMono.mnext;
+			}
+			return	monoPosmax;
+		}
+
+		var frontMono, monoPosmax;
+
+		// assumes attribute "marked" is NOT yet "true" for any mono chain segment
+		this.monoSubPolyChains = [];
+		// loop through all original segments
+		for ( var i = 0, j = this.segments.length; i < j; i++ ) {
+			frontMono = this.segments[i];
+			if ( frontMono.marked )		continue;		// already in a processed mono chain
+			monoPosmax = find_monotone_chain_max( frontMono );
+			if ( monoPosmax )	this.monoSubPolyChains.push( monoPosmax );
+		}
+		// loop through all additional segments (diagonals)			// TODO: Testcase for mono chain without original segments !!!
+/*		for ( var i = 0, j = this.diagonals.length; i < j; i++ ) {
+			frontMono = this.diagonals[i];
+			if ( frontMono.marked )		continue;		// already in a processed mono chain
+			monoPosmax = find_monotone_chain_max( frontMono );
+			if ( monoPosmax )	this.monoSubPolyChains.push( monoPosmax );
+		}	*/
+		return	this.monoSubPolyChains;
+	},
+
+
+	/* Triangles */
+
+	clearTriangles: function () {
+		this.triangles = [];
+	},
+
+	addTriangle: function ( inVert1, inVert2, inVert3 ) {
+		this.triangles.push( [ inVert1.id, inVert2.id, inVert3.id ] );
+	},
+
+};
+
+/**
+ * Simple Polygon Triangulation by Ear Clipping
+ *
+ * description of technique employed:
+ *	http://www.siggraph.org/education/materials/HyperGraph/scanline/outprims/polygon1.htm
+ *
+ * This code is a quick port of code written in C++ which was submitted to
+ *	flipcode.com by John W. Ratcliff  // July 22, 2000
+ * See original code and more information here:
+ *	http://www.flipcode.com/archives/Efficient_Polygon_Triangulation.shtml
+ *
+ * ported to actionscript by Zevan Rosser
+ *	http://actionsnippet.com/?p=1462
+ *
+ * ported to javascript by Joshua Koo
+ *	http://www.lab4games.net/zz85/blog
+ *
+ * adapted to doubly linked list by Juergen Ahting
+ *	http://www.ameco.tv
+ *
+ */
+
+/** @constructor */
+PNLTRI.EarClipTriangulator = function ( inPolygonData ) {
+
+	this.polyData	= inPolygonData;
+
+};
+
+
+PNLTRI.EarClipTriangulator.prototype = {
+
+	constructor: PNLTRI.EarClipTriangulator,
+
+
+	// triangulates first doubly linked segment list in this.polyData
+	//	algorithm uses ear-clipping and runs in O(n^2) time
+
+	triangulate_polygon_no_holes: function () {
+
+		function isEarAt( vertex ) {
+
+			var prevX = vertex.mprev.vFrom.x;
+			var prevY = vertex.mprev.vFrom.y;
+
+			var vertX = vertex.vFrom.x;
+			var vertY = vertex.vFrom.y;
+
+			var nextX = vertex.mnext.vFrom.x;
+			var nextY = vertex.mnext.vFrom.y;
+
+			var vnX = nextX - vertX,  vnY = nextY - vertY;
+			var npX = prevX - nextX,  npY = prevY - nextY;
+			var pvX = vertX - prevX,  pvY = vertY - prevY;
+
+			// concave angle at vertex -> not an ear to cut off
+			if ( PNLTRI.Math.EPSILON_P > ( ( pvX * vnY ) - ( vnX * pvY ) ) ) return false;
+
+			// check whether any other point lieas within the triangle abc
+			var vStop	= vertex.mprev.mprev;
+			var vOther	= vertex.mnext;
+			while ( vOther != vStop ) {
+				vOther = vOther.mnext;
+				var otherX = vOther.vFrom.x;
+				var otherY = vOther.vFrom.y;
+
+				var poX = otherX - prevX,  poY = otherY - prevY;
+					// just in case there are several vertices with the same coordinate
+					if ( ( poX === 0 ) && ( poY === 0 ) )		continue;	// vOther == vertex.mprev
+				var voX = otherX - vertX,  voY = otherY - vertY;
+					if ( ( voX === 0 ) && ( voY === 0 ) )		continue;	// vOther == vertex
+				var noX = otherX - nextX,  noY = otherY - nextY;
+					if ( ( noX === 0 ) && ( noY === 0 ) )		continue;	// vOther == vertex.mnext
+
+				// if vOther is inside triangle abc -> not an ear to cut off
+				if ( ( ( vnX * voY - vnY * voX ) >= PNLTRI.Math.EPSILON_N ) &&
+					 ( ( pvX * poY - pvY * poX ) >= PNLTRI.Math.EPSILON_N ) &&
+					 ( ( npX * noY - npY * noX ) >= PNLTRI.Math.EPSILON_N ) ) return false;
+			}
+			return true;
+
+		}
+
+		var myPolyData = this.polyData;
+		var startSeg = myPolyData.getFirstSegment();
+
+		// create a counter-clockwise ordered doubly linked list (monoChain links)
+
+		var cursor = startSeg;
+		if ( myPolyData.isClockWise( startSeg ) ) {
+			do {	// reverses chain order
+				cursor.mprev = cursor.snext;
+				cursor.mnext = cursor.sprev;
+				cursor = cursor.sprev;
+			} while ( cursor != startSeg );
+			myPolyData.set_PolyLeft_wrong(0);
+		} else {
+			do {
+				cursor.mprev = cursor.sprev;
+				cursor.mnext = cursor.snext;
+				cursor = cursor.snext;
+			} while ( cursor != startSeg );
+		}
+
+		//  remove all vertices except 2, creating 1 triangle every time
+
+		var vertex = startSeg;
+		var fullLoop = vertex;   // prevent infinite loop on "defective" polygons
+
+		while ( vertex.mnext != vertex.mprev ) {
+			if ( isEarAt( vertex ) ) {
+				// found a triangle ear to cut off
+				this.polyData.addTriangle( vertex.mprev.vFrom, vertex.vFrom, vertex.mnext.vFrom );
+				// remove vertex from the remaining chain
+				vertex.mprev.mnext = vertex.mnext;
+				vertex.mnext.mprev = vertex.mprev;
+				vertex = vertex.mnext;
+				fullLoop = vertex;			// reset error detection
+			} else {
+				vertex = vertex.mnext;
+				// loop?: probably non-simple polygon -> stop with error
+				if ( vertex == fullLoop )	return false;
+			}
+		}
+
+		return true;
+
+	},
+
+/*	// takes one element of a double linked segment list
+	//	works on array of vertices
+
+	triangulate_polygon_no_holes: function () {
+		var startSeg = this.polyData.getFirstSegment();
+
+		function vertList( inStartSeg ) {
+			var verts = [];
+			// we want a counter-clockwise polygon in verts
+			var doubleArea = 0.0;
+			var cursor = inStartSeg;
+			var p,q;
+			var idx = 0;
+			do {
+				p = cursor.sprev.vFrom;
+				q = cursor.vFrom;
+				doubleArea += p.x * q.y - q.x * p.y;
+				verts[idx++] = q;
+				cursor = cursor.snext;
+			} while ( cursor != inStartSeg );
+			if ( doubleArea < 0.0 ) {
+				verts = verts.reverse();
+				var tmp = verts.pop();
+				verts.unshift( tmp );
+			}
+			return	verts;
+		}
+
+		function snip( verts, u, v, w, n ) {
+
+			var ax = verts[ u ].x;
+			var ay = verts[ u ].y;
+
+			var bx = verts[ v ].x;
+			var by = verts[ v ].y;
+
+			var cx = verts[ w ].x;
+			var cy = verts[ w ].y;
+
+			if ( PNLTRI.Math.EPSILON_P > ( ( bx - ax ) * ( cy - ay ) - ( by - ay ) * ( cx - ax ) ) ) return false;
+
+			var aX, aY, bX, bY, cX, cY;
+
+			aX = cx - bx;  aY = cy - by;
+			bX = ax - cx;  bY = ay - cy;
+			cX = bx - ax;  cY = by - ay;
+
+			var p, px, py;
+
+			var apx, apy, bpx, bpy, cpx, cpy;
+			var cCROSSap, bCROSScp, aCROSSbp;
+
+			for ( p = 0; p < n; p ++ ) {
+
+				px = verts[ p ].x
+				py = verts[ p ].y
+
+				apx = px - ax;  apy = py - ay;
+					if ( ( apx == 0 ) && ( apy == 0 ) )		continue;
+				bpx = px - bx;  bpy = py - by;
+					if ( ( bpx == 0 ) && ( bpy == 0 ) )		continue;
+				cpx = px - cx;  cpy = py - cy;
+					if ( ( cpx == 0 ) && ( cpy == 0 ) )		continue;
+
+				// see if p is inside triangle abc
+
+				aCROSSbp = aX * bpy - aY * bpx;
+				cCROSSap = cX * apy - cY * apx;
+				bCROSScp = bX * cpy - bY * cpx;
+
+				if ( ( aCROSSbp >= PNLTRI.Math.EPSILON_N ) &&
+					 ( bCROSScp >= PNLTRI.Math.EPSILON_N ) &&
+					 ( cCROSSap >= PNLTRI.Math.EPSILON_N ) ) return false;
+
+			}
+
+			return true;
+
+		};
+
+		var result = [];
+
+		var	verts = vertList( startSeg );
+
+		var n = verts.length;
+		var nv = n;
+
+		var u, v, w;
+
+		//  remove nv - 2 vertices, creating 1 triangle every time
+
+		var count = 2 * nv;   // error detection
+
+		for ( v = nv - 1; nv > 2; ) {
+
+			// if we loop, it is probably a non-simple polygon
+
+			if ( ( count -- ) <= 0 )	return false;
+
+			// three consecutive vertices in current polygon, <u,v,w>
+
+			u = v; 	 	if ( nv <= u ) u = 0;     // previous
+			v = u + 1;  if ( nv <= v ) v = 0;     // new v
+			w = v + 1;  if ( nv <= w ) w = 0;     // next
+
+			if ( snip( verts, u, v, w, nv ) ) {
+
+				// output Triangle
+
+				this.polyData.addTriangle( verts[ u ], verts[ v ], verts[ w ] );
+
+				// remove v from the remaining polygon
+
+				var s, t;
+
+				for ( s = v, t = v + 1; t < nv; s++, t++ ) {
+
+					verts[ s ] = verts[ t ];
+
+				}
+
+				nv --;
+
+				v --;
+				if ( v < 0 )	v = nv-1;
+
+				// reset error detection counter
+
+				count = 2 * nv;
+
+			}
+
+		}
+
+		return true;
+
+	},		*/
+
+};
+
+/**
+ * @author jahting / http://www.ameco.tv/
+ *
+ *	Algorithm to create the trapezoidation of a polygon with holes
+ *	 according to Seidel's algorithm [Sei91]
+ */
+
+/** @constructor */
+PNLTRI.Trapezoid = function ( inHigh, inLow, inLeft, inRight ) {
+
+	this.vHigh = inHigh ? inHigh : { x: Number.POSITIVE_INFINITY, y: Number.POSITIVE_INFINITY };
+	this.vLow  = inLow  ? inLow  : { x: Number.NEGATIVE_INFINITY, y: Number.NEGATIVE_INFINITY };
+
+	this.lseg = inLeft;
+	this.rseg = inRight;
+
+//	this.uL = null;				// -> Trapezoid: upper left neighbor
+//	this.uR = null;				// -> Trapezoid: upper right neighbor
+//	this.dL = null;				// -> Trapezoid: lower left neighbor
+//	this.dR = null;				// -> Trapezoid: lower right neighbor
+
+//	this.sink = null;			// link to corresponding SINK-Node in QueryStructure
+
+//	this.usave = null;			// temp: uL/uR, preserved for next step
+//	this.uleft = null;			// temp: from uL? (true) or uR (false)
+
+	this.depth = -1;			// no depth assigned yet
+
+	this.monoDone = false;		// monotonization: done with trying to split this trapezoid ?
+
+};
+
+PNLTRI.Trapezoid.prototype = {
+
+	constructor: PNLTRI.Trapezoid,
+
+	clone: function () {
+		var newTrap = new PNLTRI.Trapezoid( this.vHigh, this.vLow, this.lseg, this.rseg );
+
+		newTrap.uL = this.uL;
+		newTrap.uR = this.uR;
+
+		newTrap.dL = this.dL;
+		newTrap.dR = this.dR;
+
+		newTrap.sink = this.sink;
+
+		return	newTrap;
+	},
+
+
+	splitOffLower: function ( inSplitPt ) {
+		var trLower = this.clone();				// new lower trapezoid
+
+		this.vLow = trLower.vHigh = inSplitPt;
+
+		// L/R unknown, anyway changed later
+		this.dL = trLower;		// setBelow
+		trLower.uL = this;		// setAbove
+		this.dR = trLower.uR = null;
+
+		// setAbove
+		if ( trLower.dL )	trLower.dL.uL = trLower;	// dL always connects to uL
+		if ( trLower.dR )	trLower.dR.uR = trLower;	// dR always connects to uR
+
+		return	trLower;
+	},
+
+};
+
+
+/*==============================================================================
+ *
+ *============================================================================*/
+
+// PNLTRI.qsCounter = 0;
+
+/** @constructor */
+PNLTRI.QsNode = function ( inTrapezoid ) {
+//	this.qsId = PNLTRI.qsCounter++;				// Debug only
+	// Only SINK-nodes are created directly.
+	// The others originate from splitting trapezoids
+	// - by a horizontal line: SINK-Node -> Y-Node
+	// - by a segment: SINK-Node -> X-Node
+	this.trap = inTrapezoid;
+	inTrapezoid.sink = this;
+};
+
+PNLTRI.QsNode.prototype = {
+
+	constructor: PNLTRI.QsNode,
+
+};
+
+/*==============================================================================
+ *
+ *============================================================================*/
+
+/** @constructor */
+PNLTRI.QueryStructure = function ( inPolygonData ) {
+	// initialise the query structure and trapezoid list
+	var initialTrap = new PNLTRI.Trapezoid( null, null, null, null );
+	this.trapArray = [];
+	this.appendTrapEntry( initialTrap );
+
+//	PNLTRI.qsCounter = 0;
+	this.root = new PNLTRI.QsNode( initialTrap );
+
+	if ( inPolygonData ) {
+		/*
+		 * adds and initializes specific attributes for all segments
+		 *	// -> QueryStructure: roots of partial tree where vertex is located
+		 *	rootFrom, rootTo:	for vFrom, vTo
+		 *	// marker
+		 *	is_inserted:	already inserted into QueryStructure ?
+		 */
+		var segListArray = inPolygonData.getSegments();
+		for ( var i = 0; i < segListArray.length; i++ ) {
+			segListArray[i].rootFrom = segListArray[i].rootTo = this.root;
+			segListArray[i].is_inserted = false;
+		}
+	}
+};
+
+PNLTRI.QueryStructure.prototype = {
+
+	constructor: PNLTRI.QueryStructure,
+
+	getRoot: function () {
+		return this.root;
+	},
+
+
+	appendTrapEntry: function ( inTrapezoid ) {
+		inTrapezoid.trapID = this.trapArray.length;			// for Debug
+		this.trapArray.push( inTrapezoid );
+	},
+	cloneTrap: function ( inTrapezoid ) {
+		var trap = inTrapezoid.clone();
+		this.appendTrapEntry( trap );
+		return	trap;
+	},
+
+
+	splitNodeAtPoint: function ( inNode, inPoint, inReturnUpper ) {
+		// inNode: SINK-Node with trapezoid containing inPoint
+		var trUpper = inNode.trap;							// trUpper: trapezoid includes the point
+		if (trUpper.vHigh == inPoint)	return	inNode;				// (ERROR) inPoint is already inserted
+		if (trUpper.vLow == inPoint)	return	inNode;				// (ERROR) inPoint is already inserted
+		var trLower = trUpper.splitOffLower( inPoint );		// trLower: new lower trapezoid
+		this.appendTrapEntry( trLower );
+
+		// SINK-Node -> Y-Node
+		inNode.yval = inPoint;
+		inNode.trap = null;
+
+		inNode.right = new PNLTRI.QsNode( trUpper );		// Upper trapezoid sink
+		inNode.left = new PNLTRI.QsNode( trLower );			// Lower trapezoid sink
+
+		return	inReturnUpper ? trUpper.sink : trLower.sink;
+	},
+
+
+	/*
+	 * Mathematics & Geometry helper methods
+	 */
+
+	fpEqual: function ( inNum0, inNum1 ) {
+		 return		Math.abs( inNum0 - inNum1 ) < PNLTRI.Math.EPSILON_P;
+	},
+
+
+	// Checks, whether the vertex inPt is to the left of line segment inSeg.
+	//	Returns:
+	//		>0: inPt is left of inSeg,
+	//		<0: inPt is right of inSeg,
+	//		=0: inPt is co-linear with inSeg
+	//
+	//	ATTENTION: always viewed from -y, not as if moving along the segment chain !!
+
+	is_left_of: function ( inSeg, inPt, inBetweenY ) {
+		var retVal;
+		var dXfrom = inSeg.vFrom.x - inPt.x;
+		var dXto = inSeg.vTo.x - inPt.x;
+		var dYfromZero = this.fpEqual( inSeg.vFrom.y, inPt.y );
+		if ( this.fpEqual( inSeg.vTo.y, inPt.y ) ) {
+			if ( dYfromZero )	return 0;		// all points on a horizontal line
+			retVal = dXto;
+		} else if ( dYfromZero ) {
+			retVal = dXfrom;
+/*		} else if ( inBetweenY && ( dXfrom * dXto > 0 ) ) {
+			// both x-coordinates of inSeg are on the same side of inPt
+			if ( Math.abs( dXto ) >= PNLTRI.Math.EPSILON_P )	return	dXto;
+			retVal = dXfrom;	*/
+		} else {
+			if ( inSeg.upward ) {
+				return	PNLTRI.Math.ptsCrossProd( inSeg.vFrom, inSeg.vTo, inPt );
+			} else {
+				return	PNLTRI.Math.ptsCrossProd( inSeg.vTo, inSeg.vFrom, inPt );
+			}
+		}
+		if ( Math.abs( retVal ) < PNLTRI.Math.EPSILON_P )		return	0;
+		return	retVal;
+	},
+
+
+	/*
+	 * Query structure main methods
+	 */
+
+	//	This method finds the Nodes in the QueryStructure corresponding
+	//   to the trapezoids that contain the endpoints of inSegment,
+	//	 starting from Nodes rootFrom/rootTo and replacing them with the results.
+
+	segNodes: function ( inSegment ) {
+		this.ptNode( inSegment, true );
+		this.ptNode( inSegment, false );
+	},
+
+	// TODO: may need to prevent infinite loop in case of messed up
+	//	trapezoid structure (s. test_add_segment_special_6)
+
+	ptNode: function ( inSegment, inUseFrom ) {
+		var ptMain, ptOther, qsNode;
+		if ( inUseFrom ) {
+			ptMain = inSegment.vFrom;
+			ptOther = inSegment.vTo;		// used if ptMain is not sufficient
+			qsNode = inSegment.rootFrom;
+		} else {
+			ptMain = inSegment.vTo;
+			ptOther = inSegment.vFrom;
+			qsNode = inSegment.rootTo;
+		}
+		var compPt, compRes;
+		var isInSegmentShorter;
+
+		while ( qsNode ) {
+			if ( qsNode.yval ) {			// Y-Node: horizontal line
+											// 4 times as often as X-Node
+				qsNode = ( PNLTRI.Math.compare_pts_yx( ( ( ptMain == qsNode.yval ) ?	// is the point already inserted ?
+									ptOther : ptMain ), qsNode.yval ) == -1 ) ?
+									qsNode.left : qsNode.right;						// below : above
+			} else if ( qsNode.seg ) {		// X-Node: segment (~vertical line)
+											// 0.8 to 1.5 times as often as SINK-Node
+				if ( ( ptMain == qsNode.seg.vFrom ) ||
+					 ( ptMain == qsNode.seg.vTo ) ) {
+					// the point is already inserted
+					if ( this.fpEqual( ptMain.y, ptOther.y ) ) {
+						// horizontal segment
+						if ( !this.fpEqual( qsNode.seg.vFrom.y, qsNode.seg.vTo.y ) ) {
+							qsNode = ( ptOther.x < ptMain.x ) ? qsNode.left : qsNode.right;		// left : right
+						} else {	// co-linear horizontal reversal: test_add_segment_special_7
+							if ( ptMain == qsNode.seg.vFrom ) {
+								// connected at qsNode.seg.vFrom
+//								console.log("ptNode: co-linear horizontal reversal, connected at qsNode.seg.vFrom", inUseFrom, inSegment, qsNode )
+								isInSegmentShorter = inSegment.upward ?
+										( ptOther.x >= qsNode.seg.vTo.x ) :
+										( ptOther.x <  qsNode.seg.vTo.x );
+								qsNode = ( isInSegmentShorter ?
+												inSegment.sprev.upward :
+												qsNode.seg.snext.upward ) ? qsNode.right : qsNode.left;		// above : below
+							} else {
+								// connected at qsNode.seg.vTo
+//								console.log("ptNode: co-linear horizontal reversal, connected at qsNode.seg.vTo", inUseFrom, inSegment, qsNode );
+								isInSegmentShorter = inSegment.upward ?
+										( ptOther.x <  qsNode.seg.vFrom.x ) :
+										( ptOther.x >= qsNode.seg.vFrom.x );
+								qsNode = ( isInSegmentShorter ?
+												inSegment.snext.upward :
+												qsNode.seg.sprev.upward ) ? qsNode.left : qsNode.right;		// below : above
+							}
+						}
+						continue;
+					} else {
+						compRes = this.is_left_of( qsNode.seg, ptOther, false );
+						if ( compRes === 0 ) {
+							// co-linear reversal (not horizontal)
+							//	a co-linear continuation would not reach this point
+							//  since the previous Y-node comparison would have led to a sink instead
+//							console.log("ptNode: co-linear, going back on previous segment", ptMain, ptOther, qsNode );
+							// now as we have two consecutive co-linear segments we have to avoid a cross-over
+							//	for this we need the far point on the "next" segment to the SHORTER of our two
+							//	segments to avoid that "next" segment to cross the longer of our two segments
+							if ( ptMain == qsNode.seg.vFrom ) {
+								// connected at qsNode.seg.vFrom
+//								console.log("ptNode: co-linear, going back on previous segment, connected at qsNode.seg.vFrom", ptMain, ptOther, qsNode );
+								isInSegmentShorter = inSegment.upward ?
+										( ptOther.y >= qsNode.seg.vTo.y ) :
+										( ptOther.y <  qsNode.seg.vTo.y );
+								compRes = isInSegmentShorter ?
+										this.is_left_of( qsNode.seg, inSegment.sprev.vFrom, false ) :
+										-this.is_left_of( qsNode.seg, qsNode.seg.snext.vTo, false );
+							} else {
+								// connected at qsNode.seg.vTo
+//								console.log("ptNode: co-linear, going back on previous segment, connected at qsNode.seg.vTo", ptMain, ptOther, qsNode );
+								isInSegmentShorter = inSegment.upward ?
+										( ptOther.y <  qsNode.seg.vFrom.y ) :
+										( ptOther.y >= qsNode.seg.vFrom.y );
+								compRes = isInSegmentShorter ?
+										this.is_left_of( qsNode.seg, inSegment.snext.vTo, false ) :
+										-this.is_left_of( qsNode.seg, qsNode.seg.sprev.vFrom, false );
+							}
+						}
+					}
+				} else {
+/*					if ( ( PNLTRI.Math.compare_pts_yx( ptMain, qsNode.seg.vFrom ) *			// TODO: Testcase
+							PNLTRI.Math.compare_pts_yx( ptMain, qsNode.seg.vTo )
+						   ) == 0 ) {
+						console.log("ptNode: Pts too close together#2: ", ptMain, qsNode.seg );
+					}		*/
+					compRes = this.is_left_of( qsNode.seg, ptMain, true );
+					if ( compRes === 0 ) {
+						// touching: ptMain lies on qsNode.seg but is none of its endpoints
+						//	should happen quite seldom
+						compRes = this.is_left_of( qsNode.seg, ptOther, false );
+						if ( compRes === 0 ) {
+							// co-linear: inSegment and qsNode.seg
+							//	includes case with ptOther connected to qsNode.seg
+							var tmpPtOther = inUseFrom ? inSegment.sprev.vFrom : inSegment.snext.vTo;
+							compRes = this.is_left_of( qsNode.seg, tmpPtOther, false );
+						}
+					}
+				}
+				if ( compRes > 0 ) {
+					qsNode = qsNode.left;
+				} else if ( compRes < 0 ) {
+					qsNode = qsNode.right;
+				} else {
+					// ???	TODO - not reached with current tests
+					//				possible at all ?
+					return qsNode;
+					// qsNode = qsNode.left;		// left
+					// qsNode = qsNode.right;		// right
+				}
+			} else {		// SINK-Node: trapezoid area
+							// least often
+				if ( !qsNode.trap )	{ console.log("ptNode: unknown type", qsNode); }
+				if ( inUseFrom )	{ inSegment.rootFrom = qsNode; }
+				else				{ inSegment.rootTo = qsNode; }
+				return qsNode;
+			}
+		}	// end while - should not exit here
+	},
+
+
+ 	// Add a new segment into the trapezoidation and update QueryStructure and Trapezoids
+	// 1) locates the two endpoints of the segment in the QueryStructure and inserts them
+	// 2) goes from the high-end trapezoid down to the low-end trapezoid
+	//		changing all the trapezoids in between.
+	// Except for the high-end and low-end no new trapezoids are created.
+	// For all in between either:
+	// - the existing trapezoid is restricted to the left of the new segment
+	//		and on the right side the trapezoid from above is extended downwards
+	// - or the other way round:
+	//	 the existing trapezoid is restricted to the right of the new segment
+	//		and on the left side the trapezoid from above is extended downwards
+
+	add_segment: function ( inSegment ) {
+		var scope = this;
+
+		// functions handling the relationship to the upper neighbors (uL, uR)
+		//	of trNewLeft and trNewRight
+
+		function fresh_seg_or_upward_cusp() {
+			// trCurrent has at most 1 upper neighbor
+			//	and should also have at least 1, since the high-point trapezoid
+			//	has been split off another one, which is now above
+			var trUpper = trCurrent.uL || trCurrent.uR;
+
+			// trNewLeft and trNewRight CANNOT have been extended from above
+			if ( trUpper.dL && trUpper.dR ) {
+				// upward cusp: top forms a triangle
+
+				// ATTENTION: the decision whether trNewLeft or trNewRight is the
+				//	triangle trapezoid formed by the two segments has already been taken
+				//	when selecting trCurrent as the left or right lower neighbor to trUpper !!
+
+				if ( trCurrent == trUpper.dL ) {
+					//	*** Case: FUC_UC_LEFT; prev: ----
+					// console.log( "fresh_seg_or_upward_cusp: upward cusp, new seg to the left!" );
+					//		  upper
+					//   -------*-------
+					//		   + \
+					//	  NL  +   \
+					//		 +	NR \
+					//		+		\
+					trNewRight.uL	= null;			// setAbove; trNewRight.uR, trNewLeft unchanged
+					trUpper.dL		= trNewLeft;	// setBelow; dR: unchanged, NEVER null
+				} else {
+					//	*** Case: FUC_UC_RIGHT; prev: ----
+					// console.log( "fresh_seg_or_upward_cusp: upward cusp, new seg from the right!" );
+					//		  upper
+					//   -------*-------
+					//		   / +
+					//		  /   +	 NR
+					//		 /	NL +
+					//		/		+
+					trNewLeft.uR	= null;			// setAbove; trNewLeft.uL, trNewRight unchanged
+					trUpper.dR		= trNewRight;	// setBelow; dL: unchanged, NEVER null
+				}
+			} else {
+				//	*** Case: FUC_FS; prev: "splitOffLower"
+				// console.log( "fresh_seg_or_upward_cusp: fresh segment, high adjacent segment still missing" );
+				//		  upper
+				//   -------*-------
+				//		   +
+				//	  NL  +
+				//		 +	NR
+				//		+
+				trNewRight.uL = null;			// setAbove; trNewLeft unchanged, set by "splitOffLower"
+				trNewRight.uR = trUpper;
+				trUpper.dR = trNewRight;		// setBelow; trUpper.dL unchanged, set by "splitOffLower"
+			}
+ 		}
+
+		function continue_chain_from_above() {
+			// trCurrent has at least 2 upper neighbors
+			if ( trCurrent.usave ) {
+				// 3 upper neighbors (part II)
+				if ( trCurrent.uleft ) {
+					//	*** Case: CC_3UN_LEFT; prev: 1B_3UN_LEFT
+					// console.log( "continue_chain_from_above: 3 upper neighbors (part II): u0a, u0b, uR(usave)" );
+					// => left gets one, right gets two of the upper neighbors
+					// !! trNewRight cannot have been extended from above
+					//		and trNewLeft must have been !!
+					//		   +		/
+					//	  C.uL  + C.uR / C.usave
+					//    - - - -+----*----------
+					//		NL	  +		NR
+					trNewRight.uL = trCurrent.uR;		// setAbove
+					trNewRight.uR = trCurrent.usave;
+					trNewRight.uL.dL = trNewRight;		// setBelow; trNewRight.uL.dR == null, unchanged
+					trNewRight.uR.dR = trNewRight;		// setBelow; trNewRight.uR.dL == null, unchanged
+				} else {
+					//	*** Case: CC_3UN_RIGHT; prev: 1B_3UN_RIGHT
+					// console.log( "continue_chain_from_above: 3 upper neighbors (part II): uL(usave), u1a, u1b" );
+					// => left gets two, right gets one of the upper neighbors
+					// !! trNewLeft cannot have been extended from above
+					//		and trNewRight must have been !!
+					//			\		 +
+					//	 C.usave \ C.uL + C.uR
+					//   ---------*----+- - - -
+					//			NL    +   NR
+					trNewLeft.uR = trCurrent.uL;		// setAbove; first uR !!!
+					trNewLeft.uL = trCurrent.usave;
+					trNewLeft.uL.dL = trNewLeft;		// setBelow; dR == null, unchanged
+					trNewLeft.uR.dR = trNewLeft;		// setBelow; dL == null, unchanged
+				}
+				trNewLeft.usave = trNewRight.usave = null;
+			} else if ( trCurrent.vHigh == trFirst.vHigh ) {		// && meetsHighAdjSeg ??? TODO
+				//	*** Case: CC_2UN_CONN; prev: ----
+				// console.log( "continue_chain_from_above: 2 upper neighbors, fresh seg, continues high adjacent seg" );
+				// !! trNewLeft and trNewRight cannot have been extended from above !!
+				//	  C.uL	 /  C.uR
+				//   -------*---------
+				//	   NL  +	NR
+				trNewRight.uR.dR = trNewRight;			// setBelow; dL == null, unchanged
+				trNewLeft.uR = trNewRight.uL = null;	// setAbove; trNewLeft.uL, trNewRight.uR unchanged
+			} else {
+				//	*** Case: CC_2UN; prev: 1B_1UN_CONT, 2B_NOCON_RIGHT/LEFT, 2B_TOUCH_RIGHT/LEFT, 2B_COLIN_RIGHT/LEFT
+				// console.log( "continue_chain_from_above: simple case, 2 upper neighbors (no usave, not fresh seg)" );
+				// !! trNewLeft XOR trNewRight will have been extended from above !!
+				//	  C.uL	 +  C.uR
+				//   -------+---------
+				//	   NL  +	NR
+				if ( trNewRight == trCurrent ) {		// trNewLeft has been extended from above
+					// setAbove
+					trNewRight.uL = trNewRight.uR;
+					trNewRight.uR = null;
+					// setBelow; dR: unchanged, is NOT always null (prev: 2B_NOCON_LEFT, 2B_TOUCH_LEFT, 2B_COLIN_LEFT)
+					trNewRight.uL.dL = trNewRight;
+				} else {								// trNewRight has been extended from above
+					trNewLeft.uR = trNewLeft.uL;	// setAbove; first uR !!!
+					trNewLeft.uL = null;
+				}
+			}
+		}
+
+		// functions handling the relationship to the lower neighbors (dL, dR)
+		//	of trNewLeft and trNewRight
+		// trNewLeft or trNewRight MIGHT have been extended from above
+		//  !! in that case dL and dR are different from trCurrent and MUST be set here !!
+
+		function only_one_trap_below( inTrNext ) {
+
+			if ( trCurrent.vLow == trLast.vLow ) {
+				// final part of segment
+
+				if ( meetsLowAdjSeg ) {
+					// downward cusp: bottom forms a triangle
+
+					// ATTENTION: the decision whether trNewLeft and trNewRight are to the
+					//	left or right of the already inserted segment the new one meets here
+					//	has already been taken when selecting trLast to the left or right
+					//	of that already inserted segment !!
+
+					if ( trCurrent.dL ) {
+						//	*** Case: 1B_DC_LEFT; next: ----
+						// console.log( "only_one_trap_below: downward cusp, new seg from the left!" );
+						//		+		/
+						//		 +  NR /
+						//	  NL  +	  /
+						//		   + /
+						//   -------*-------
+						//	   C.dL = next
+
+						// setAbove
+						inTrNext.uL = trNewLeft;	// uR: unchanged, NEVER null
+						// setBelow part 1
+						trNewLeft.dL = inTrNext;
+						trNewRight.dR = null;
+					} else {
+						//	*** Case: 1B_DC_RIGHT; next: ----
+						// console.log( "only_one_trap_below: downward cusp, new seg to the right!" );
+						//		\		+
+						//		 \  NL +
+						//		  \	  +  NR
+						//		   \ +
+						//   -------*-------
+						//	   C.dR = next
+
+						// setAbove
+						inTrNext.uR = trNewRight;	// uL: unchanged, NEVER null
+						// setBelow part 1
+						trNewLeft.dL = null;
+						trNewRight.dR = inTrNext;
+					}
+				} else {
+					//	*** Case: 1B_1UN_END; next: ----
+					// console.log( "only_one_trap_below: simple case, new seg ends here, low adjacent seg still missing" );
+					//			  +
+					//		NL	 +  NR
+					//			+
+					//   ------*-------
+					//		  next
+
+					// setAbove
+					inTrNext.uL = trNewLeft;									// trNewLeft must
+					inTrNext.uR = trNewRight;		// must
+					// setBelow part 1
+					trNewLeft.dL = trNewRight.dR = inTrNext;					// Error
+//					trNewRight.dR = inTrNext;
+				}
+				// setBelow part 2
+				trNewLeft.dR = trNewRight.dL = null;
+			} else {
+				// NOT final part of segment
+
+				if ( inTrNext.uL && inTrNext.uR ) {
+					// inTrNext has two upper neighbors
+					// => a segment ends on the upper Y-line of inTrNext
+					// => inTrNext has temporarily 3 upper neighbors
+					// => marks whether the new segment cuts through
+					//		uL or uR of inTrNext and saves the other in .usave
+					if ( inTrNext.uL == trCurrent ) {
+						//	*** Case: 1B_3UN_LEFT; next: CC_3UN_LEFT
+						// console.log( "only_one_trap_below: inTrNext has 3 upper neighbors (part I): u0a, u0b, uR(usave)" );
+						//		 +		  /
+						//	  NL  +	 NR	 /
+						//		   +	/
+						//   - - - -+--*----
+						//			 +
+						//		  next
+//						if ( inTrNext.uR != trNewRight ) {		// for robustness	TODO: prevent
+							inTrNext.usave = inTrNext.uR;
+							inTrNext.uleft = true;
+							// trNewLeft: L/R undefined, will be extended down and changed anyway
+						// } else {
+							// ERROR: should not happen
+							// console.log( "ERR add_segment: Trapezoid Loop right", inTrNext, trCurrent, trNewLeft, trNewRight, inSegment, this );
+//						}
+					} else {
+						//	*** Case: 1B_3UN_RIGHT; next: CC_3UN_RIGHT
+						// console.log( "only_one_trap_below: inTrNext has 3 upper neighbors (part I): uL(usave), u1a, u1b" );
+						//	 \		   +
+						//	  \	  NL  +  NR
+						//	   \	 +
+						//   ---*---+- - - -
+						//		   +
+						//		  next
+//						if ( inTrNext.uL != trNewLeft ) {		// for robustness	TODO: prevent
+							inTrNext.usave = inTrNext.uL;
+							inTrNext.uleft = false;
+							// trNewRight: L/R undefined, will be extended down and changed anyway
+						// } else {
+							// ERROR: should not happen
+							// console.log( "ERR add_segment: Trapezoid Loop left", inTrNext, trCurrent, trNewLeft, trNewRight, inSegment, this );
+//						}
+					}
+				//} else {
+					//	*** Case: 1B_1UN_CONT; next: CC_2UN
+					// console.log( "only_one_trap_below: simple case, new seg continues down" );
+					//			  +
+					//		NL	 +  NR
+					//			+
+					//   ------+-------
+					//	 	  +
+					//		next
+
+					// L/R for one side undefined, which one is not fixed
+					//	but that one will be extended down and changed anyway
+					// for the other side, vLow must lie at the opposite end
+					//	thus both are set accordingly
+				}
+				// setAbove
+				inTrNext.uL = trNewLeft;
+				inTrNext.uR = trNewRight;
+				// setBelow
+				trNewLeft.dR = trNewRight.dL = inTrNext;
+				trNewLeft.dL = trNewRight.dR = null;
+			}
+		}
+
+		function two_trap_below() {
+			// Find out which one (dL,dR) is intersected by this segment and
+			//	continue down that one
+			var trNext;
+			if ( ( trCurrent.vLow == trLast.vLow ) && meetsLowAdjSeg ) {	// meetsLowAdjSeg necessary? TODO
+				//	*** Case: 2B_CON_END; next: ----
+				// console.log( "two_trap_below: finished, meets low adjacent segment" );
+				//			  +
+				//		NL	 +  NR
+				//			+
+				//   ------*-------
+				//	 		\  C.dR
+				//	  C.dL	 \
+
+				// setAbove
+				trCurrent.dL.uL = trNewLeft;
+				trCurrent.dR.uR = trNewRight;
+				// setBelow; sequence of assignments essential, just in case: trCurrent == trNewLeft
+				trNewLeft.dL = trCurrent.dL;
+				trNewRight.dR = trCurrent.dR;
+				trNewLeft.dR = trNewRight.dL = null;
+
+				trNext = null;	      	// segment finished
+			} else {
+				// setAbove part 1
+				trCurrent.dL.uL = trNewLeft;
+				trCurrent.dR.uR = trNewRight;
+
+				var goDownRight;
+				// passes left or right of an already inserted NOT connected segment
+				//	trCurrent.vLow: high-end of existing segment
+				var compRes = scope.is_left_of( inSegment, trCurrent.vLow, true );
+				if ( compRes > 0 ) {				// trCurrent.vLow is left of inSegment
+					//	*** Case: 2B_NOCON_RIGHT; next: CC_2UN
+					// console.log( "two_trap_below: (intersecting dR)" );
+					//		 +
+					//	  NL  +  NR
+					//		   +
+					//   ---*---+- - - -
+					//		 \	 +
+					//	 C.dL \	C.dR
+					goDownRight = true;
+				} else if ( compRes < 0 ) {			// trCurrent.vLow is right of inSegment
+					//	*** Case: 2B_NOCON_LEFT; next: CC_2UN
+					// console.log( "two_trap_below: (intersecting dL)" );
+					//			  +
+					//		NL	 +  NR
+					//			+
+					//    - - -+---*-------
+					//	 	  +		\  C.dR
+					//	 	 C.dL	 \
+					goDownRight = false;
+				} else {							// trCurrent.vLow lies ON inSegment
+					var vLowSeg = trCurrent.dL.rseg;
+					var directionIsUp = vLowSeg.upward;
+					var otherPt = directionIsUp ? vLowSeg.vFrom : vLowSeg.vTo;
+					compRes = scope.is_left_of( inSegment, otherPt, false );
+					if ( compRes > 0 ) {				// otherPt is left of inSegment
+						//	*** Case: 2B_TOUCH_RIGHT; next: CC_2UN
+						// console.log( "two_trap_below: vLow ON new segment, touching from right" );
+						//		 +
+						//	  NL  +  NR
+						//		   +
+						//   -------*- - - -
+						//		   / +
+						//	 C.dL /	C.dR
+						goDownRight = true;		// like intersecting dR
+					} else if ( compRes < 0 ) {			// otherPt is right of inSegment
+						//	*** Case: 2B_TOUCH_LEFT; next: CC_2UN
+						// console.log( "two_trap_below: vLow ON new segment, touching from left" );
+						//			  +
+						//		NL	 +  NR
+						//			+
+						//    - - -*-------
+						//	 	  +	\  C.dR
+						//	  C.dL	 \
+						goDownRight = false;	// like intersecting dL
+					} else {							// otherPt lies ON inSegment
+						vLowSeg = directionIsUp ? vLowSeg.snext : vLowSeg.sprev;		// other segment with trCurrent.vLow
+						otherPt = directionIsUp ? vLowSeg.vTo : vLowSeg.vFrom;
+						compRes = scope.is_left_of( inSegment, otherPt, false );
+						if ( compRes > 0 ) {				// otherPt is left of inSegment
+							//	*** Case: 2B_COLIN_RIGHT; next: CC_2UN
+							// console.log( "two_trap_below: vLow ON new segment, touching from right" );
+							//		  +
+							//	  NL   +  NR
+							//   -------*- - - -
+							//	  C.dL 	\+  C.dR
+							//			 \+
+							goDownRight = true;		// like intersecting dR
+					//	} else if ( compRes == 0 ) {		//	NOT POSSIBLE, since 3 points on a line is prevented during input of polychains
+					//		goDownRight = true;		// like intersecting dR
+						} else {							// otherPt is right of inSegment
+							//	*** Case: 2B_COLIN_LEFT; next: CC_2UN
+							// console.log( "two_trap_below: vLow ON new segment, touching from left" );
+							//			   +
+							//		NL	  +  NR
+							//    - - - -*-------
+							//	  C.dL	+/  C.dR
+							//		   +/
+							goDownRight = false;		// TODO: for test_add_segment_special_4 -> like intersecting dL
+						}
+					}
+				}
+				if ( goDownRight ) {
+					trNext = trCurrent.dR;
+					// setAbove part 2
+					trCurrent.dR.uL = trNewLeft;
+					// setBelow part 1
+					trNewLeft.dL = trCurrent.dL;
+					trNewRight.dR = null;	// L/R undefined, will be extended down and changed anyway
+				} else {
+					trNext = trCurrent.dL;
+					// setAbove part 2
+					trCurrent.dL.uR = trNewRight;
+					// setBelow part 1
+					trNewRight.dR = trCurrent.dR;
+					trNewLeft.dL = null;	// L/R undefined, will be extended down and changed anyway
+				}
+				// setBelow part 2
+				trNewLeft.dR = trNewRight.dL = trNext;
+			}
+
+ 			return	trNext;
+		}
+
+		//
+		//	main function body
+		//
+
+/*		if ( ( inSegment.sprev.vTo != inSegment.vFrom ) || ( inSegment.vTo != inSegment.snext.vFrom ) ) {
+			console.log( "add_segment: inconsistent point order of adjacent segments: ",
+						 inSegment.sprev.vTo, inSegment.vFrom, inSegment.vTo, inSegment.snext.vFrom );
+			return;
+		}		*/
+
+		//	Find the top-most and bottom-most intersecting trapezoids -> rootXXX
+		this.segNodes( inSegment );
+
+		var segLowVert , segLowNode, meetsLowAdjSeg;		// y-min vertex
+		var segHighVert, segHighNode, meetsHighAdjSeg;		// y-max vertex
+
+		if ( inSegment.upward ) {
+			segLowVert	= inSegment.vFrom;
+			segHighVert	= inSegment.vTo;
+			segLowNode		= inSegment.rootFrom;
+			segHighNode		= inSegment.rootTo;
+			// was lower point already inserted earlier? => segments meet at their ends
+			meetsLowAdjSeg	= inSegment.sprev.is_inserted;
+			// was higher point already inserted earlier? => segments meet at their ends
+			meetsHighAdjSeg	= inSegment.snext.is_inserted;
+		} else {
+			segLowVert	= inSegment.vTo;
+			segHighVert	= inSegment.vFrom;
+			segLowNode		= inSegment.rootTo;
+			segHighNode		= inSegment.rootFrom;
+			meetsLowAdjSeg	= inSegment.snext.is_inserted;
+			meetsHighAdjSeg	= inSegment.sprev.is_inserted;
+		}
+
+		//	insert higher vertex into QueryStructure
+		if ( !meetsHighAdjSeg ) {
+			// higher vertex not yet inserted => split trapezoid horizontally
+			var tmpNode = this.splitNodeAtPoint( segHighNode, segHighVert, false );
+			// move segLowNode to new (lower) trapezoid, if it was the one which was just split
+			if ( segHighNode == segLowNode )	segLowNode = tmpNode;
+			segHighNode = tmpNode;
+		}
+		var trFirst = segHighNode.trap;		// top-most trapezoid for this segment
+
+		// check for robustness		// TODO: prevent
+		if ( !trFirst.uL && !trFirst.uR ) {
+			console.log("ERR add_segment: missing trFirst.uX: ", trFirst );
+			return;
+		}
+		if ( trFirst.vHigh != segHighVert ) {
+			console.log("ERR add_segment: trFirstHigh != segHigh: ", trFirst );
+			return;
+		}
+
+		//	insert lower vertex into QueryStructure
+		if ( !meetsLowAdjSeg ) {
+			// lower vertex not yet inserted => split trapezoid horizontally
+			segLowNode = this.splitNodeAtPoint( segLowNode, segLowVert, true );
+		}
+		var trLast = segLowNode.trap;			// bottom-most trapezoid for this segment
+
+		//
+		// Thread the segment into the query "tree" from top to bottom.
+		// All the trapezoids which are intersected by inSegment are "split" into two.
+		// For each the SINK-QsNode is converted into an X-Node and
+		//  new sinks for the new partial trapezoids are added.
+		// In fact a real split only happens at the top and/or bottom end of the segment
+		//	since at every y-line seperating two trapezoids is traverses it
+		//	cuts off the "beam" from the y-vertex on one side, so that at that side
+		//	the trapezoid from above can be extended down.
+		//
+
+		var trCurrent = trFirst;
+
+		var trNewLeft, trNewRight, trPrevLeft, trPrevRight;
+
+		var counter = this.trapArray.length + 2;		// just to prevent infinite loop
+		var trNext;
+		while ( trCurrent ) {
+			if ( --counter < 0 ) {
+				console.log( "ERR add_segment: infinite loop", trCurrent, inSegment, this );
+				return;
+			}
+			if ( !trCurrent.dL && !trCurrent.dR ) {
+				// ERROR: no successors, cannot arise if data is correct
+				console.log( "ERR add_segment: missing successors", trCurrent, inSegment, this );
+				return;
+			}
+
+			var qs_trCurrent = trCurrent.sink;
+			// SINK-Node -> X-Node
+			qs_trCurrent.seg = inSegment;
+			qs_trCurrent.trap = null;
+			//
+			// successive trapezoids bordered by the same segments are merged
+			//  by extending the trPrevRight or trPrevLeft down
+			//  and redirecting the parent X-Node to the extended sink
+			// !!! destroys tree structure since several nodes now point to the same SINK-Node !!!
+			// TODO: maybe it's not a problem;
+			//  merging of X-Nodes is no option, since they are used as "rootFrom/rootTo" !
+			//
+			if ( trPrevRight && ( trPrevRight.rseg == trCurrent.rseg ) ) {
+				// console.log( "add_segment: extending right predecessor down!", trPrevRight );
+				trNewLeft = trCurrent;
+				trNewRight = trPrevRight;
+				trNewRight.vLow = trCurrent.vLow;
+				// redirect parent X-Node to extended sink
+				qs_trCurrent.left = new PNLTRI.QsNode( trNewLeft );			// trCurrent -> left SINK-Node
+				qs_trCurrent.right = trPrevRight.sink;						// deforms tree by multiple links to trPrevRight.sink
+			} else if ( trPrevLeft && ( trPrevLeft.lseg == trCurrent.lseg ) ) {
+				// console.log( "add_segment: extending left predecessor down!", trPrevLeft );
+				trNewRight = trCurrent;
+				trNewLeft = trPrevLeft;
+				trNewLeft.vLow = trCurrent.vLow;
+				// redirect parent X-Node to extended sink
+				qs_trCurrent.left = trPrevLeft.sink;						// deforms tree by multiple links to trPrevLeft.sink
+				qs_trCurrent.right = new PNLTRI.QsNode( trNewRight );		// trCurrent -> right SINK-Node
+			} else {
+				trNewLeft = trCurrent;
+				trNewRight = this.cloneTrap(trCurrent);
+				qs_trCurrent.left = new PNLTRI.QsNode( trNewLeft );			// trCurrent -> left SINK-Node
+				qs_trCurrent.right = new PNLTRI.QsNode( trNewRight );		// new clone -> right SINK-Node
+			}
+
+			// handle neighbors above
+			if ( trCurrent.uL && trCurrent.uR )	{
+				continue_chain_from_above();
+			} else {
+				fresh_seg_or_upward_cusp();
+			}
+
+			// handle neighbors below
+			if ( trCurrent.dL && trCurrent.dR ) {
+				trNext = two_trap_below();
+			} else {
+				if ( trCurrent.dL ) {
+					// console.log( "add_segment: only_one_trap_below! (dL)" );
+					trNext = trCurrent.dL;
+				} else {
+					// console.log( "add_segment: only_one_trap_below! (dR)" );
+					trNext = trCurrent.dR;
+				}
+				only_one_trap_below( trNext );
+			}
+
+			if ( trNewLeft.rseg )	trNewLeft.rseg.trLeft = trNewRight;
+			if ( trNewRight.lseg )	trNewRight.lseg.trRight = trNewLeft;
+			trNewLeft.rseg = trNewRight.lseg  = inSegment;
+			inSegment.trLeft = trNewLeft;
+			inSegment.trRight = trNewRight;
+
+			// further loop-step down ?
+			if ( trCurrent.vLow != trLast.vLow ) {
+				trPrevLeft = trNewLeft;
+				trPrevRight = trNewRight;
+
+				trCurrent = trNext;
+			} else {
+				trCurrent = null;
+			}
+		}	// end while
+
+		inSegment.is_inserted = true;
+		// console.log( "add_segment: ###### DONE ######" );
+	},
+
+	// Assigns a depth to all trapezoids;
+	//	0: outside, 1: main polygon, 2: holes, 3:polygons in holes, ...
+	// Checks segment orientation and marks those polygon chains for reversal
+	//	where the polygon inside lies to their right (contour in CW, holes in CCW)
+	assignDepths: function ( inPolyData ) {
+		var thisDepth = [ this.trapArray[0] ];
+		var nextDepth = [];
+
+		var thisTrap, borderSeg, curDepth = 0;
+		do {
+			// rseg should exactely go upward on trapezoids inside the polygon (odd depth)
+			var expectedRsegUpward = ( ( curDepth % 2 ) == 1 );
+			while ( thisTrap = thisDepth.pop() ) {			// assignment !
+				if ( thisTrap.depth != -1 )	continue;
+				thisTrap.depth = curDepth;
+				//
+				if ( thisTrap.uL )	thisDepth.push( thisTrap.uL );
+				if ( thisTrap.uR )	thisDepth.push( thisTrap.uR );
+				if ( thisTrap.dL )	thisDepth.push( thisTrap.dL );
+				if ( thisTrap.dR )	thisDepth.push( thisTrap.dR );
+				//
+				if ( ( borderSeg = thisTrap.lseg ) && ( borderSeg.trLeft.depth == -1 ) )	// assignment !
+					nextDepth.push( borderSeg.trLeft );
+				if ( borderSeg = thisTrap.rseg ) {											// assignment !
+					if ( borderSeg.trRight.depth == -1 )
+						nextDepth.push( borderSeg.trRight );
+					if ( borderSeg.upward != expectedRsegUpward )
+						inPolyData.set_PolyLeft_wrong( borderSeg.chainId );
+				}
+			}
+			thisDepth = nextDepth; nextDepth = [];
+			curDepth++;
+		} while ( thisDepth.length > 0 );
+	},
+
+	// creates the visibility map:
+	//	for each vertex the list of all vertices in CW order which are directly
+	//	visible through neighboring trapezoids and thus can be connected by a diagonal
+
+	create_visibility_map: function ( inPolygonData ) {
+		// positional slots for neighboring trapezoid-diagonals
+		var DIAG_UL = 0, DIAG_UM = 1, DIAG_ULR = 2, DIAG_UR = 3;
+		var DIAG_DR = 4, DIAG_DM = 5, DIAG_DLR = 6, DIAG_DL = 7;
+
+		var i, j;
+		var nbVertices = inPolygonData.nbVertices();
+
+		// initialize arrays for neighboring trapezoid-diagonals and vertices
+		var myVisibleDiagonals	= new Array(nbVertices);
+		for ( i = 0; i < nbVertices; i++ ) {
+			myVisibleDiagonals[i] = new Array(DIAG_DL+1);
+		}
+		// create the list of neighboring trapezoid-diagonals
+		//	put into their positional slots
+		var myExternalNeighbors = new Array(nbVertices);
+		for ( i = 0, j = this.trapArray.length; i < j; i++ ) {
+			var curTrap = this.trapArray[i];
+			var highPos = curTrap.uL ?
+						( curTrap.uR ? DIAG_DM : DIAG_DL ) :
+						( curTrap.uR ? DIAG_DR : DIAG_DLR );
+			var lowPos = curTrap.dL ?
+						( curTrap.dR ? DIAG_UM : DIAG_UL ) :
+						( curTrap.dR ? DIAG_UR : DIAG_ULR );
+
+			if ( ( curTrap.depth % 2 ) == 1 ) {		// inside ?
+				if ( ( highPos == DIAG_DM ) || ( lowPos == DIAG_UM ) ||
+					 ( ( highPos == DIAG_DL ) && ( lowPos == DIAG_UR ) ) ||
+					 ( ( highPos == DIAG_DR ) && ( lowPos == DIAG_UL ) ) ) {
+					var lhDiag = inPolygonData.appendDiagonalsEntry( {
+									vFrom: curTrap.vLow, vTo: curTrap.vHigh,
+									mprev: null, mnext: null, marked: false } );
+					var hlDiag = inPolygonData.appendDiagonalsEntry( {
+									vFrom: curTrap.vHigh, vTo: curTrap.vLow, revDiag: lhDiag,
+									mprev: null, mnext: null, marked: false } );
+					lhDiag.revDiag = hlDiag;
+					myVisibleDiagonals[ curTrap.vLow.id][ lowPos] = lhDiag;
+					myVisibleDiagonals[curTrap.vHigh.id][highPos] = hlDiag;
+				}
+			} else {		// outside, hole
+				if ( curTrap.vHigh.id !== null )	myExternalNeighbors[curTrap.vHigh.id] = highPos;
+				if ( curTrap.vLow.id  !== null )	myExternalNeighbors[ curTrap.vLow.id] = lowPos;
+			}
+		}
+		// create the list of outgoing diagonals in the right order (CW)
+		//	from the ordered list of neighboring trapezoid-diagonals
+		//	- starting from an external one
+		// and connect those incoming to
+		var curDiag, curDiags, firstElem, fromVertex, lastIncoming;
+		for ( i = 0; i < nbVertices; i++ ) {
+			curDiags  = myVisibleDiagonals[i];
+			firstElem = myExternalNeighbors[i];
+			if ( firstElem == null )	continue;		// eg. skipped vertices (zero length, co-linear		// NOT: === !
+			j = firstElem;
+			lastIncoming = null;
+			do {
+				if ( j++ > DIAG_DL )			j = DIAG_UL;	// circular positional list
+				if ( curDiag = curDiags[j] ) {
+					if ( lastIncoming ) {
+						curDiag.mprev = lastIncoming;
+						lastIncoming.mnext = curDiag;
+					} else {
+						fromVertex = curDiag.vFrom;
+						fromVertex.firstOutDiag = curDiag;
+					}
+					lastIncoming = curDiag.revDiag;
+				}
+			} while ( j != firstElem );
+			if ( lastIncoming )		fromVertex.lastInDiag = lastIncoming;
+		}
+	},
+
+
+};
+
+
+/*==============================================================================
+ *
+ *============================================================================*/
+
+/** @constructor */
+PNLTRI.Trapezoider = function ( inPolygonData ) {
+
+	this.polyData		= inPolygonData;
+	this.queryStructure	= new PNLTRI.QueryStructure( this.polyData );
+
+};
+
+PNLTRI.Trapezoider.prototype = {
+
+	constructor: PNLTRI.Trapezoider,
+
+
+	/*
+	 * Mathematics helper methods
+	 */
+
+	optimise_randomlist: function ( inOutSegListArray ) {
+		// makes sure that the first N segments are one from each of the N polygon chains
+		var mainIdx = 0;
+		var helpIdx = this.polyData.nbPolyChains();
+		if ( helpIdx == 1 )		return;
+		var chainMarker = new Array(helpIdx);
+		var oldSegListArray = inOutSegListArray.concat();
+		for (var i=0; i<oldSegListArray.length; i++) {
+			var chainId = oldSegListArray[i].chainId;
+			if ( chainMarker[chainId] ) {
+				inOutSegListArray[helpIdx++] = oldSegListArray[i];
+			} else {
+				inOutSegListArray[mainIdx++] = oldSegListArray[i];
+				chainMarker[chainId] = true;
+			}
+		}
+	},
+
+
+	/*
+	 * main methods
+	 */
+
+	// Creates the trapezoidation of the polygon
+	//  and assigns a depth to all trapezoids (odd: inside, even: outside).
+
+	trapezoide_polygon: function () {							// <<<< public
+		var randSegListArray = this.polyData.getSegments().concat();
+//		console.log( "Polygon Chains: ", dumpSegmentList( randSegListArray ) );
+		PNLTRI.Math.array_shuffle( randSegListArray );
+		this.optimise_randomlist( randSegListArray );
+//		console.log( "Random Segment Sequence: ", dumpRandomSequence( randSegListArray ) );
+
+		var nbSegs = randSegListArray.length;
+		var myQs = this.queryStructure;
+
+		var i, current = 0, logstar = nbSegs;
+		while ( current < nbSegs ) {
+			// The CENTRAL mechanism for the near-linear performance:
+			//	stratefies the loop through all segments into log* parts
+			//	and computes new root-Nodes for the remaining segments in each
+			//	partition.
+			logstar = Math.log(logstar)/Math.LN2;		// == log2(logstar)
+			var partEnd = ( logstar > 1 ) ? Math.floor( nbSegs / logstar ) : nbSegs;
+
+			// Core: adds next partition of the segments
+			for (; current < partEnd; current++ ) { myQs.add_segment( randSegListArray[current] ); }
+//			console.log( nbSegs, current );
+
+			// To speed up the segment insertion into the trapezoidation
+			//	the endponts of those segments not yet inserted
+			//	are repeatedly pre-located,
+			// thus their final location-query can start at the top of the
+			//	appropriate sub-tree instead of the root of the whole
+			//	query structure.
+			//
+			for (i = current; i < nbSegs; i++) { this.queryStructure.segNodes( randSegListArray[i] ); }
+		}
+
+		myQs.assignDepths( this.polyData );
+		// cleanup to support garbage collection
+		for (i = 0; i < nbSegs; i++) { randSegListArray[i].trLeft = randSegListArray[i].trRight = null; }
+	},
+
+	// Creates a visibility map:
+	//	for each vertex the list of all vertices in CW order which are directly
+	//	visible through neighboring trapezoids and thus can be connected by a diagonal
+
+	create_visibility_map: function () {
+		return	this.queryStructure.create_visibility_map( this.polyData );
+	},
+
+};
+
+/**
+ * @author jahting / http://www.ameco.tv/
+ *
+ *	Algorithm to split a polygon into uni-y-monotone sub-polygons
+ *
+ *	1) creates a trapezoidation of the main polygon according to Seidel's
+ *	   algorithm [Sei91]
+ *	2) uses diagonals of the trapezoids as additional segments
+ *		to split the main polygon into uni-y-monotone sub-polygons
+ */
+
+/** @constructor */
+PNLTRI.MonoSplitter = function ( inPolygonData ) {
+
+	this.polyData = inPolygonData;
+
+	this.trapezoider = null;
+
+};
+
+
+PNLTRI.MonoSplitter.prototype = {
+
+	constructor: PNLTRI.MonoSplitter,
+
+
+	monotonate_trapezoids: function () {					// <<<<<<<<<< public
+		// Trapezoidation
+		this.trapezoider = new PNLTRI.Trapezoider( this.polyData );
+		//	=> one triangular trapezoid which lies inside the polygon
+		this.trapezoider.trapezoide_polygon();
+
+		// create segments for diagonals
+		this.trapezoider.create_visibility_map();
+		// create mono chains by inserting diagonals
+		this.polyData.create_mono_chains();
+
+		// create UNIQUE monotone sub-polygons
+		this.polyData.unique_monotone_chains_max();
+	},
+
+};
+
+/**
+ * @author jahting / http://www.ameco.tv/
+ *
+ *	Algorithm to triangulate uni-y-monotone polygons [FoM84]
+ *
+ *	expects list of doubly linked monoChains, with Y-max as first vertex
+ */
+
+
+/** @constructor */
+PNLTRI.MonoTriangulator = function ( inPolygonData ) {
+
+	this.polyData	= inPolygonData;
+
+};
+
+
+PNLTRI.MonoTriangulator.prototype = {
+
+	constructor: PNLTRI.MonoTriangulator,
+
+
+	// Pass each uni-y-monotone polygon with start at Y-max for greedy triangulation.
+
+	triangulate_all_polygons: function () {					// <<<<<<<<<< public
+		var	normedMonoChains = this.polyData.getMonoSubPolys();
+		this.polyData.clearTriangles();
+		for ( var i=0; i<normedMonoChains.length; i++ ) {
+			// loop through uni-y-monotone chains
+			// => monoPosmin is next to monoPosmax (left or right)
+			var monoPosmax = normedMonoChains[i];
+			var prevMono = monoPosmax.mprev;
+			var nextMono = monoPosmax.mnext;
+
+			if ( nextMono.mnext == prevMono ) {		// already a triangle
+				this.polyData.addTriangle( monoPosmax.vFrom, nextMono.vFrom, prevMono.vFrom );
+			} else {								// triangulate the polygon
+				this.triangulate_monotone_polygon( monoPosmax );
+			}
+		}
+	},
+
+	//	algorithm to triangulate an uni-y-monotone polygon in O(n) time.[FoM84]
+
+	triangulate_monotone_polygon: function ( monoPosmax ) {			// private
+		var scope = this;
+
+		function error_cleanup() {
+			// Error in algorithm OR polygon is not uni-y-monotone
+			console.log( "ERR uni-y-monotone: only concave angles left", vertBackLog );
+			// push all "wrong" triangles => loop ends
+			while (vertBackLogIdx > 1) {
+				vertBackLogIdx--;
+				scope.polyData.addTriangle(	vertBackLog[vertBackLogIdx-1],
+											vertBackLog[vertBackLogIdx],
+											vertBackLog[vertBackLogIdx+1] );
+			}
+		}
+
+		//
+		// Decisive for this algorithm to work correctly is to make sure
+		//  the polygon stays uni-y-monotone when cutting off ears, i.e.
+		//  to make sure the top-most and bottom-most vertices are removed last
+		// Usually this is done by handling the LHS-case ("LeftHandSide is a single segment")
+		//	and the RHS-case ("RightHandSide segment is a single segment")
+		//	differently by starting at the bottom for LHS and at the top for RHS.
+		// This is not necessary. It can be seen easily, that starting
+		//	from the vertex next to top handles both cases correctly.
+		//
+
+		var frontMono = monoPosmax.mnext;		// == LHS: YminPoint; RHS: YmaxPoint.mnext
+		var endVert = monoPosmax.vFrom;
+
+		var vertBackLog = [ frontMono.vFrom ];
+		var vertBackLogIdx = 0;
+
+		frontMono = frontMono.mnext;
+		var frontVert = frontMono.vFrom;
+
+		// check for robustness		// TODO
+		if (frontVert == endVert)	return;		// Error: only 2 vertices
+
+		while ( (frontVert != endVert) || (vertBackLogIdx > 1) ) {
+			if ( vertBackLogIdx > 0 ) {
+				// vertBackLog is not empty
+				var insideAngleCCW = PNLTRI.Math.ptsCrossProd( vertBackLog[vertBackLogIdx], frontVert, vertBackLog[vertBackLogIdx-1] );
+				if ( Math.abs(insideAngleCCW) <= PNLTRI.Math.EPSILON_P ) {
+					// co-linear
+					if ( (frontVert == endVert) ||		// all remaining triangles are co-linear (180 degree)
+						 ( PNLTRI.Math.compare_pts_yx( vertBackLog[vertBackLogIdx], frontVert ) ==				// co-linear-reversal
+						   PNLTRI.Math.compare_pts_yx( vertBackLog[vertBackLogIdx], vertBackLog[vertBackLogIdx-1] ) ) ) {
+						insideAngleCCW = 1;		// => create triangle
+					}
+				}
+				if ( insideAngleCCW > 0 ) {
+					// convex corner: cut if off
+					this.polyData.addTriangle( vertBackLog[vertBackLogIdx-1], vertBackLog[vertBackLogIdx], frontVert );
+					vertBackLogIdx--;
+				} else {
+					// non-convex: add frontVert to the vertBackLog
+					vertBackLog[++vertBackLogIdx] = frontVert;
+					if (frontVert == endVert)	error_cleanup();	// should never happen !!
+					else {
+						frontMono = frontMono.mnext;
+						frontVert = frontMono.vFrom;
+					}
+				}
+			} else {
+				// vertBackLog contains only start vertex:
+				//	add frontVert to the vertBackLog and advance frontVert
+				vertBackLog[++vertBackLogIdx] = frontVert;
+				frontMono = frontMono.mnext;
+				frontVert = frontMono.vFrom;
+			}
+		}
+		// reached the last vertex. Add in the triangle formed
+		this.polyData.addTriangle( vertBackLog[vertBackLogIdx - 1], vertBackLog[vertBackLogIdx], frontVert );
+	},
+
+};
+
+/**
+ * @author jahting / http://www.ameco.tv/
+ */
+
+/*******************************************************************************
+ *
+ *	Triangulator for Simple Polygons with Holes
+ *
+ *  polygon with holes:
+ *	- one closed contour polygon chain
+ *  - zero or more closed hole polygon chains
+ *
+ *	polygon chain (closed):
+ *	- Array of vertex Objects with attributes "x" and "y"
+ *		- representing the sequence of line segments
+ *		- closing line segment (last->first vertex) is implied
+ *		- line segments are non-zero length and non-crossing
+ *
+ *	"global vertex index":
+ *	- vertex number resulting from concatenation all polygon chains (starts with 0)
+ *
+ *
+ *	Parameters (will not be changed):
+ *		inPolygonChains:
+ *		- Array of polygon chains
+ *
+ *	Results (are a fresh copy):
+ *		triangulate_polygon:
+ *		- Array of Triangles ( Array of 3 "global vertex index" values )
+ *
+ ******************************************************************************/
+
+/** @constructor */
+PNLTRI.Triangulator = function () {
+
+	this.lastPolyData = null;		// for Debug purposes only
+
+};
+
+
+PNLTRI.Triangulator.prototype = {
+
+	constructor: PNLTRI.Triangulator,
+
+
+	clear_lastData: function () {	// save memory after Debug
+		this.lastPolyData = null;
+	},
+
+	// for the polygon data AFTER triangulation
+	//	returns an Array of flags, one flag for each polygon chain:
+	//		lies the inside of the polygon to the left?
+	//		"true" implies CCW for contours and CW for holes
+	get_PolyLeftArr: function () {
+		if ( this.lastPolyData )	return this.lastPolyData.get_PolyLeftArr();
+		return	null;
+	},
+
+
+	triangulate_polygon: function ( inPolygonChains, inForceTrapezoidation ) {
+
+		// collected conditions for selecting EarClipTriangulator over Seidel's algorithm
+		function is_basic_polygon() {
+			if (inForceTrapezoidation)	return	false;
+			return	( myPolygonData.nbPolyChains() == 1 );
+		}
+
+
+		this.clear_lastData();
+		if ( ( !inPolygonChains ) || ( inPolygonChains.length === 0 ) )		return	[];
+		//
+		// initializes general polygon data structure
+		//
+		var myPolygonData = new PNLTRI.PolygonData( inPolygonChains );
+		//
+		var basicPolygon = is_basic_polygon();
+		var	myTriangulator;
+		if ( basicPolygon ) {
+			//
+			// triangulates single polygon without holes
+			//
+			myTriangulator = new PNLTRI.EarClipTriangulator( myPolygonData );
+			basicPolygon = myTriangulator.triangulate_polygon_no_holes();
+		}
+		if ( !basicPolygon ) {
+			//
+			// splits polygon into uni-y-monotone sub-polygons
+			//
+			var	myMonoSplitter = new PNLTRI.MonoSplitter( myPolygonData );
+			myMonoSplitter.monotonate_trapezoids();
+			//
+			// triangulates all uni-y-monotone sub-polygons
+			//
+			myTriangulator = new PNLTRI.MonoTriangulator( myPolygonData );
+			myTriangulator.triangulate_all_polygons();
+		}
+		//
+		this.lastPolyData = myPolygonData;
+		return	myPolygonData.getTriangles();	// copy of triangle list
+	}
+
+
+};
+
+// Export the PNLTRI object for **Node.js**, with
+// backwards-compatibility for the old `require()` API. If we're in
+// the browser, add `_` as a global object via a string identifier,
+// for Closure Compiler "advanced" mode.
+
+if (typeof exports !== 'undefined') {
+  if (typeof module !== 'undefined' && module.exports) {
+    exports = module.exports = PNLTRI;
+  }
+  exports.PNLTRI = PNLTRI;
+} else {
+  this['PNLTRI'] = PNLTRI;
+}
+
+},{}],172:[function(require,module,exports){
 module.exports = function (point, vs) {
     // ray-casting algorithm based on
     // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
@@ -32665,7 +35101,9 @@ module.exports.direction = function direction(out, a, b) {
     normalize(out, out)
     return out
 }
-},{"gl-vec2/add":129,"gl-vec2/dot":131,"gl-vec2/normalize":132,"gl-vec2/set":134,"gl-vec2/subtract":135}],174:[function(require,module,exports){
+},{"gl-vec2/add":136,"gl-vec2/dot":138,"gl-vec2/normalize":139,"gl-vec2/set":141,"gl-vec2/subtract":142}],174:[function(require,module,exports){
+arguments[4][18][0].apply(exports,arguments)
+},{"dup":18}],175:[function(require,module,exports){
 var now = require('performance-now')
   , global = typeof window === 'undefined' ? {} : window
   , vendors = ['moz', 'webkit']
@@ -32735,7 +35173,7 @@ module.exports.cancel = function() {
   caf.apply(global, arguments)
 }
 
-},{"performance-now":171}],175:[function(require,module,exports){
+},{"performance-now":170}],176:[function(require,module,exports){
 /*!
  * repeat-string <https://github.com/jonschlinkert/repeat-string>
  *
@@ -32803,7 +35241,7 @@ function repeat(str, num) {
 var res = '';
 var cache;
 
-},{}],176:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 "use strict"
 
 var twoProduct = require("two-product")
@@ -32994,7 +35432,7 @@ function generateOrientationProc() {
 }
 
 generateOrientationProc()
-},{"robust-scale":177,"robust-subtract":178,"robust-sum":179,"two-product":187}],177:[function(require,module,exports){
+},{"robust-scale":178,"robust-subtract":179,"robust-sum":180,"two-product":191}],178:[function(require,module,exports){
 "use strict"
 
 var twoProduct = require("two-product")
@@ -33045,7 +35483,7 @@ function scaleLinearExpansion(e, scale) {
   g.length = count
   return g
 }
-},{"two-product":187,"two-sum":188}],178:[function(require,module,exports){
+},{"two-product":191,"two-sum":192}],179:[function(require,module,exports){
 "use strict"
 
 module.exports = robustSubtract
@@ -33202,7 +35640,7 @@ function robustSubtract(e, f) {
   g.length = count
   return g
 }
-},{}],179:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 "use strict"
 
 module.exports = linearExpansionSum
@@ -33359,7 +35797,7 @@ function linearExpansionSum(e, f) {
   g.length = count
   return g
 }
-},{}],180:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 // Version 0.5.0 - Copyright 2012 - 2015 -  Jim Riecken <jimr@jimr.ca>
 //
 // Released under the MIT License - https://github.com/jriecken/sat-js
@@ -34343,7 +36781,7 @@ function linearExpansionSum(e, f) {
   return SAT;
 }));
 
-},{}],181:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 "use strict"; "use restrict";
 
 var bits      = require("bit-twiddle")
@@ -34687,7 +37125,7 @@ function connectedComponents(cells, vertex_count) {
 }
 exports.connectedComponents = connectedComponents
 
-},{"bit-twiddle":54,"union-find":191}],182:[function(require,module,exports){
+},{"bit-twiddle":60,"union-find":195}],183:[function(require,module,exports){
 (function(window) {
     var re = {
         not_string: /[^s]/,
@@ -34897,7 +37335,13 @@ exports.connectedComponents = connectedComponents
     }
 })(typeof window === "undefined" ? this : window);
 
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
+arguments[4][19][0].apply(exports,arguments)
+},{"dup":19,"to-space-case":186}],185:[function(require,module,exports){
+arguments[4][20][0].apply(exports,arguments)
+},{"dup":20}],186:[function(require,module,exports){
+arguments[4][21][0].apply(exports,arguments)
+},{"dup":21,"to-no-case":185}],187:[function(require,module,exports){
 var addEvent = require('add-event-listener')
 var offset = require('mouse-event-offset')
 var Emitter = require('events/')
@@ -34953,7 +37397,7 @@ module.exports = function(opt) {
 module.exports.emitter = function(opt) {
     return attach(opt)
 }
-},{"add-event-listener":47,"events/":79,"mouse-event-offset":166}],184:[function(require,module,exports){
+},{"add-event-listener":52,"events/":86,"mouse-event-offset":165}],188:[function(require,module,exports){
 module.exports = {
   enableOn: function ( el, opts ) {
     var Tap = require( './touchy' );
@@ -34962,7 +37406,7 @@ module.exports = {
   }
 };
 
-},{"./touchy":185}],185:[function(require,module,exports){
+},{"./touchy":189}],189:[function(require,module,exports){
 var debounce = require( 'debouncy' );
 var extend = require( 'extend' );
 var eventHelper = require( 'dom-event-special' );
@@ -35241,7 +37685,7 @@ tapProto.handleEvent = function ( e ) {
 
 module.exports = Touchy;
 
-},{"debouncy":66,"dom-event-special":69,"extend":80}],186:[function(require,module,exports){
+},{"debouncy":72,"dom-event-special":76,"extend":87}],190:[function(require,module,exports){
 var _ = require('lodash')
 
 module.exports = Transform
@@ -35341,7 +37785,7 @@ function rotmat (angle) {
   return [[Math.cos(rad), -Math.sin(rad)], [Math.sin(rad), Math.cos(rad)]]
 }
 
-},{"lodash":163}],187:[function(require,module,exports){
+},{"lodash":162}],191:[function(require,module,exports){
 "use strict"
 
 module.exports = twoProduct
@@ -35375,7 +37819,7 @@ function twoProduct(a, b, result) {
 
   return [ y, x ]
 }
-},{}],188:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 "use strict"
 
 module.exports = fastTwoSum
@@ -35393,7 +37837,7 @@ function fastTwoSum(a, b, result) {
 	}
 	return [ar+br, x]
 }
-},{}],189:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 (function (global,Buffer){
 'use strict'
 
@@ -35610,7 +38054,7 @@ exports.clearCache = function clearCache() {
   }
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"bit-twiddle":54,"buffer":4,"dup":77}],190:[function(require,module,exports){
+},{"bit-twiddle":60,"buffer":4,"dup":84}],194:[function(require,module,exports){
 module.exports = unindex
 
 function unindex(positions, cells, out) {
@@ -35664,7 +38108,7 @@ function unindex(positions, cells, out) {
   return out
 }
 
-},{}],191:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 "use strict"; "use restrict";
 
 module.exports = UnionFind;
@@ -35727,7 +38171,7 @@ proto.link = function(x, y) {
     ++ranks[xr];
   }
 }
-},{}],192:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 "use strict"
 
 function unique_pred(list, compare) {
@@ -35786,7 +38230,7 @@ function unique(list, compare, sorted) {
 
 module.exports = unique
 
-},{}],193:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 var hiddenStore = require('./hidden-store.js');
 
 module.exports = createStore;
@@ -35807,7 +38251,7 @@ function createStore() {
     };
 }
 
-},{"./hidden-store.js":194}],194:[function(require,module,exports){
+},{"./hidden-store.js":198}],198:[function(require,module,exports){
 module.exports = hiddenStore;
 
 function hiddenStore(obj, key) {
@@ -35825,7 +38269,7 @@ function hiddenStore(obj, key) {
     return store;
 }
 
-},{}],195:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 // Original - @Gozola. 
 // https://gist.github.com/Gozala/1269991
 // This is a reimplemented version (with a few bug fixes).
@@ -35855,16 +38299,14 @@ function weakMap() {
     }
 }
 
-},{"./create-store.js":193}],196:[function(require,module,exports){
+},{"./create-store.js":197}],200:[function(require,module,exports){
 var _ = require('lodash')
 var sprintf = require('sprintf-js').sprintf
 var EventEmitter = require('eventemitter2').EventEmitter2
 var State = require('./state.js')
 var formatEvent = require('./util/events.js').formatEvent
 
-module.exports = function (id, level, opts) {
-  opts = opts || {size: 700}
-
+module.exports = function (id, level) {
   function load (level) {
     var tmp
     var maps = []
@@ -35877,7 +38319,7 @@ module.exports = function (id, level, opts) {
     })
     var config = _.cloneDeep(level.config)
     config.stages = maps.length
-    config.energy = 12000
+    config.energy = 2400
     return {maps: maps, config: config}
   }
 
@@ -35885,7 +38327,7 @@ module.exports = function (id, level, opts) {
 
   var container = document.getElementById(id)
 
-  var main = require('./ui/main.js')(container, opts)
+  var main = require('./ui/main.js')(container)
   var message = require('./ui/message.js')(container)
   var energy = require('./ui/energy.js')(container)
   var score = require('./ui/score.js')(container)
@@ -35903,7 +38345,7 @@ module.exports = function (id, level, opts) {
     state.energy.current += 50
     state.score.current += 10
     energy.update(state.energy)
-    score.update(state.score)
+    score.update(state.score, {magnitude: 0})
   })
 
   game.events.on(['player', 'exit'], function (event) {
@@ -35925,7 +38367,7 @@ module.exports = function (id, level, opts) {
 
   function endgame (text) {
     setTimeout(function () {
-      message.show(text + ' \n SCORE ' + sprintf('%05d', state.score.current))
+      message.show(text + '<br>\nSCORE ' + sprintf('%05d', state.score.current))
     }, 500)
   }
 
@@ -35945,6 +38387,9 @@ module.exports = function (id, level, opts) {
     energy.update(state.energy)
     game.flash()
 
+    state.stages.current += 1
+    stages.update(state.stages)
+
     setTimeout(function () {
       if (state.energy.current > 0) {
         var remaining = state.energy.current
@@ -35960,22 +38405,23 @@ module.exports = function (id, level, opts) {
         }, 150)
       }
 
-      if (state.stages.current === state.stages.total - 1) {
+      if (state.stages.current === state.stages.total) {
         events.emit(['level', 'completed'], formatEvent({ level: level.config.name }))
         setTimeout(function () {
           main.hide()
           endgame('COMPLETE!')
         }, 700)
       } else {
-        state.stages.current += 1
+        
         setTimeout(function () {
           main.hide()
           setTimeout(function () {
             game.reload(level.maps[state.stages.current])
-            stages.update(state.stages)
-            state.energy.current += 900
-            energy.update(state.energy)
-            main.show()
+            setTimeout(function () {
+              state.energy.current += 900
+              energy.update(state.energy)
+              main.show()
+            }, 400)
           }, 400)
         }, 700)
       }
@@ -35996,7 +38442,7 @@ module.exports = function (id, level, opts) {
       score.show()
       //energy.show()
       stages.show()
-    }, 1000)
+    }, 1500)
     game.start()
   }
 
@@ -36023,7 +38469,7 @@ module.exports = function (id, level, opts) {
   }
 }
 
-},{"./game.js":29,"./state.js":197,"./ui/energy.js":198,"./ui/main.js":199,"./ui/message.js":200,"./ui/score.js":201,"./ui/stages.js":202,"./util/events.js":204,"eventemitter2":78,"lodash":163,"sprintf-js":182}],197:[function(require,module,exports){
+},{"./game.js":34,"./state.js":201,"./ui/energy.js":202,"./ui/main.js":203,"./ui/message.js":204,"./ui/score.js":205,"./ui/stages.js":206,"./util/events.js":208,"eventemitter2":85,"lodash":162,"sprintf-js":183}],201:[function(require,module,exports){
 module.exports = State
 
 function State (opts) {
@@ -36042,7 +38488,7 @@ State.prototype.reload = function (opts) {
   this.stages = {name: opts.name, current: 0, total: opts.stages}
 }
 
-},{}],198:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 var _ = require('lodash')
 
 module.exports = function (container) {
@@ -36136,38 +38582,39 @@ module.exports = function (container) {
   }
 }
 
-},{"lodash":163}],199:[function(require,module,exports){
+},{"lodash":162}],203:[function(require,module,exports){
+var css = require('dom-css')
 var animate = require('animateplus')
 
 module.exports = function (container, opts) {
   var canvas = document.createElement('canvas')
-  var height = container.clientHeight || opts.size
+  var height = container.clientHeight
+  var width = container.clientWidth
+  var ismobile = width < height
 
-  var ismobile = window.innerWidth < window.innerHeight
+  var size = ismobile ? 0.9 * width : 0.65 * height
+  var ratio = window.devicePixelRatio || 1
 
-  if (height * 0.7 > window.innerWidth) {
-    height = window.innerWidth * (1 / 0.7) - 30
-  } else {
-    height = height * 0.9
-  }
-
-  container.style.width = ismobile ? window.innerWidth : window.innerWidth
-  container.style.height = height + 'px'
-  container.style.position = 'relative'
-  container.style.top = 0
-  container.style.background = 'rgb(10,10,10)'
+  css(container, {position: 'relative'})
 
   canvas.id = 'game'
+  canvas.width = size * ratio
+  canvas.height = size * 1.153 * ratio
+  css(canvas, {width: size, height: size * 1.153})
 
-  canvas.width = ismobile ? window.innerWidth : window.innerWidth
-  canvas.height = window.innerHeight
-  canvas.style.marginTop = 0
-  canvas.style.position = 'relative'
-  canvas.style.zIndex = 0
-  canvas.style.background = 'rgb(10,10,10)'
+  css(canvas, {
+    display: 'block',
+    margin: '0px auto',
+    left: 0, right: 0,
+    marginTop: (height - size) * 0.5,
+    position: 'absolute',
+    zIndex: 0,
+    opacity: 0.0,
+    background: 'rgb(10,10,10)'
+  })
+  
   container.appendChild(canvas)
 
-  canvas.style.opacity = 0.0
 
   function hide () {
     animate({
@@ -36195,38 +38642,42 @@ module.exports = function (container, opts) {
   }
 }
 
-},{"animateplus":49}],200:[function(require,module,exports){
+},{"animateplus":55,"dom-css":75}],204:[function(require,module,exports){
+var css = require('dom-css')
+
 module.exports = function (container) {
   var width = container.clientWidth
   var height = container.clientHeight
-  var style
+  var ismobile = width < height
 
   var label = document.createElement('div')
-  style = label.style
-  style.left = 0
-  style.top = height * 0.4
-  style.width = width
-  style.height = width * 0.1
-  style.textAlign = 'center'
-  style.position = 'absolute'
-  style.pointerEvents = 'none'
   container.appendChild(label)
+  css(label, {
+    top: height * 0.35,
+    margin: '0px auto',
+    left: 0, right: 0,
+    width: ismobile ? width : width * 0.6,
+    textAlign: 'center',
+    position: 'absolute',
+    pointerEvents: 'none'
+  })
 
   var message = document.createElement('div')
-  style = message.style
-  style.color = 'rgb(150,150,150)'
-  style.fontFamily = 'Hack'
-  style.fontSize = width * 0.12 + 'px'
-  style.opacity = 0
   label.appendChild(message)
-
+  css(message, {
+    color: 'rgb(150,150,150)',
+    fontFamily: 'Hack',
+    fontSize: Math.sqrt(width * 5),
+    opacity: 0
+  })
+  
   function show (text) {
-    style.opacity = 1
+    css(message, {opacity: 1})
     message.innerHTML = text
   }
 
   function hide () {
-    style.opacity = 0
+    css(message, {opacity: 0})
   }
 
   return {
@@ -36235,68 +38686,68 @@ module.exports = function (container) {
   }
 }
 
-},{}],201:[function(require,module,exports){
+},{"dom-css":75}],205:[function(require,module,exports){
+var css = require('dom-css')
 var sprintf = require('sprintf-js').sprintf
 var animate = require('animateplus')
 
 module.exports = function (container) {
   var width = container.clientWidth
   var height = container.clientHeight
-  var style
 
   var ismobile = window.innerWidth < window.innerHeight
 
   var label = document.createElement('div')
   label.id = 'score'
-  var offset = container.offsetLeft
-  if (container.offsetParent) offset += container.offsetParent.offsetLeft
-  style = label.style
-  style.left = offset + width * 0.5 - width * 0.25 * 0.5
-  style.width = width * 0.25
-  style.top = ismobile ? height * 0.1 : height * 0.06
-  style.height = width * 0.05
-  style.textAlign = 'center'
-  style.display = 'inline-block'
-  style.pointerEvents = 'none'
-  style.position = 'fixed'
+  css(label, {
+    left: 0, right: 0,
+    margin: '0px auto',
+    width: width * 0.35,
+    top: ismobile ? height * 0.1 : height * 0.06,
+    textAlign: 'center',
+    pointerEvents: 'none',
+    position: 'absolute',
+  })
   container.appendChild(label)
 
   var number = document.createElement('span')
-  style = number.style
-  style.color = 'rgb(200,200,200)'
-  style.fontFamily = 'Hack'
-  style.fontSize = height * 0.06 + 'px'
-  style.lineHeight = width * 0.06 + 'px'
-  style.display = 'inline-block'
-  style.verticalAlign = 'middle'
   number.innerHTML = sprintf('%05d', 0)
+  css(number, {
+    color: 'rgb(200,200,200)',
+    fontFamily: 'Hack',
+    fontSize: height * 0.065,
+    display: 'inline-block',
+    verticalAlign: 'middle',
+  })
   label.appendChild(number)
 
   function update (state, opts) {
     opts = opts || {duration: 50, magnitude: 0.1}
     number.innerHTML = sprintf('%05d', state.current)
-    animate({
-      el: number,
-      scale: [1, 1 + opts.magnitude],
-      duration: 50,
-      easing: 'easeInQuad',
-      complete: function () {
-        animate({
-          el: number,
-          scale: [1 + opts.magnitude, 1],
-          duration: opts.duration,
-          easing: 'easeInQuad'
-        })
-      }
-    })
+    if (opts.magnitude > 0) {
+      animate({
+        el: number,
+        scale: [1, 1 + opts.magnitude],
+        duration: 50,
+        easing: 'easeInQuad',
+        complete: function () {
+          animate({
+            el: number,
+            scale: [1 + opts.magnitude, 1],
+            duration: opts.duration,
+            easing: 'easeInQuad'
+          })
+        }
+      })
+    }
   }
 
   function hide () {
-    label.style.opacity = 0
+    css(label, {opacity: 0})
   }
 
   function show () {
-    label.style.opacity = 1
+    css(label, {opacity: 1})
   }
 
   return {
@@ -36306,15 +38757,23 @@ module.exports = function (container) {
   }
 }
 
-},{"animateplus":49,"sprintf-js":182}],202:[function(require,module,exports){
+},{"animateplus":55,"dom-css":75,"sprintf-js":183}],206:[function(require,module,exports){
+var css = require('dom-css')
 var _ = require('lodash')
 
 module.exports = function (container) {
-  var width = window.innerHeight * 0.6
-  var height = window.innerHeight
-  var size = width * 0.5
+  var width = container.clientWidth
+  var height = container.clientHeight
 
   var ismobile = window.innerWidth < window.innerHeight
+  var size = ismobile ? width * 0.57 : height * 0.4
+
+  var colors = {
+    fill: 'rgb(10,10,10)',
+    stroke: 'none',
+    text1: 'rgb(200,200,200)',
+    text2: 'rgb(150,150,150)'
+  }
 
   var points = _.range(7).map(function (i) {
     var dx = 0.6 * size * Math.cos(i * 2 * Math.PI / 6) + size / 2
@@ -36327,50 +38786,53 @@ module.exports = function (container) {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.setAttribute('width', size * 1.2)
   svg.setAttribute('height', size)
-  svg.style.pointerEvents = 'none'
-  svg.style.position = 'fixed'
-  svg.style.top = 0
-  svg.style.left = 0
+  css(svg, {
+    pointerEvents: 'none',
+    position: 'absolute',
+    top: 0, left: 0
+  })
   container.appendChild(svg)
 
   var hex = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
   hex.setAttribute('points', points.join(' '))
-  hex.style.fill = 'rgb(20,20,20)'
-  hex.style.stroke = 'rgb(190,190,190)'
-  hex.style.strokeWidth = '5'
-  hex.style.strokeLinejoin = 'round'
-  hex.style.pointerEvents = 'none'
-  t = ismobile
-    ? 'translate(' + size * -0.3 + ',' + size * -0.62 + ')'
-    : 'translate(' + size * -0.3 + ',' + size * -0.62 + ')'
+  t = 'translate(' + size * -0.39 + ',' + size * -0.62 + ')'
   hex.setAttribute('transform', t)
+  css(hex, {
+    fill: colors.fill,
+    stroke: colors.stroke,
+    strokeWidth: 4,
+    strokeLinejoin: 'round',
+    pointerEvents: 'none'
+  })
   svg.appendChild(hex)
 
   var number = document.createElement('div')
-  number.style.fontFamily = 'Hack'
-  number.style.fontSize = width * 0.05
-  number.style.color = 'rgb(150,150,150)'
-  number.style.opacity = 1
-  number.style.pointerEvents = 'none'
-  number.style.left = width * 0.02
-  number.style.top = ismobile ? height * 0.015 : height * 0.015
-  number.style.width = width * 0.3
-  number.style.position = 'fixed'
   number.innerHTML = ''
+  css(number, {
+    fontFamily: 'Hack',
+    fontSize: ismobile ? width * 0.066 : size * 0.1,
+    color: colors.text,
+    pointerEvents: 'none',
+    left: ismobile ? width * 0.03 : width * 0.012, 
+    top: size * 0.05,
+    width: width * 0.3,
+    position: 'absolute'
+  })
   container.appendChild(number)
 
   function update (state) {
-    number.innerHTML = "<span style='font-size:" + width * 0.04 + "px'>found </span>" + (state.current) + '|' + state.total
+    number.innerHTML = '+ ' + (state.current) + '/' + state.total
   }
 
   function hide () {
-    svg.style.opacity = 0
-    number.style.opacity = 0
+    css(svg, {opacity: 0.0})
+    css(number, {opacity: 0.0})
   }
 
   function show () {
-    svg.style.opacity = 1
-    number.style.opacity = 1
+    console.log('showing')
+    css(svg, {opacity: 1.0})
+    css(number, {opacity: 1.0})
   }
 
   return {
@@ -36380,7 +38842,7 @@ module.exports = function (container) {
   }
 }
 
-},{"lodash":163}],203:[function(require,module,exports){
+},{"dom-css":75,"lodash":162}],207:[function(require,module,exports){
 var _ = require('lodash')
 
 module.exports = Collision
@@ -36411,7 +38873,7 @@ Collision.prototype.correct = function (delta, overlap) {
   }
 }
 
-},{"lodash":163}],204:[function(require,module,exports){
+},{"lodash":162}],208:[function(require,module,exports){
 module.exports = {
   formatEvent: function formatEvent (event) {
     event = event || {}
@@ -36420,7 +38882,7 @@ module.exports = {
   }
 }
 
-},{}],205:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 var _ = require('lodash')
 
 module.exports = Mask
@@ -36457,4 +38919,9 @@ Mask.prototype.unset = function (context) {
   context.restore()
 }
 
-},{"lodash":163}]},{},[24]);
+},{"lodash":162}],210:[function(require,module,exports){
+var hexaworld = require('hexaworld-app/app')
+var set = require('hexaworld-app/set')
+hexaworld('container', set)
+
+},{"hexaworld-app/app":12,"hexaworld-app/set":22}]},{},[210]);
