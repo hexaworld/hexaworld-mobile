@@ -7,7 +7,7 @@
     "bundle-css": "sheetify -u sheetify-cssnext www/style.css > www/bundle.css",
     "bundle-js": "browserify www/index.js > www/bundle.js",
     "bundle": "npm run bundle-css & npm run bundle-js",
-    "web": "budo www/index.js:www/bundle.js --live --dir www",
+    "web": "budo www/index.js:bundle.js --live --dir www",
     "ios": "cordova emulate ios"
   },
   "repository": {
@@ -22,8 +22,11 @@
     "url": "https://github.com/hexaworld/hexaworld-mobile/issues"
   },
   "homepage": "https://github.com/hexaworld/hexaworld-mobile#readme",
-  "dependencies": {},
+  "dependencies": {
+    "hexaworld-levels": "github:hexaworld/hexaworld-levels"
+  },
   "devDependencies": {
+    "budo": "^8.0.0",
     "sheetify": "^3.3.3",
     "sheetify-cssnext": "^1.0.7",
     "standard": "^5.4.1",
